@@ -7,7 +7,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/index.ts",
+    "dev": "NODE_ENV=development bun --watch src/index.ts",
+    "prod": "NODE_ENV=production bun --watch src/index.ts",
     "start": "bun dist/index.js",
     "format": "prettier --write .",
     "db:generate": "bunx drizzle-kit generate",
