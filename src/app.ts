@@ -21,9 +21,9 @@ import { env } from "@/config/env";
 import compression from "compression";
 import { loggerMiddleware } from "@/shared/middlewares/logger.middleware";
 import { notFoundMiddleware } from "@/shared/middlewares/not-found.middleware";
+import { globalErrorMiddleware } from "@/shared/middlewares/global.middleware";
 
 const app = express();
-
 
 /* ================================================================= */
 //  logger middlewares
@@ -74,7 +74,7 @@ app.use(notFoundMiddleware);
 /* ================================================================= */
 // Global Error Handler
 /* ================================================================= */
-
+app.use(globalErrorMiddleware);
 /* ================================================================= */
 // Export app
 /* ================================================================= */
