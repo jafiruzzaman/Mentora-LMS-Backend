@@ -8,14 +8,22 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
+import { signUpSchema } from "@/shared/validations/user-validation";
 import type { Request, Response } from "express";
+import { authService } from "./auth-service";
 
 const signUp = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = signUpSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await authService.signUp(parsedData.data);
   apiResponse({
     res,
     statusCode: 201,
     message: "sign-up successfully",
-    data: {},
+    data: { ...response },
   });
 });
 const signIn = asyncHandler(async (req: Request, res: Response) => {
