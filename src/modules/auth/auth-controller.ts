@@ -7,88 +7,91 @@
  */
 
 import { apiResponse } from "@/shared/lib/api-response";
+import { asyncHandler } from "@/shared/lib/async-handler";
 import type { Request, Response } from "express";
 
-const signUp = async (req: Request, res: Response) => {
+const signUp = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 201,
     message: "sign-up successfully",
     data: {},
   });
-};
-const signIn = async (req: Request, res: Response) => {
+});
+const signIn = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `sign-in successfully.`,
     data: {},
   });
-};
-const signOut = async (req: Request, res: Response) => {
+});
+const signOut = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `sign-out successfully.`,
     data: {},
   });
-};
-const refresh = async (req: Request, res: Response) => {
+});
+const refresh = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `token refreshed successfully.`,
     data: {},
   });
-};
-const forgotPassword = async (req: Request, res: Response) => {
+});
+const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `We send a password reset email to your email.`,
     data: {},
   });
-};
-const sendVerificationEmail = async (req: Request, res: Response) => {
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `We send a verification email to your email.`,
-    data: {},
-  });
-};
-const verifyEmail = async (req: Request, res: Response) => {
+});
+const sendVerificationEmail = asyncHandler(
+  async (req: Request, res: Response) => {
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: `We send a verification email to your email.`,
+      data: {},
+    });
+  }
+);
+const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `email verified successfully.`,
     data: {},
   });
-};
-const resendEmail = async (req: Request, res: Response) => {
+});
+const resendEmail = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `We send a verification email to your email.`,
     data: {},
   });
-};
-const changePassword = async (req: Request, res: Response) => {
+});
+const changePassword = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `password changed successfully.`,
     data: {},
   });
-};
-const resetPassword = async (req: Request, res: Response) => {
+});
+const resetPassword = asyncHandler(async (req: Request, res: Response) => {
   apiResponse({
     res,
     statusCode: 200,
     message: `password changed successfully.`,
     data: {},
   });
-};
+});
 
 export const authController = {
   signUp,
