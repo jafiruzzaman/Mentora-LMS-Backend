@@ -8,18 +8,14 @@
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",
     "prod": "NODE_ENV=production bun dist/index.js",
-    
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-
     "db:generate": "bunx drizzle-kit generate",
     "db:migrate": "bunx drizzle-kit migrate",
     "db:studio": "bunx drizzle-kit studio",
-
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "bun run format:check && bun run lint",
-    
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -65,6 +61,7 @@
     "prettier": "^3.9.9",
     "typescript": "6.0.3",
     "typescript-eslint": "^8.71.0",
+    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.3"
   }
 }
