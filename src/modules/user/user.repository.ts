@@ -4,9 +4,8 @@
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
  * @date 3rd October
-*/
+ */
 import { eq } from "drizzle-orm";
-
 
 import { db } from "@/config/db";
 import { users } from "@/database/schema/user-schema";
@@ -64,6 +63,7 @@ export const userRepository = {
   create,
   findByEmail,
   findById,
+  findAllUser,
   updateUser,
   deleteUser,
 };
