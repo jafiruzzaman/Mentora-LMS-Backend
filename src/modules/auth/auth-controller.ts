@@ -6,83 +6,85 @@
  * @date 3rd October
  */
 
-import { signUpSchema } from "@/shared/validations/user-validation";
+import { apiResponse } from "@/shared/lib/api-response";
 import type { Request, Response } from "express";
 
 const signUp = async (req: Request, res: Response) => {
-  return res.status(201).json({
-    success: true,
+  apiResponse({
+    res,
+    statusCode: 201,
     message: "sign-up successfully",
+    data: {},
   });
 };
 const signIn = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `sign-in successfully.`,
     data: {},
   });
 };
 const signOut = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `sign-out successfully.`,
     data: {},
   });
 };
 const refresh = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `token refreshed successfully.`,
     data: {},
   });
 };
 const forgotPassword = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
-    message: `sign-up successfully.`,
+  apiResponse({
+    res,
+    statusCode: 200,
+    message: `We send a password reset email to your email.`,
     data: {},
   });
 };
 const sendVerificationEmail = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `We send a verification email to your email.`,
     data: {},
   });
 };
 const verifyEmail = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `email verified successfully.`,
     data: {},
   });
 };
 const resendEmail = async (req: Request, res: Response) => {
-  return res.status(201).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `We send a verification email to your email.`,
     data: {},
   });
 };
 const changePassword = async (req: Request, res: Response) => {
-  return res.status(201).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `password changed successfully.`,
     data: {},
   });
 };
 const resetPassword = async (req: Request, res: Response) => {
-  return res.status(201).json({
-    success: true,
-    method: req.method,
+  apiResponse({
+    res,
+    statusCode: 200,
     message: `password changed successfully.`,
     data: {},
   });
