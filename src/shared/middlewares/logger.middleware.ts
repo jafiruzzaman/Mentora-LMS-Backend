@@ -11,7 +11,7 @@ import { logger } from "@/config/logger";
 
 export const loggerMiddleware = pinoHttp({
   logger,
-  customLogLevel: (req, res, err) => {
+  customLogLevel: (_req, res, err) => {
     if (err || res.statusCode >= 500) {
       return "error";
     }
@@ -20,10 +20,10 @@ export const loggerMiddleware = pinoHttp({
     }
     return "info";
   },
-  customSuccessMessage: (req, res) => {
+  customSuccessMessage: (req) => {
     return `${req.method} ${req.url} completed with ${req.statusCode}`;
   },
-  customErrorMessage: (req, res, err) => {
+  customErrorMessage: (req) => {
     return `${req.method} ${req.url} failed with ${req.statusCode}`;
   },
 });
