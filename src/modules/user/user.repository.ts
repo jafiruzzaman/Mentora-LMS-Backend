@@ -34,6 +34,15 @@ const findById = async (id: string) => {
   return user;
 };
 
+const findByUserName = async (user_name: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.user_name, user_name))
+    .limit(1);
+  return user;
+};
+
 const findAllUser = async () => {
   const usersList = await db.select().from(users);
   return usersList;
@@ -63,6 +72,7 @@ export const userRepository = {
   create,
   findByEmail,
   findById,
+  findByUserName,
   findAllUser,
   updateUser,
   deleteUser,
