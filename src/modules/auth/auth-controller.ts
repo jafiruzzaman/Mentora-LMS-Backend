@@ -10,7 +10,7 @@ import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import {
   changePasswordSchema,
-  forgotPasswordSchema,
+  emailSchema,
   resetPasswordSchema,
   signUpSchema,
   singInSchema,
@@ -97,7 +97,7 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = forgotPasswordSchema.safeParse(req.body);
+  const parsedData = emailSchema.safeParse(req.body);
   if (!parsedData.success) {
     const message = parsedData.error.issues[0]?.message;
     throw new Error(message);
@@ -172,6 +172,12 @@ const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const resendEmail = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = emailSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  await authService.resendEmail(parsedData.data.email);
   apiResponse({
     res,
     statusCode: 200,

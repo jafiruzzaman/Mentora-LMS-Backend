@@ -27,14 +27,6 @@ const singInSchema = z.object({
     .describe("password must be at-least 8 characters long"),
 });
 
-const forgotPasswordSchema = z.object({
-  email: z
-    .email()
-    .lowercase()
-    .trim()
-    .describe("please enter a valid email address"),
-});
-
 const resetPasswordSchema = z
   .object({
     token: z
@@ -75,22 +67,30 @@ const changePasswordSchema = z
   })
   .refine((data) => data.newPassword === data.confirmedPassword);
 
+const emailSchema = z.object({
+  email: z
+    .email()
+    .lowercase()
+    .trim()
+    .describe("please enter a valid email address"),
+});
+
 type signUpDTO = z.infer<typeof signUpSchema>;
 type signInDTO = z.infer<typeof singInSchema>;
-type forgotPasswordDTO = z.infer<typeof forgotPasswordSchema>;
+type emailDTO = z.infer<typeof emailSchema>;
 type resetPasswordDTO = z.infer<typeof resetPasswordSchema>;
 type verifyEmailDTO = z.infer<typeof verifyEmailSchema>;
 type changePasswordDTO = z.infer<typeof changePasswordSchema>;
 export {
   type signUpDTO,
   type signInDTO,
-  type forgotPasswordDTO,
+  type emailDTO,
   type resetPasswordDTO,
   type verifyEmailDTO,
   type changePasswordDTO,
   signUpSchema,
   singInSchema,
-  forgotPasswordSchema,
+  emailSchema,
   resetPasswordSchema,
   verifyEmailSchema,
   changePasswordSchema,
