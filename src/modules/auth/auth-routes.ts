@@ -8,12 +8,13 @@
 
 import { Router } from "express";
 import { authController } from "./auth-controller";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 
 const router = Router();
 
 router.post("/sign-up", authController.signUp);
 router.post("/sign-in", authController.signIn);
-router.post("/sign-out", authController.signOut);
+router.post("/sign-out", authMiddleware, authController.signOut);
 
 router.post("/refresh", authController.refresh);
 
