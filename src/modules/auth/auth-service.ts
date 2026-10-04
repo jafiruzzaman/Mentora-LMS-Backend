@@ -272,6 +272,29 @@ const changePassword = async ({
   });
   return response;
 };
+
+const resendEmail = async (email: string) => {
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    throw new AppError(404, "User not found.");
+  }
+  // check if user already verified or not
+  if (user.is_verified) {
+    throw new AppError(400, "User is already verified");
+  }
+  const rawToken = crypto.randomBytes(32).toString("hex");
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(rawToken)
+    .digest("hex");
+
+  await userRepository.updateUser(user.id, {
+    email_verification_token: hashedToken,
+    email_verification_expires_at: new Date(Date.now() + 15 * 60 * 1000),
+  });
+};
+
 export const authService = {
   signUp,
   signIn,
@@ -282,4 +305,5 @@ export const authService = {
   sendVerificationEmail,
   verifyEmail,
   changePassword,
+  resendEmail,
 };
