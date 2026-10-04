@@ -27,6 +27,9 @@ const findById = async (id: string) => {
     .limit(1);
   return category;
 };
+const findAll = async () => {
+  return await db.select().from(categories);
+};
 const findByName = async (name: string) => {
   const [category] = await db
     .select()
@@ -68,6 +71,7 @@ export const categoryRepository = {
   findById,
   findByName,
   findBySlug,
+  findAll,
   findByIdAndUpdate,
   findByIdAndDelete,
 };

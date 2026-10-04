@@ -29,10 +29,12 @@ const createCategory = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
+  const response = await categoryService.getAllCategories();
   apiResponse({
     res,
     statusCode: 200,
     message: "Categories fetched successfully",
+    data: response,
   });
 });
 
