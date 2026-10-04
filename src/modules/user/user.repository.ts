@@ -9,13 +9,9 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/config/db";
 import { users } from "@/database/schema/user-schema";
-import { hashPassword } from "@/shared/lib/password";
-import type { signUpDTO } from "@/shared/validations/user-validation";
-import type { UserType } from "./user.types";
+import type { signUpDTO } from "@/modules/auth/auth-validation";
 
 const create = async (data: signUpDTO) => {
-  const password_hash = await hashPassword(data.password);
-
   const [user] = await db
     .insert(users)
     .values({
@@ -23,7 +19,7 @@ const create = async (data: signUpDTO) => {
       last_name: data.last_name,
       user_name: data.user_name,
       email: data.email,
-      password_hash,
+      password_hash: data.password,
     })
     .returning();
   return user;
@@ -31,6 +27,15 @@ const create = async (data: signUpDTO) => {
 
 const findById = async (id: string) => {
   const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return user;
+};
+
+const findByUserName = async (user_name: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.user_name, user_name))
+    .limit(1);
   return user;
 };
 
@@ -47,7 +52,11 @@ const findByEmail = async (email: string) => {
     .limit(1);
   return user;
 };
-const updateUser = async (id: string, data: Partial<UserType>) => {
+
+const updateUser = async (
+  id: string,
+  data: Partial<typeof users.$inferInsert>
+) => {
   const [user] = await db
     .update(users)
     .set(data)
@@ -55,14 +64,36 @@ const updateUser = async (id: string, data: Partial<UserType>) => {
     .returning();
   return user;
 };
+
 const deleteUser = async (id: string) => {
   const [user] = await db.delete(users).where(eq(users.id, id)).returning();
   return user;
 };
+
+const findByResetPasswordToken = async (token: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.reset_password_verification_token, token))
+    .limit(1);
+  return user;
+};
+const findByVerificationToken = async (token: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email_verification_token, token))
+    .limit(1);
+  return user;
+};
+
 export const userRepository = {
   create,
   findByEmail,
   findById,
+  findByVerificationToken,
+  findByResetPasswordToken,
+  findByUserName,
   findAllUser,
   updateUser,
   deleteUser,
