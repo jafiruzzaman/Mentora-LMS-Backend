@@ -19,6 +19,7 @@ import { comparePassword, hashPassword } from "@/shared/lib/password";
 import { token } from "@/shared/lib/token";
 import type { JwtPayload } from "@/types/express.types";
 import {
+  emailVerifiedTemplate,
   generateWelcomeEmailTemplate,
   passwordResetEmailTemplate,
   resetPasswordConfirmationTemplate,
@@ -174,21 +175,28 @@ const resetPassword = async ({
   token,
 }: resetPasswordDTO) => {
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-  const tokenInDB = await userRepository.findByResetPasswordToken(hashedToken);
-  if (!tokenInDB) {
-    throw new AppError(400, "Invalid user credentials");
+  const user = await userRepository.findByResetPasswordToken(hashedToken);
+  // TODO: compare time its a huge mistake
+  if (!user) {
+    throw new AppError(400, "Invalid or expired verification token");
+  }
+  if (
+    !user.reset_password_verification_expires_at ||
+    user.reset_password_verification_expires_at.getTime() < Date.now()
+  ) {
+    throw new AppError(400, "Verification token has expired");
   }
   const password_hash = await hashPassword(confirmedPassword);
-  await userRepository.updateUser(tokenInDB.id, {
+  await userRepository.updateUser(user.id, {
     password_hash,
     reset_password_verification_token: null,
     reset_password_verification_expires_at: null,
   });
   // send password reset email confirmation
   sendEmail({
-    to: tokenInDB.email,
+    to: user.email,
     subject: "Reset Password",
-    html: resetPasswordConfirmationTemplate(tokenInDB.first_name),
+    html: resetPasswordConfirmationTemplate(user.first_name),
   });
 };
 
@@ -216,6 +224,36 @@ const sendVerificationEmail = async (email: string) => {
     html: verificationEmailTemplate(user.first_name, url),
   });
 };
+const verifyEmail = async (token: string) => {
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await userRepository.findByVerificationToken(hashedToken);
+
+  if (!user) {
+    throw new AppError(400, "Invalid or expired verification token");
+  }
+
+  if (user.is_verified === true) {
+    throw new AppError(400, "Email is already verified.");
+  }
+
+  if (
+    !user.email_verification_expires_at ||
+    user.email_verification_expires_at.getTime() <= Date.now()
+  ) {
+    throw new AppError(400, "Verification token has expired");
+  }
+
+  await userRepository.updateUser(user.id, {
+    is_verified: true,
+    email_verification_token: null,
+    email_verification_expires_at: null,
+  });
+  await sendEmail({
+    to: user.email,
+    subject: "Your Mentora email has been verified",
+    html: emailVerifiedTemplate(user.first_name),
+  });
+};
 
 export const authService = {
   signUp,
@@ -225,4 +263,5 @@ export const authService = {
   forgotPassword,
   resetPassword,
   sendVerificationEmail,
+  verifyEmail,
 };

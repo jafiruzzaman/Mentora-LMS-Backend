@@ -27,7 +27,7 @@ router.post(
   authMiddleware,
   authController.sendVerificationEmail
 );
-router.post("/verify-email", authController.verifyEmail);
+router.post("/verify-email", authMiddleware, authController.verifyEmail);
 router.post("/resend-email", authController.resendEmail);
 
 export { router as authRoutes };
