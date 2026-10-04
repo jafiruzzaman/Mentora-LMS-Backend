@@ -11,8 +11,15 @@ import z from "zod";
 const categorySchema = z.object({
   name: z
     .string()
-    .min(3, { message: "category name have to at-least characters long" }),
+    .trim()
+    .min(3, {
+      message: "Category name must be at least 3 characters long.",
+    })
+    .max(100, {
+      message: "Category name must not exceed 100 characters.",
+    }),
 });
 
-type categoryDTO = z.infer<typeof categorySchema>;
-export { categorySchema, type categoryDTO };
+type CategoryDTO = z.infer<typeof categorySchema>;
+
+export { categorySchema, type CategoryDTO };

@@ -1,3 +1,4 @@
+import { Roles } from "./../../constants/index";
 /**
  * @file category-routes.ts
  * @description category routes
@@ -9,10 +10,17 @@
 import { Router } from "express";
 
 import { categoryController } from "./category-controller";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
 
 const router = Router();
 
-router.post("/", categoryController.createCategory);
+router.post(
+  "/",
+  authMiddleware,
+  roleMiddlewares([Roles.admin]),
+  categoryController.createCategory
+);
 
 router.get("/", categoryController.getAllCategories);
 

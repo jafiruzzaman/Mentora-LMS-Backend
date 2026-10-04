@@ -27,6 +27,14 @@ const findById = async (id: string) => {
     .limit(1);
   return category;
 };
+const findByName = async (name: string) => {
+  const [category] = await db
+    .select()
+    .from(categories)
+    .where(eq(categories.name, name))
+    .limit(1);
+  return category;
+};
 const findBySlug = async (slug: string) => {
   const [category] = await db
     .select()
@@ -58,6 +66,7 @@ const findByIdAndDelete = async (id: string) => {
 export const categoryRepository = {
   create,
   findById,
+  findByName,
   findBySlug,
   findByIdAndUpdate,
   findByIdAndDelete,
