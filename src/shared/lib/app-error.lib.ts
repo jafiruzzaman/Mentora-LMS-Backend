@@ -16,7 +16,8 @@ export class AppError extends Error {
     isOperational: boolean = true
   ) {
     super(message);
-    ((this.name = "app-error"), (this.statusCode = statusCode));
+    this.name = "app-error";
+    this.statusCode = statusCode;
     this.isOperational = isOperational;
     Error.captureStackTrace(this, this.constructor);
   }
