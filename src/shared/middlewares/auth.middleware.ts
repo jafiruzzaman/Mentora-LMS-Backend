@@ -29,7 +29,6 @@ export const authMiddleware = (
     throw new AppError(401, "Token is required");
   }
   const decodedToken = verify(token, env.ACCESS_TOKEN_SECRET);
-  console.log(`bearer token `, decodedToken);
   req.user = decodedToken as JwtPayload;
   next();
 };

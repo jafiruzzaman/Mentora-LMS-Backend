@@ -6,7 +6,7 @@ export type UserType = {
   email: string;
   password_hash: string | null;
   phone: string | null;
-  refresh_token: string;
+  refresh_token: string | null;
   email_verification_token: string;
   email_verification_expires_at: Date;
   is_verified: boolean;
