@@ -28,6 +28,8 @@ export const accountStatusEnum = pgEnum("account_status", [
 /* Users */
 /* ================================================================= */
 
+export const roleEnum = pgEnum("role", ["student", "admin", "instructor"]);
+
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
 
@@ -44,7 +46,7 @@ export const users = pgTable("users", {
   })
     .notNull()
     .unique(),
-
+  role: roleEnum("role").notNull().default("student"),
   email: varchar("email", {
     length: 255,
   })
