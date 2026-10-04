@@ -9,9 +9,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/config/db";
 import { users } from "@/database/schema/user-schema";
-import { hashPassword } from "@/shared/lib/password";
 import type { signUpDTO } from "@/shared/validations/user-validation";
-import type { UserType } from "./user.types";
 
 const create = async (data: signUpDTO) => {
   const [user] = await db
@@ -54,7 +52,10 @@ const findByEmail = async (email: string) => {
     .limit(1);
   return user;
 };
-const updateUser = async (id: string, data: Partial<UserType>) => {
+const updateUser = async (
+  id: string,
+  data: Partial<typeof users.$inferInsert>
+) => {
   const [user] = await db
     .update(users)
     .set(data)
