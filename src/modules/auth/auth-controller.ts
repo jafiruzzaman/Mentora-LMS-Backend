@@ -99,12 +99,11 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
     const message = parsedData.error.issues[0]?.message;
     throw new Error(message);
   }
-
+  await authService.forgotPassword(parsedData.data.email);
   apiResponse({
     res,
     statusCode: 200,
     message: `We send a password reset email to your email.`,
-    data: {},
   });
 });
 const sendVerificationEmail = asyncHandler(

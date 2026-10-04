@@ -52,7 +52,268 @@ export const generateWelcomeEmailTemplate = (name: string): string => {
     </html>
   `;
 };
+export const passwordResetEmailTemplate = (resetUrl: string): string => {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+        <title>Reset your Mentora password</title>
+      </head>
 
+      <body
+        style="
+          margin: 0;
+          padding: 0;
+          background-color: #f4f3f8;
+          font-family: Arial, Helvetica, sans-serif;
+          color: #18151f;
+        "
+      >
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="
+            background-color: #f4f3f8;
+            padding: 40px 16px;
+          "
+        >
+          <tr>
+            <td align="center">
+
+              <table
+                width="100%"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="
+                  max-width: 600px;
+                  background-color: #ffffff;
+                  border-radius: 20px;
+                  overflow: hidden;
+                  box-shadow:
+                    0 10px 40px
+                    rgba(20, 15, 35, 0.08);
+                "
+              >
+
+                <!-- Header -->
+                <tr>
+                  <td
+                    style="
+                      padding: 32px 40px;
+                      background-color: #08070b;
+                    "
+                  >
+                    <div
+                      style="
+                        font-size: 26px;
+                        font-weight: 700;
+                        letter-spacing: -0.8px;
+                        color: #ffffff;
+                      "
+                    >
+                      Mentora
+                    </div>
+
+                    <div
+                      style="
+                        margin-top: 6px;
+                        font-size: 13px;
+                        color: #aaa5b5;
+                      "
+                    >
+                      Learn. Build. Grow.
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 48px 40px 40px;">
+
+                    <div
+                      style="
+                        width: 56px;
+                        height: 56px;
+                        line-height: 56px;
+                        text-align: center;
+                        border-radius: 16px;
+                        background-color: #f0e9ff;
+                        font-size: 26px;
+                      "
+                    >
+                      🔐
+                    </div>
+
+                    <h1
+                      style="
+                        margin: 24px 0 0;
+                        font-size: 30px;
+                        line-height: 1.25;
+                        letter-spacing: -0.8px;
+                        color: #18151f;
+                      "
+                    >
+                      Reset your password
+                    </h1>
+
+                    <p
+                      style="
+                        margin: 18px 0 0;
+                        font-size: 16px;
+                        line-height: 1.7;
+                        color: #625d6b;
+                      "
+                    >
+                      We received a request to reset the password
+                      associated with your Mentora account.
+                    </p>
+
+                    <p
+                      style="
+                        margin: 14px 0 0;
+                        font-size: 16px;
+                        line-height: 1.7;
+                        color: #625d6b;
+                      "
+                    >
+                      Click the button below to choose a new password
+                      and get back to learning.
+                    </p>
+
+                    <!-- Button -->
+                    <table
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      style="margin-top: 32px;"
+                    >
+                      <tr>
+                        <td
+                          align="center"
+                          style="
+                            border-radius: 10px;
+                            background-color: #7c3aed;
+                          "
+                        >
+                          <a
+                            href="${resetUrl}"
+                            target="_blank"
+                            style="
+                              display: inline-block;
+                              padding: 15px 28px;
+                              font-size: 15px;
+                              font-weight: 700;
+                              color: #ffffff;
+                              text-decoration: none;
+                              border-radius: 10px;
+                            "
+                          >
+                            Reset Password
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Expiry -->
+                    <table
+                      width="100%"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      style="
+                        margin-top: 32px;
+                        background-color: #faf9fc;
+                        border-radius: 12px;
+                      "
+                    >
+                      <tr>
+                        <td style="padding: 18px 20px;">
+                          <p
+                            style="
+                              margin: 0;
+                              font-size: 14px;
+                              line-height: 1.6;
+                              color: #625d6b;
+                            "
+                          >
+                            <strong style="color: #18151f;">
+                              This link expires in 15 minutes.
+                            </strong>
+                            For your security, please reset your
+                            password before the link expires.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- Security -->
+                    <p
+                      style="
+                        margin: 32px 0 0;
+                        padding-top: 24px;
+                        border-top: 1px solid #eceaf0;
+                        font-size: 13px;
+                        line-height: 1.7;
+                        color: #85808e;
+                      "
+                    >
+                      If you didn't request a password reset, you can
+                      safely ignore this email. Your password will
+                      remain unchanged.
+                    </p>
+
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td
+                    style="
+                      padding: 28px 40px;
+                      background-color: #faf9fc;
+                      border-top: 1px solid #eeeaf3;
+                    "
+                  >
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 13px;
+                        color: #85808e;
+                      "
+                    >
+                      © 2026 Mentora. All rights reserved.
+                    </p>
+
+                    <p
+                      style="
+                        margin: 6px 0 0;
+                        font-size: 12px;
+                        color: #a09ba8;
+                      "
+                    >
+                      This is an automated security email.
+                      Please don't reply to this message.
+                    </p>
+                  </td>
+                </tr>
+
+              </table>
+
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+};
 export const sendEmail = async ({ to, html, subject }: SendMailOptions) => {
   const mailOptions = {
     // Fixed string interpolation logic
