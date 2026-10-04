@@ -53,11 +53,7 @@ export const generateWelcomeEmailTemplate = (name: string): string => {
   `;
 };
 
-export const sendEmail = async ({
-  to,
-  html,
-  subject,
-}: SendMailOptions) => {
+export const sendEmail = async ({ to, html, subject }: SendMailOptions) => {
   const mailOptions = {
     // Fixed string interpolation logic
     from: `Mentora LMS <${env.SMTP_FROM || env.SMTP_EMAIL}>`,
