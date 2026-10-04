@@ -78,8 +78,35 @@ const signOut = async ({ id, email }: JwtPayload) => {
     refresh_token: null,
   });
 };
+const refresh = async (refreshToken: string) => {
+  const { id, email } = (await token.verifyRefreshToken(
+    refreshToken
+  )) as JwtPayload;
+  const existingUser = await userRepository.findByEmail(email);
+  if (!existingUser) {
+    throw new AppError(404, "User not found.");
+  }
+  const access_token = token.generateAccessToken({
+    id: existingUser.id,
+    email: existingUser.email,
+    role: existingUser.role,
+  });
+  const refresh_token = token.generateAccessToken({
+    id: existingUser.id,
+    email: existingUser.email,
+    role: existingUser.role,
+  });
+  const user = await userRepository.updateUser(existingUser.id, {
+    refresh_token,
+  });
+  await userRepository.updateUser(id, {
+    refresh_token,
+  });
+  return { user, access_token, refresh_token };
+};
 export const authService = {
   signUp,
   signIn,
   signOut,
+  refresh,
 };

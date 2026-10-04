@@ -27,7 +27,16 @@ const generateRefreshToken = (data: TokenData) => {
   });
 };
 
+const verifyAccessToken = async (token: string) => {
+  return jwt.verify(token, env.ACCESS_TOKEN_SECRET);
+};
+const verifyRefreshToken = async (token: string) => {
+  return jwt.verify(token, env.REFRESH_TOKEN_SECRET);
+};
+
 export const token = {
   generateAccessToken,
   generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
 };
