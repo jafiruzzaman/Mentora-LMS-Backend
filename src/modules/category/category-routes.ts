@@ -6,39 +6,20 @@
  * @date 4th October
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+
+import { categoryController } from "./category-controller";
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `category created successfully`,
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `get all categories successfully`,
-  });
-});
-router.get("/:id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `get category successfully`,
-  });
-});
-router.patch("/:id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `category updated successfully`,
-  });
-});
-router.delete("/:id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `category deleted successfully`,
-  });
-});
+router.post("/", categoryController.createCategory);
+
+router.get("/", categoryController.getAllCategories);
+
+router.get("/:id", categoryController.getCategoryById);
+
+router.patch("/:id", categoryController.updateCategory);
+
+router.delete("/:id", categoryController.deleteCategory);
 
 export { router as categoryRoutes };
