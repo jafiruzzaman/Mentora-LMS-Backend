@@ -14,8 +14,6 @@ import type { signUpDTO } from "@/shared/validations/user-validation";
 import type { UserType } from "./user.types";
 
 const create = async (data: signUpDTO) => {
-  const password_hash = await hashPassword(data.password);
-
   const [user] = await db
     .insert(users)
     .values({
@@ -23,7 +21,7 @@ const create = async (data: signUpDTO) => {
       last_name: data.last_name,
       user_name: data.user_name,
       email: data.email,
-      password_hash,
+      password_hash: data.password,
     })
     .returning();
   return user;
