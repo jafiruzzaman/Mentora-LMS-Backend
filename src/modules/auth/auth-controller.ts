@@ -63,11 +63,25 @@ const signOut = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const refresh = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.cookies["token"];
+  console.log(`token `, token);
+
+  const { user, access_token, refresh_token } =
+    await authService.refresh(token);
+  res.cookie("token", refresh_token, {
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    secure: env.NODE_ENV === "production",
+    sameSite: "lax",
+    httpOnly: true,
+  });
   apiResponse({
     res,
     statusCode: 200,
     message: `token refreshed successfully.`,
-    data: {},
+    data: {
+      user,
+      access_token,
+    },
   });
 });
 const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
