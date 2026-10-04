@@ -65,6 +65,18 @@ export const users = pgTable("users", {
 
   status: accountStatusEnum("status").notNull().default("active"),
 
+  email_verification_token: varchar("email_verification_token", {
+    length: 255,
+  }),
+
+  email_verification_expires_at: timestamp({
+    withTimezone: true,
+  }),
+
+  refresh_token: varchar("refresh_token", {
+    length: 255,
+  }),
+
   created_at: timestamp("created_at", {
     withTimezone: true,
   })
