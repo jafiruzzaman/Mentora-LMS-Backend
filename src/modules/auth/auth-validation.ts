@@ -55,18 +55,28 @@ const resetPasswordSchema = z
     path: ["confirmedPassword"],
   });
 
+const verifyEmailSchema = z.object({
+  token: z
+    .string()
+    .min(16)
+    .describe("token have to be at-least 16 characters long"),
+});
+
 type signUpDTO = z.infer<typeof signUpSchema>;
 type signInDTO = z.infer<typeof singInSchema>;
 type forgotPasswordDTO = z.infer<typeof forgotPasswordSchema>;
 type resetPasswordDTO = z.infer<typeof resetPasswordSchema>;
+type verifyEmailDTO = z.infer<typeof verifyEmailSchema>;
 
 export {
   type signUpDTO,
   type signInDTO,
   type forgotPasswordDTO,
   type resetPasswordDTO,
+  type verifyEmailDTO,
   signUpSchema,
   singInSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  verifyEmailSchema,
 };

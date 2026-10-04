@@ -52,6 +52,7 @@ const findByEmail = async (email: string) => {
     .limit(1);
   return user;
 };
+
 const updateUser = async (
   id: string,
   data: Partial<typeof users.$inferInsert>
@@ -63,6 +64,7 @@ const updateUser = async (
     .returning();
   return user;
 };
+
 const deleteUser = async (id: string) => {
   const [user] = await db.delete(users).where(eq(users.id, id)).returning();
   return user;
@@ -76,11 +78,20 @@ const findByResetPasswordToken = async (token: string) => {
     .limit(1);
   return user;
 };
+const findByVerificationToken = async (token: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email_verification_token, token))
+    .limit(1);
+  return user;
+};
 
 export const userRepository = {
   create,
   findByEmail,
   findById,
+  findByVerificationToken,
   findByResetPasswordToken,
   findByUserName,
   findAllUser,

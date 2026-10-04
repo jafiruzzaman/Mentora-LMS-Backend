@@ -13,6 +13,7 @@ import {
   resetPasswordSchema,
   signUpSchema,
   singInSchema,
+  verifyEmailSchema,
 } from "@/modules/auth/auth-validation";
 import type { Request, Response } from "express";
 import { authService } from "./auth-service";
@@ -142,11 +143,17 @@ const sendVerificationEmail = asyncHandler(
   }
 );
 const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = verifyEmailSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await authService.verifyEmail(parsedData.data.token);
   apiResponse({
     res,
     statusCode: 200,
     message: `email verified successfully.`,
-    data: {},
+    data: { response},
   });
 });
 const resendEmail = asyncHandler(async (req: Request, res: Response) => {

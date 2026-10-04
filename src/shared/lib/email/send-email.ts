@@ -790,3 +790,217 @@ export const verificationEmailTemplate = (
 </html>
 `;
 };
+
+export const emailVerifiedTemplate = (firstName?: string): string => {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <title>Email Verified Successfully</title>
+</head>
+
+<body style="
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f7;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #18181b;
+">
+
+  <!-- Preheader -->
+  <div style="
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    color: transparent;
+  ">
+    Your Mentora email address has been successfully verified.
+  </div>
+
+  <table
+    role="presentation"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="background-color: #f5f5f7;"
+  >
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+
+        <!-- Main Container -->
+        <table
+          role="presentation"
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="
+            max-width: 560px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+          "
+        >
+
+          <!-- Header -->
+          <tr>
+            <td
+              align="center"
+              style="
+                background-color: #08070B;
+                padding: 28px 24px;
+              "
+            >
+              <div style="
+                font-size: 26px;
+                line-height: 32px;
+                font-weight: 700;
+                color: #ffffff;
+              ">
+                Mentora
+              </div>
+
+              <div style="
+                margin-top: 6px;
+                font-size: 13px;
+                line-height: 20px;
+                color: #B48CFF;
+              ">
+                Learn. Build. Grow.
+              </div>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding: 40px 32px;">
+
+              <h1 style="
+                margin: 0 0 20px;
+                font-size: 24px;
+                line-height: 32px;
+                font-weight: 700;
+                color: #18181b;
+              ">
+                Email verified successfully
+              </h1>
+
+              <p style="
+                margin: 0 0 16px;
+                font-size: 15px;
+                line-height: 24px;
+                color: #52525b;
+              ">
+                Hi${firstName ? ` ${firstName}` : ""},
+              </p>
+
+              <p style="
+                margin: 0 0 20px;
+                font-size: 15px;
+                line-height: 24px;
+                color: #52525b;
+              ">
+                Your email address has been successfully verified.
+                Your Mentora account is now ready to use.
+              </p>
+
+              <!-- Success Box -->
+              <table
+                role="presentation"
+                width="100%"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="
+                  margin: 24px 0;
+                  background-color: #f5f3ff;
+                  border-radius: 8px;
+                "
+              >
+                <tr>
+                  <td style="padding: 18px 20px;">
+
+                    <p style="
+                      margin: 0 0 6px;
+                      font-size: 14px;
+                      line-height: 20px;
+                      font-weight: 700;
+                      color: #6d28d9;
+                    ">
+                      ✓ Email address verified
+                    </p>
+
+                    <p style="
+                      margin: 0;
+                      font-size: 13px;
+                      line-height: 20px;
+                      color: #52525b;
+                    ">
+                      Your account has been successfully verified and
+                      you can continue using Mentora normally.
+                    </p>
+
+                  </td>
+                </tr>
+              </table>
+
+              <p style="
+                margin: 24px 0 0;
+                font-size: 14px;
+                line-height: 22px;
+                color: #71717a;
+              ">
+                If you did not perform this verification, please contact
+                our support team and secure your account.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td
+              align="center"
+              style="
+                padding: 24px 32px;
+                background-color: #fafafa;
+                border-top: 1px solid #eeeeee;
+              "
+            >
+
+              <p style="
+                margin: 0 0 8px;
+                font-size: 12px;
+                line-height: 18px;
+                color: #71717a;
+              ">
+                This is an automated security notification from Mentora.
+              </p>
+
+              <p style="
+                margin: 0;
+                font-size: 11px;
+                line-height: 18px;
+                color: #a1a1aa;
+              ">
+                © ${new Date().getFullYear()} Mentora. All rights reserved.
+              </p>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+`;
+};
