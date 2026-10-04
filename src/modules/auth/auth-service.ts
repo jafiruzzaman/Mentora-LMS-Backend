@@ -6,10 +6,7 @@
  * @date 3rd October
  */
 
-import type {
-  signInDTO,
-  signUpDTO,
-} from "@/shared/validations/user-validation";
+import type { signInDTO, signUpDTO } from "@/modules/auth/auth-validation";
 import { userRepository } from "@/modules/user/user.repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import { comparePassword, hashPassword } from "@/shared/lib/password";
@@ -42,7 +39,7 @@ const signUp = async ({
     last_name,
     user_name,
     email,
-    password_hash,
+    password: password_hash,
   });
   if (!createdUser) {
     throw new AppError(400, "Failed to created user");

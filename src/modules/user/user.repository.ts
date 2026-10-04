@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/config/db";
 import { users } from "@/database/schema/user-schema";
-import type { signUpDTO } from "@/shared/validations/user-validation";
+import type { signUpDTO } from "@/modules/auth/auth-validation";
 
 const create = async (data: signUpDTO) => {
   const [user] = await db
