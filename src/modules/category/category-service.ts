@@ -16,7 +16,7 @@ const createCategory = async (name: string) => {
   if (existingCategory) {
     throw new AppError(409, "Category already exists.");
   }
-  const slug = slugify(name).toLocaleLowerCase().trim();
+  const slug = slugify(normalizedName).toLocaleLowerCase().trim();
 
   const existingSlug = await categoryRepository.findBySlug(slug);
 
@@ -29,6 +29,11 @@ const createCategory = async (name: string) => {
   });
 };
 
+const getAllCategories = async () => {
+  return await categoryRepository.findAll();
+};
+
 export const categoryService = {
   createCategory,
+  getAllCategories,
 };
