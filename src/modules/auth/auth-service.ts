@@ -23,6 +23,7 @@ import {
   passwordResetEmailTemplate,
   resetPasswordConfirmationTemplate,
   sendEmail,
+  verificationEmailTemplate,
 } from "@/shared/lib/email/send-email";
 import { logger } from "@/config/logger";
 import { env } from "@/config/env";
@@ -191,6 +192,31 @@ const resetPassword = async ({
   });
 };
 
+const sendVerificationEmail = async (email: string) => {
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    throw new AppError(404, "User not found.");
+  }
+  // send verification email
+  const rawToken = crypto.randomBytes(32).toString("hex");
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(rawToken)
+    .digest("hex");
+
+  await userRepository.updateUser(user.id, {
+    email_verification_token: hashedToken,
+    email_verification_expires_at: new Date(Date.now() + 15 * 60 * 1000),
+  });
+  const url = `${env.FRONTEND_DOMAIN}/verify-email?token=${rawToken}`;
+  sendEmail({
+    to: user.email,
+    subject: `Email Verification`,
+    html: verificationEmailTemplate(user.first_name, url),
+  });
+};
+
 export const authService = {
   signUp,
   signIn,
@@ -198,4 +224,5 @@ export const authService = {
   refresh,
   forgotPassword,
   resetPassword,
+  sendVerificationEmail,
 };

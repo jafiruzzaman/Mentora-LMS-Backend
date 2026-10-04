@@ -547,3 +547,246 @@ export const sendEmail = async ({ to, html, subject }: SendMailOptions) => {
   const info = await transporter.sendMail(mailOptions);
   return info;
 };
+
+export const verificationEmailTemplate = (
+  firstName?: string,
+  verificationUrl?: string
+): string => {
+  const name = firstName ? ` ${firstName}` : "";
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify your Mentora email</title>
+</head>
+
+<body
+  style="
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f5;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #18181b;
+  "
+>
+  <table
+    role="presentation"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="width: 100%; margin: 0; padding: 32px 16px;"
+  >
+    <tr>
+      <td align="center">
+
+        <!-- Email Container -->
+        <table
+          role="presentation"
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="
+            width: 100%;
+            max-width: 560px;
+            background-color: #ffffff;
+            border-radius: 10px;
+          "
+        >
+
+          <!-- Header -->
+          <tr>
+            <td
+              style="
+                padding: 28px 32px;
+                background-color: #08070b;
+                text-align: center;
+                border-radius: 10px 10px 0 0;
+              "
+            >
+              <p
+                style="
+                  margin: 0;
+                  color: #ffffff;
+                  font-size: 24px;
+                  line-height: 1.3;
+                  font-weight: 700;
+                "
+              >
+                Mentora
+              </p>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding: 36px 32px;">
+
+              <h1
+                style="
+                  margin: 0 0 20px;
+                  color: #18181b;
+                  font-size: 24px;
+                  line-height: 1.3;
+                  font-weight: 700;
+                "
+              >
+                Verify your email address
+              </h1>
+
+              <p
+                style="
+                  margin: 0 0 16px;
+                  color: #3f3f46;
+                  font-size: 16px;
+                  line-height: 1.6;
+                "
+              >
+                Hi${name},
+              </p>
+
+              <p
+                style="
+                  margin: 0 0 24px;
+                  color: #3f3f46;
+                  font-size: 16px;
+                  line-height: 1.6;
+                "
+              >
+                Thanks for creating a Mentora account. Please verify
+                your email address to complete your registration.
+              </p>
+
+              <!-- CTA -->
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="margin: 0 0 28px;"
+              >
+                <tr>
+                  <td
+                    align="center"
+                    style="border-radius: 7px; background-color: #7c3aed;"
+                  >
+                    <a
+                      href="${verificationUrl}"
+                      target="_blank"
+                      style="
+                        display: inline-block;
+                        padding: 13px 24px;
+                        color: #ffffff;
+                        background-color: #7c3aed;
+                        border-radius: 7px;
+                        font-size: 15px;
+                        line-height: 1.4;
+                        font-weight: 600;
+                        text-decoration: none;
+                      "
+                    >
+                      Verify Email
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Fallback -->
+              <p
+                style="
+                  margin: 0 0 8px;
+                  color: #71717a;
+                  font-size: 13px;
+                  line-height: 1.5;
+                "
+              >
+                If the button doesn't work, open this link:
+              </p>
+
+              <p
+                style="
+                  margin: 0 0 24px;
+                  font-size: 13px;
+                  line-height: 1.5;
+                  word-break: break-word;
+                "
+              >
+                <a
+                  href="${verificationUrl}"
+                  target="_blank"
+                  style="
+                    color: #6d28d9;
+                    text-decoration: underline;
+                  "
+                >
+                  Verify your Mentora email
+                </a>
+              </p>
+
+              <!-- Security -->
+              <p
+                style="
+                  margin: 0;
+                  padding-top: 20px;
+                  border-top: 1px solid #e4e4e7;
+                  color: #71717a;
+                  font-size: 13px;
+                  line-height: 1.6;
+                "
+              >
+                If you didn't create a Mentora account, you can
+                safely ignore this email.
+              </p>
+
+              <p
+                style="
+                  margin: 12px 0 0;
+                  color: #a1a1aa;
+                  font-size: 12px;
+                  line-height: 1.5;
+                "
+              >
+                This verification link is temporary and will expire
+                for security reasons.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td
+              style="
+                padding: 20px 32px;
+                background-color: #fafafa;
+                border-top: 1px solid #e4e4e7;
+                text-align: center;
+                border-radius: 0 0 10px 10px;
+              "
+            >
+              <p
+                style="
+                  margin: 0;
+                  color: #a1a1aa;
+                  font-size: 12px;
+                  line-height: 1.5;
+                "
+              >
+                © ${new Date().getFullYear()} Mentora
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
+};

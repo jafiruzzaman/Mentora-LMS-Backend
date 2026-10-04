@@ -109,7 +109,6 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-
   const parsedData = resetPasswordSchema.safeParse(req.body);
   if (!parsedData.success) {
     const message = parsedData.error.issues[0]?.message;
@@ -133,11 +132,12 @@ const changePassword = asyncHandler(async (req: Request, res: Response) => {
 
 const sendVerificationEmail = asyncHandler(
   async (req: Request, res: Response) => {
+    const userEmail = req.user.email;
+    await authService.sendVerificationEmail(userEmail);
     apiResponse({
       res,
       statusCode: 200,
       message: `We send a verification email to your email.`,
-      data: {},
     });
   }
 );

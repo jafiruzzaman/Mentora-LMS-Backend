@@ -20,9 +20,13 @@ router.post("/refresh", authController.refresh);
 
 router.post("/forgot-password", authController.forgotPassword);
 router.post("/reset-password", authController.resetPassword);
-router.post("/change-password", authController.changePassword);
+router.post("/change-password", authMiddleware, authController.changePassword);
 
-router.post("/send-verification-email", authController.sendVerificationEmail);
+router.post(
+  "/send-verification-email",
+  authMiddleware,
+  authController.sendVerificationEmail
+);
 router.post("/verify-email", authController.verifyEmail);
 router.post("/resend-email", authController.resendEmail);
 
