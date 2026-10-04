@@ -8,10 +8,7 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
-import {
-  signUpSchema,
-  singInSchema,
-} from "@/shared/validations/user-validation";
+import { signUpSchema, singInSchema } from "@/modules/auth/auth-validation";
 import type { Request, Response } from "express";
 import { authService } from "./auth-service";
 import { env } from "@/config/env";
