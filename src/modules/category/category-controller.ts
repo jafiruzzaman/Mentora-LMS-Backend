@@ -10,12 +10,21 @@ import type { Request, Response } from "express";
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
+import { categorySchema } from "./category-validation";
+import { categoryService } from "./category-service";
 
 const createCategory = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = categorySchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await categoryService.createCategory(parsedData.data.name);
   apiResponse({
     res,
     statusCode: 201,
     message: "Category created successfully",
+    data: response,
   });
 });
 
