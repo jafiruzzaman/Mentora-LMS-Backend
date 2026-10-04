@@ -53,11 +53,13 @@ const signIn = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const signOut = asyncHandler(async (req: Request, res: Response) => {
+  const user = req.user;
+  await authService.signOut(user);
+  res.clearCookie("token");
   apiResponse({
     res,
     statusCode: 200,
     message: `sign-out successfully.`,
-    data: {},
   });
 });
 const refresh = asyncHandler(async (req: Request, res: Response) => {

@@ -14,6 +14,7 @@ import { userRepository } from "@/modules/user/user.repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import { comparePassword, hashPassword } from "@/shared/lib/password";
 import { token } from "@/shared/lib/token";
+import type { JwtPayload } from "@/types/express.types";
 
 const signUp = async ({
   first_name,
@@ -68,8 +69,17 @@ const signIn = async ({ email, password }: signInDTO) => {
   });
   return { user, access_token, refresh_token };
 };
-
+const signOut = async ({ id, email }: JwtPayload) => {
+  const existingUser = await userRepository.findByEmail(email);
+  if (!existingUser) {
+    throw new AppError(404, "User not found.");
+  }
+  await userRepository.updateUser(id, {
+    refresh_token: null,
+  });
+};
 export const authService = {
   signUp,
   signIn,
+  signOut,
 };
