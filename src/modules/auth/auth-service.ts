@@ -149,8 +149,10 @@ const forgotPassword = async (email: string) => {
     .digest("hex");
 
   await userRepository.updateUser(existingUser.id, {
-    email_verification_token: hashedToken,
-    email_verification_expires_at: new Date(Date.now() + 15 * 60 * 1000),
+    reset_password_verification_token: hashedToken,
+    reset_password_verification_expires_at: new Date(
+      Date.now() + 15 * 60 * 1000
+    ),
   });
   const resetUrl = `${env.FRONTEND_DOMAIN}/reset-password?token=${rawToken}`;
 

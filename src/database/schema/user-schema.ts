@@ -75,6 +75,16 @@ export const users = pgTable("users", {
   email_verification_expires_at: timestamp({
     withTimezone: true,
   }),
+  reset_password_verification_token: varchar(
+    "reset_password_verification_token",
+    {
+      length: 255,
+    }
+  ),
+
+  reset_password_verification_expires_at: timestamp({
+    withTimezone: true,
+  }),
 
   refresh_token: text("refresh_token"),
 
