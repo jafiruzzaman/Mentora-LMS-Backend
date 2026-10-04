@@ -22,12 +22,20 @@ const signUp = asyncHandler(async (req: Request, res: Response) => {
     const message = parsedData.error.issues[0]?.message;
     throw new Error(message);
   }
-  const response = await authService.signUp(parsedData.data);
+  const { updatedUser, access_token, refresh_token } = await authService.signUp(
+    parsedData.data
+  );
+  res.cookie("token", refresh_token, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    secure: env.NODE_ENV === "production",
+  });
   apiResponse({
     res,
-    statusCode: 201,
-    message: "sign-up successfully",
-    data: { ...response },
+    statusCode: 200,
+    message: `sign-up successfully.`,
+    data: { updatedUser, access_token },
   });
 });
 const signIn = asyncHandler(async (req: Request, res: Response) => {

@@ -15,6 +15,11 @@ import { AppError } from "@/shared/lib/app-error.lib";
 import { comparePassword, hashPassword } from "@/shared/lib/password";
 import { token } from "@/shared/lib/token";
 import type { JwtPayload } from "@/types/express.types";
+import {
+  generateWelcomeEmailTemplate,
+  sendEmail,
+} from "@/shared/lib/email/send-email";
+import { logger } from "@/config/logger";
 
 const signUp = async ({
   first_name,
@@ -32,14 +37,39 @@ const signUp = async ({
     throw new AppError(409, "Username already exists.");
   }
   const password_hash = await hashPassword(password);
-  const response = await userRepository.create({
+  const createdUser = await userRepository.create({
     first_name,
     last_name,
     user_name,
     email,
-    password: password_hash,
+    password_hash,
   });
-  return response;
+  if (!createdUser) {
+    throw new AppError(400, "Failed to created user");
+  }
+  const access_token = token.generateAccessToken({
+    id: createdUser.id,
+    email: createdUser.email,
+    role: createdUser.role,
+  });
+  const refresh_token = token.generateRefreshToken({
+    id: createdUser.id,
+    email: createdUser.email,
+    role: createdUser.role,
+  });
+  const updatedUser = await userRepository.updateUser(createdUser.id, {
+    refresh_token,
+  });
+  // send welcome email
+  const welcomeEmail = generateWelcomeEmailTemplate(createdUser.first_name);
+  await sendEmail({
+    to: createdUser.email,
+    subject: "Welcome to Mentora LMS",
+    html: welcomeEmail,
+  }).catch((err) => {
+    logger.error("Failed to send welcome email:", err);
+  });
+  return { updatedUser, access_token, refresh_token };
 };
 
 const signIn = async ({ email, password }: signInDTO) => {

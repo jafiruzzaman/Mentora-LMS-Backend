@@ -1,8 +1,8 @@
 export type UserType = {
   id: string;
-  first_name: string;
-  last_name: string;
-  user_name: string;
+  first_name: string | null;
+  last_name: string | null;
+  user_name: string | null;
   email: string;
   password_hash: string | null;
   phone: string | null;

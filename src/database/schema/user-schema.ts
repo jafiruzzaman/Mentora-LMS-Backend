@@ -12,6 +12,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  text,
 } from "drizzle-orm/pg-core";
 
 /* ================================================================= */
@@ -75,9 +76,7 @@ export const users = pgTable("users", {
     withTimezone: true,
   }),
 
-  refresh_token: varchar("refresh_token", {
-    length: 255,
-  }),
+  refresh_token: text("refresh_token"),
 
   created_at: timestamp("created_at", {
     withTimezone: true,
