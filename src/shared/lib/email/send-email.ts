@@ -314,6 +314,228 @@ export const passwordResetEmailTemplate = (resetUrl: string): string => {
     </html>
   `;
 };
+
+export const resetPasswordConfirmationTemplate = (
+  firstName?: string
+): string => {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Changed Successfully</title>
+</head>
+
+<body style="
+  margin: 0;
+  padding: 0;
+  background-color: #f4f3f8;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #18181b;
+">
+
+  <table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="padding: 40px 16px;"
+  >
+    <tr>
+      <td align="center">
+
+        <!-- Main Container -->
+        <table
+          width="100%"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+          "
+        >
+
+          <!-- Header -->
+          <tr>
+            <td
+              style="
+                background-color: #08070B;
+                padding: 32px;
+                text-align: center;
+              "
+            >
+              <h1
+                style="
+                  margin: 0;
+                  color: #ffffff;
+                  font-size: 28px;
+                  font-weight: 700;
+                  letter-spacing: -0.5px;
+                "
+              >
+                Mentora
+              </h1>
+
+              <p
+                style="
+                  margin: 8px 0 0;
+                  color: #B48CFF;
+                  font-size: 14px;
+                "
+              >
+                Learn. Build. Grow.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding: 40px 36px;">
+
+              <h2
+                style="
+                  margin: 0 0 16px;
+                  font-size: 24px;
+                  color: #18181b;
+                "
+              >
+                Password changed successfully
+              </h2>
+
+              <p
+                style="
+                  margin: 0 0 16px;
+                  font-size: 16px;
+                  line-height: 1.6;
+                  color: #52525b;
+                "
+              >
+                Hi${firstName ? ` ${firstName}` : ""},
+              </p>
+
+              <p
+                style="
+                  margin: 0 0 20px;
+                  font-size: 16px;
+                  line-height: 1.6;
+                  color: #52525b;
+                "
+              >
+                Your Mentora account password has been successfully
+                changed.
+              </p>
+
+              <!-- Success Box -->
+              <table
+                width="100%"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="
+                  background-color: #f5f3ff;
+                  border-radius: 12px;
+                  margin: 24px 0;
+                "
+              >
+                <tr>
+                  <td style="padding: 20px;">
+
+                    <p
+                      style="
+                        margin: 0 0 8px;
+                        color: #6d28d9;
+                        font-size: 15px;
+                        font-weight: 700;
+                      "
+                    >
+                      ✓ Password updated
+                    </p>
+
+                    <p
+                      style="
+                        margin: 0;
+                        color: #52525b;
+                        font-size: 14px;
+                        line-height: 1.5;
+                      "
+                    >
+                      Your new password is now active and can be
+                      used the next time you sign in.
+                    </p>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Security Notice -->
+              <p
+                style="
+                  margin: 24px 0 0;
+                  font-size: 14px;
+                  line-height: 1.6;
+                  color: #71717a;
+                "
+              >
+                <strong style="color: #18181b;">
+                  Didn't make this change?
+                </strong>
+                If you didn't reset your password, your account may
+                have been compromised. Please contact our support team
+                immediately and secure your account.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td
+              style="
+                padding: 24px 36px;
+                background-color: #fafafa;
+                border-top: 1px solid #eeeeee;
+                text-align: center;
+              "
+            >
+
+              <p
+                style="
+                  margin: 0 0 8px;
+                  font-size: 13px;
+                  color: #71717a;
+                "
+              >
+                This is an automated security notification from Mentora.
+              </p>
+
+              <p
+                style="
+                  margin: 0;
+                  font-size: 12px;
+                  color: #a1a1aa;
+                "
+              >
+                © ${new Date().getFullYear()} Mentora. All rights reserved.
+              </p>
+
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+`;
+};
+
 export const sendEmail = async ({ to, html, subject }: SendMailOptions) => {
   const mailOptions = {
     // Fixed string interpolation logic

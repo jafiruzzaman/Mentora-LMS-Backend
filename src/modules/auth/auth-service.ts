@@ -8,7 +8,11 @@
 
 import crypto from "node:crypto";
 
-import type { signInDTO, signUpDTO } from "@/modules/auth/auth-validation";
+import type {
+  resetPasswordDTO,
+  signInDTO,
+  signUpDTO,
+} from "@/modules/auth/auth-validation";
 import { userRepository } from "@/modules/user/user.repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import { comparePassword, hashPassword } from "@/shared/lib/password";
@@ -17,6 +21,7 @@ import type { JwtPayload } from "@/types/express.types";
 import {
   generateWelcomeEmailTemplate,
   passwordResetEmailTemplate,
+  resetPasswordConfirmationTemplate,
   sendEmail,
 } from "@/shared/lib/email/send-email";
 import { logger } from "@/config/logger";
@@ -161,7 +166,29 @@ const forgotPassword = async (email: string) => {
     subject: "Reset your Mentora password",
     html: passwordResetEmailTemplate(resetUrl),
   });
-  return { rawToken };
+};
+
+const resetPassword = async ({
+  confirmedPassword,
+  token,
+}: resetPasswordDTO) => {
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const tokenInDB = await userRepository.findByResetPasswordToken(hashedToken);
+  if (!tokenInDB) {
+    throw new AppError(400, "Invalid user credentials");
+  }
+  const password_hash = await hashPassword(confirmedPassword);
+  await userRepository.updateUser(tokenInDB.id, {
+    password_hash,
+    reset_password_verification_token: null,
+    reset_password_verification_expires_at: null,
+  });
+  // send password reset email confirmation
+  sendEmail({
+    to: tokenInDB.email,
+    subject: "Reset Password",
+    html: resetPasswordConfirmationTemplate(tokenInDB.first_name),
+  });
 };
 
 export const authService = {
@@ -170,4 +197,5 @@ export const authService = {
   signOut,
   refresh,
   forgotPassword,
+  resetPassword,
 };

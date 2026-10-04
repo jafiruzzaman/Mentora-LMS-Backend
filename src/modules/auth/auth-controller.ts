@@ -10,6 +10,7 @@ import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import {
   forgotPasswordSchema,
+  resetPasswordSchema,
   signUpSchema,
   singInSchema,
 } from "@/modules/auth/auth-validation";
@@ -106,6 +107,30 @@ const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
     message: `We send a password reset email to your email.`,
   });
 });
+
+const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+
+  const parsedData = resetPasswordSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  await authService.resetPassword(parsedData.data);
+  apiResponse({
+    res,
+    statusCode: 200,
+    message: `password reset successfully.`,
+  });
+});
+
+const changePassword = asyncHandler(async (req: Request, res: Response) => {
+  apiResponse({
+    res,
+    statusCode: 200,
+    message: `password changed successfully.`,
+  });
+});
+
 const sendVerificationEmail = asyncHandler(
   async (req: Request, res: Response) => {
     apiResponse({
@@ -129,22 +154,6 @@ const resendEmail = asyncHandler(async (req: Request, res: Response) => {
     res,
     statusCode: 200,
     message: `We send a verification email to your email.`,
-    data: {},
-  });
-});
-const changePassword = asyncHandler(async (req: Request, res: Response) => {
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `password changed successfully.`,
-    data: {},
-  });
-});
-const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `password changed successfully.`,
     data: {},
   });
 });

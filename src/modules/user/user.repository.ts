@@ -67,10 +67,21 @@ const deleteUser = async (id: string) => {
   const [user] = await db.delete(users).where(eq(users.id, id)).returning();
   return user;
 };
+
+const findByResetPasswordToken = async (token: string) => {
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.reset_password_verification_token, token))
+    .limit(1);
+  return user;
+};
+
 export const userRepository = {
   create,
   findByEmail,
   findById,
+  findByResetPasswordToken,
   findByUserName,
   findAllUser,
   updateUser,

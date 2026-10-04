@@ -6,7 +6,7 @@
  * @date 3rd October
  */
 
-import {  z } from "zod";
+import { z } from "zod";
 
 const signUpSchema = z.object({
   first_name: z.string().min(3).describe("first name is required"),
@@ -35,15 +35,38 @@ const forgotPasswordSchema = z.object({
     .describe("please enter a valid email address"),
 });
 
+const resetPasswordSchema = z
+  .object({
+    token: z
+      .string()
+      .min(16)
+      .describe("token have to be at-least 16 characters long"),
+    newPassword: z
+      .string()
+      .min(8)
+      .describe("password must be at-least 8 characters long"),
+    confirmedPassword: z
+      .string()
+      .min(8)
+      .describe("password must be at-least 8 characters long"),
+  })
+  .refine((data) => data.newPassword === data.confirmedPassword, {
+    message: `password don't matched.`,
+    path: ["confirmedPassword"],
+  });
+
 type signUpDTO = z.infer<typeof signUpSchema>;
 type signInDTO = z.infer<typeof singInSchema>;
 type forgotPasswordDTO = z.infer<typeof forgotPasswordSchema>;
+type resetPasswordDTO = z.infer<typeof resetPasswordSchema>;
 
 export {
   type signUpDTO,
   type signInDTO,
   type forgotPasswordDTO,
+  type resetPasswordDTO,
   signUpSchema,
   singInSchema,
   forgotPasswordSchema,
+  resetPasswordSchema,
 };
