@@ -22,6 +22,7 @@ import compression from "compression";
 import { loggerMiddleware } from "@/shared/middlewares/logger.middleware";
 import { notFoundMiddleware } from "@/shared/middlewares/not-found.middleware";
 import { globalErrorMiddleware } from "@/shared/middlewares/global.middleware";
+import { rootRoutes } from "./routes";
 
 const app = express();
 
@@ -66,7 +67,7 @@ app.use(compression({ threshold: "1kb" }));
 /* ================================================================= */
 //  API Routes
 /* ================================================================= */
-
+app.use(rootRoutes);
 /* ================================================================= */
 // Not Found Middleware
 /* ================================================================= */
