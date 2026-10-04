@@ -8,9 +8,13 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
-import { signUpSchema } from "@/shared/validations/user-validation";
+import {
+  signUpSchema,
+  singInSchema,
+} from "@/shared/validations/user-validation";
 import type { Request, Response } from "express";
 import { authService } from "./auth-service";
+import { env } from "@/config/env";
 
 const signUp = asyncHandler(async (req: Request, res: Response) => {
   const parsedData = signUpSchema.safeParse(req.body);
@@ -27,11 +31,25 @@ const signUp = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const signIn = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = singInSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const { user, access_token, refresh_token } = await authService.signIn(
+    parsedData.data
+  );
+  res.cookie("token", refresh_token, {
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    secure: env.NODE_ENV === "production",
+  });
   apiResponse({
     res,
     statusCode: 200,
     message: `sign-in successfully.`,
-    data: {},
+    data: { user, access_token },
   });
 });
 const signOut = asyncHandler(async (req: Request, res: Response) => {
