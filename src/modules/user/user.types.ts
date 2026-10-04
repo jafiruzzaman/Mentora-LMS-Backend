@@ -6,6 +6,9 @@ export type UserType = {
   email: string;
   password_hash: string | null;
   phone: string | null;
+  refresh_token: string;
+  email_verification_token: string;
+  email_verification_expires_at: Date;
   is_verified: boolean;
   is_active: boolean;
   status: "active" | "banned" | "suspended";
