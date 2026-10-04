@@ -255,6 +255,23 @@ const verifyEmail = async (token: string) => {
   });
 };
 
+const changePassword = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    throw new AppError(404, "User not found.");
+  }
+  const password_hash = await hashPassword(password);
+  const response = await userRepository.updateUser(user.id, {
+    password_hash,
+  });
+  return response;
+};
 export const authService = {
   signUp,
   signIn,
@@ -264,4 +281,5 @@ export const authService = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  changePassword,
 };
