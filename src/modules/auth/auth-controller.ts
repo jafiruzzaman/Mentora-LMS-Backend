@@ -8,7 +8,11 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
-import { signUpSchema, singInSchema } from "@/modules/auth/auth-validation";
+import {
+  forgotPasswordSchema,
+  signUpSchema,
+  singInSchema,
+} from "@/modules/auth/auth-validation";
 import type { Request, Response } from "express";
 import { authService } from "./auth-service";
 import { env } from "@/config/env";
@@ -90,6 +94,12 @@ const refresh = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+  const parsedData = forgotPasswordSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+
   apiResponse({
     res,
     statusCode: 200,

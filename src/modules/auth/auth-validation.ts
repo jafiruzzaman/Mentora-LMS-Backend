@@ -6,7 +6,7 @@
  * @date 3rd October
  */
 
-import { z } from "zod";
+import {  z } from "zod";
 
 const signUpSchema = z.object({
   first_name: z.string().min(3).describe("first name is required"),
@@ -27,7 +27,23 @@ const singInSchema = z.object({
     .describe("password must be at-least 8 characters long"),
 });
 
+const forgotPasswordSchema = z.object({
+  email: z
+    .email()
+    .lowercase()
+    .trim()
+    .describe("please enter a valid email address"),
+});
+
 type signUpDTO = z.infer<typeof signUpSchema>;
 type signInDTO = z.infer<typeof singInSchema>;
+type forgotPasswordDTO = z.infer<typeof forgotPasswordSchema>;
 
-export { type signUpDTO, type signInDTO, signUpSchema, singInSchema };
+export {
+  type signUpDTO,
+  type signInDTO,
+  type forgotPasswordDTO,
+  signUpSchema,
+  singInSchema,
+  forgotPasswordSchema,
+};
