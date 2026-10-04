@@ -6,6 +6,8 @@
  * @date 3rd October
  */
 
+import crypto from "node:crypto";
+
 import type { signInDTO, signUpDTO } from "@/modules/auth/auth-validation";
 import { userRepository } from "@/modules/user/user.repository";
 import { AppError } from "@/shared/lib/app-error.lib";
@@ -14,9 +16,11 @@ import { token } from "@/shared/lib/token";
 import type { JwtPayload } from "@/types/express.types";
 import {
   generateWelcomeEmailTemplate,
+  passwordResetEmailTemplate,
   sendEmail,
 } from "@/shared/lib/email/send-email";
 import { logger } from "@/config/logger";
+import { env } from "@/config/env";
 
 const signUp = async ({
   first_name,
@@ -131,9 +135,37 @@ const refresh = async (refreshToken: string) => {
   });
   return { user, access_token, refresh_token };
 };
+
+const forgotPassword = async (email: string) => {
+  const existingUser = await userRepository.findByEmail(email);
+  if (!existingUser) {
+    throw new AppError(404, "User not found.");
+  }
+  const rawToken = crypto.randomBytes(32).toString("hex");
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(rawToken)
+    .digest("hex");
+
+  await userRepository.updateUser(existingUser.id, {
+    email_verification_token: hashedToken,
+    email_verification_expires_at: new Date(Date.now() + 15 * 60 * 1000),
+  });
+  const resetUrl = `${env.FRONTEND_DOMAIN}/reset-password?token=${rawToken}`;
+
+  await sendEmail({
+    to: existingUser.email,
+    subject: "Reset your Mentora password",
+    html: passwordResetEmailTemplate(resetUrl),
+  });
+  return { rawToken };
+};
+
 export const authService = {
   signUp,
   signIn,
   signOut,
   refresh,
+  forgotPassword,
 };
