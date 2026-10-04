@@ -12,6 +12,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  text,
 } from "drizzle-orm/pg-core";
 
 /* ================================================================= */
@@ -27,6 +28,8 @@ export const accountStatusEnum = pgEnum("account_status", [
 /* ================================================================= */
 /* Users */
 /* ================================================================= */
+
+export const roleEnum = pgEnum("role", ["student", "admin", "instructor"]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -44,7 +47,7 @@ export const users = pgTable("users", {
   })
     .notNull()
     .unique(),
-
+  role: roleEnum("role").notNull().default("student"),
   email: varchar("email", {
     length: 255,
   })
@@ -64,6 +67,26 @@ export const users = pgTable("users", {
   is_active: boolean("is_active").notNull().default(true),
 
   status: accountStatusEnum("status").notNull().default("active"),
+
+  email_verification_token: varchar("email_verification_token", {
+    length: 255,
+  }),
+
+  email_verification_expires_at: timestamp({
+    withTimezone: true,
+  }),
+  reset_password_verification_token: varchar(
+    "reset_password_verification_token",
+    {
+      length: 255,
+    }
+  ),
+
+  reset_password_verification_expires_at: timestamp({
+    withTimezone: true,
+  }),
+
+  refresh_token: text("refresh_token"),
 
   created_at: timestamp("created_at", {
     withTimezone: true,
