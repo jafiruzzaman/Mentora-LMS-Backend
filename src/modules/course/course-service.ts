@@ -12,7 +12,7 @@ import { AppError } from "@/shared/lib/app-error.lib";
 import { courseRepository } from "./course-repository";
 import { categoryRepository } from "../category/category-repository";
 import { subCategoryRepository } from "../sub-category/sub-category-repository";
-import type { createCourseDTO } from "./course-validation";
+import type { courseFilter, createCourseDTO } from "./course-validation";
 
 const createCourse = async ({
   instructor_id,
@@ -65,8 +65,11 @@ const getCourse = async (courseId: string) => {
     throw new AppError(404, "Course not found.");
   }
 };
-
+const getAllCourses = async (filters: courseFilter) => {
+  return await courseRepository.findAll(filters);
+};
 export const courseService = {
   createCourse,
   getCourse,
+  getAllCourses,
 };
