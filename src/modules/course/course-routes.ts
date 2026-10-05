@@ -7,12 +7,19 @@
 
 import { Router } from "express";
 
-
 import { courseController } from "./course-controller";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
+import { Roles } from "@/constants";
 
 const router = Router();
 
-router.post("/", courseController.createCourse);
+router.post(
+  "/",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor, Roles.admin]),
+  courseController.createCourse
+);
 router.get("/", courseController.getAllCourses);
 router.get("/:id", courseController.getCourse);
 router.patch("/:id", courseController.updateCourse);

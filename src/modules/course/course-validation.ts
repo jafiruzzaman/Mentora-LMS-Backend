@@ -12,7 +12,7 @@ const createCourseSchema = z.object({
   title: z.string().min(3).max(100).describe("course title"),
   description: z.string().min(10).max(1000).describe("course description"),
   category_id: z.uuid().describe("category id is required"),
-  sub_category_id: z.uuid().optional().describe("sub-category id is required"),
+  sub_category_id: z.uuid().describe("sub-category id is required"),
   discount: z
     .number()
     .min(0)
@@ -31,6 +31,7 @@ const createCourseSchema = z.object({
     .describe("course level"),
   status: z
     .enum(["DRAFT", "PENDING", "PUBLISHED", "ARCHIVED", "BANNED", "REJECTED"])
+    .optional()
     .describe("course status is required"),
 });
 
