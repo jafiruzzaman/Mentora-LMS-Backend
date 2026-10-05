@@ -5,39 +5,17 @@
  * @license Apache-2.0
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+
+
+import { courseController } from "./course-controller";
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "course created successfully",
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "get all courses successfully",
-  });
-});
-router.get("/:id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "fetch course details successfully",
-  });
-});
-router.patch("/:id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "course updated successfully",
-  });
-});
-router.delete("/:id", (req: Request, res: Response) => {
-  res.status(204).json({
-    success: true,
-    message: "course deleted successfully",
-  });
-});
+router.post("/", courseController.createCourse);
+router.get("/", courseController.getAllCourses);
+router.get("/:id", courseController.getCourse);
+router.patch("/:id", courseController.updateCourse);
+router.delete("/:id", courseController.deleteCourse);
 
 export { router as courseRoutes };
