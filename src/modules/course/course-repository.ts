@@ -44,7 +44,7 @@ const findByIdAndUpdate = async (
 ) => {
   const [course] = await db
     .update(courses)
-    .set(data)
+    .set({ ...data, updated_at: new Date() })
     .where(eq(courses.id, id))
     .returning();
   return course;
