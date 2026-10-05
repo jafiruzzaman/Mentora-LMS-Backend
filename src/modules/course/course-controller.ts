@@ -10,6 +10,8 @@ import { apiResponse } from "@/shared/lib/api-response";
 import type { Request, Response } from "express";
 
 const createCourse = async (req: Request, res: Response) => {
+  const instructor = req.user;
+  const parsedData = 
   apiResponse({
     res,
     statusCode: 201,

@@ -35,50 +35,33 @@ const courseLevelEnum = pgEnum("course_level", [
 ]);
 
 const courses = pgTable("courses", {
-  /**
-   * Primary key.
-   */
+
   id: uuid("id").primaryKey().defaultRandom(),
 
-  /**
-   * Instructor who owns the course.
-   */
+
   instructor_id: uuid("instructor_id")
     .references(() => users.id, {
       onDelete: "restrict",
     })
     .notNull(),
 
-  /**
-   * Course title.
-   */
   title: varchar("title", {
     length: 200,
   })
-    .unique()
     .notNull(),
 
-  /**
-   * URL-friendly unique course identifier.
-   */
   slug: varchar("slug", {
     length: 255,
   })
     .unique()
     .notNull(),
 
-  /**
-   * Parent category.
-   */
   category_id: uuid("category_id")
     .references(() => categories.id, {
       onDelete: "restrict",
     })
     .notNull(),
 
-  /**
-   * Optional sub-category.
-   */
   sub_category_id: uuid("sub_category_id").references(() => subCategories.id, {
     onDelete: "set null",
   }),
@@ -109,9 +92,7 @@ const courses = pgTable("courses", {
     .notNull()
     .defaultNow(),
 
-  /**
-   * Course last update timestamp.
-   */
+
   updated_at: timestamp("updated_at", {
     withTimezone: true,
   })
