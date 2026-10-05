@@ -3,7 +3,7 @@
  * @description course API controllers
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
- * @date 5th October
+ * @date 5th October 2026
  */
 
 import { apiResponse } from "@/shared/lib/api-response";
@@ -15,6 +15,7 @@ import {
 } from "./course-validation";
 import { courseService } from "./course-service";
 import { AppError } from "@/shared/lib/app-error.lib";
+import { authController } from "../auth/auth-controller";
 
 const createCourse = async (req: Request, res: Response) => {
   const instructor = req.user;
@@ -94,6 +95,14 @@ const updateCourse = async (req: Request, res: Response) => {
 };
 
 const deleteCourse = async (req: Request, res: Response) => {
+  const validatedParam = courseParamsSchema.safeParse(req.params);
+  if (!validatedParam.success) {
+    const message = validatedParam.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const course_id = validatedParam.data.id;
+  const instructor_id = req.user.id;
+  await courseService.deleteCourse({ instructor_id, course_id });
   apiResponse({
     res,
     statusCode: 204,

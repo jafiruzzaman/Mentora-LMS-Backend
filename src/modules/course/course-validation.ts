@@ -3,7 +3,7 @@
  * @description course API validation
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
- * @date 5th October
+ * @date 5th October 2026
  */
 
 import z from "zod";
@@ -89,7 +89,7 @@ const updateCourseSchema = z.object({
 type courseFilter = z.infer<typeof courseFilterSchema>;
 type createCourseDTO = z.infer<typeof createCourseSchema>;
 type courseParamsDTO = z.infer<typeof courseParamsSchema>;
-type updateCourseDTO =z.infer<typeof updateCourseSchema>
+type updateCourseDTO = z.infer<typeof updateCourseSchema>;
 export {
   type createCourseDTO,
   type courseParamsDTO,

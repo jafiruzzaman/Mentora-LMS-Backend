@@ -3,6 +3,7 @@
  * @description course API routes
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
+ * @date 5th October 2026
  */
 
 import { Router } from "express";
