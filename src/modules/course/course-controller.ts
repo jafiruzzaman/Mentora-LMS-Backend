@@ -15,7 +15,6 @@ import {
 } from "./course-validation";
 import { courseService } from "./course-service";
 import { AppError } from "@/shared/lib/app-error.lib";
-import { authController } from "../auth/auth-controller";
 
 const createCourse = async (req: Request, res: Response) => {
   const instructor = req.user;
