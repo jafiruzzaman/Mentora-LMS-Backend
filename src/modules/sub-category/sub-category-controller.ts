@@ -39,13 +39,20 @@ const createSubCategory = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getSubCategories = asyncHandler(async (req: Request, res: Response) => {
-  // const response = await subCategoryService.getSubCategories(...);
+  const categoryParams = categoryIdParamsSchema.safeParse(req.params);
+  if (!categoryParams.success) {
+    const message = categoryParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await subCategoryService.getSubCategories(
+    categoryParams.data.categoryId
+  );
 
   apiResponse({
     res,
     statusCode: 200,
     message: "Sub-categories fetched successfully.",
-    data: {},
+    data: response,
   });
 });
 
