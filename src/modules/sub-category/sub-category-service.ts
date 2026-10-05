@@ -52,8 +52,27 @@ const getSubCategory = async (id: string) => {
   return subCategory;
 };
 
+const updateSubCategory = async (id: string, name: string) => {
+  const subCategory = await subCategoryRepository.findById(id);
+  if (!subCategory) {
+    throw new AppError(404, "Sub-category not found.");
+  }
+  const normalizedName = name.replace(/\s+/g, " ").trim();
+  const slug = slugify(normalizedName).trim().toLocaleLowerCase();
+  const existingSubCategory = await subCategoryRepository.findBySlug(slug);
+  if (existingSubCategory) {
+    throw new AppError(409, "A sub-category with this name already exists.");
+  }
+  const response = await subCategoryRepository.findByIdAndUpdate(id, {
+    name: normalizedName,
+    slug,
+  });
+  return response;
+};
+
 export const subCategoryService = {
   createSubCategory,
   getSubCategories,
   getSubCategory,
+  updateSubCategory,
 };
