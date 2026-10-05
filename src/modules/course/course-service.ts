@@ -3,6 +3,7 @@
  * @description course API controllers
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
+ * @date 5th October 2026
  */
 
 import slugify from "slugify";
@@ -133,10 +134,33 @@ const updateCourse = async ({
     });
   }
 };
+const deleteCourse = async ({
+  course_id,
+  instructor_id,
+}: {
+  course_id: string;
+  instructor_id: string;
+}) => {
+  // check course exist or not
+  const course = await courseRepository.findById(course_id);
+  if (!course) {
+    throw new AppError(404, "Course not found");
+  }
+  // owner ship check
+  if (course.instructor_id !== instructor_id) {
+    throw new AppError(403, "You are not authorized to update this course");
+  }
+  // Only allow permanent deletion for draft/rejected courses
+  if (course.status !== "DRAFT" && course.status !== "REJECTED") {
+    throw new AppError(400, "Only draft or rejected courses can be deleted.");
+  }
+  await courseRepository.findByIdAndDelete(course_id);
+};
 
 export const courseService = {
   createCourse,
   getCourse,
   getAllCourses,
   updateCourse,
+  deleteCourse,
 };
