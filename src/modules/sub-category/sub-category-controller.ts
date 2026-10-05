@@ -12,6 +12,7 @@ import type { Request, Response } from "express";
 import { subCategoryService } from "./sub-category-service";
 import {
   categoryIdParamsSchema,
+  subCategoryIdParamsSchema,
   subCategorySchema,
 } from "./sub-category-validation";
 
@@ -57,13 +58,20 @@ const getSubCategories = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getSubCategory = asyncHandler(async (req: Request, res: Response) => {
-  // const response = await subCategoryService.getSubCategory(...);
+  const subCategoryParams = subCategoryIdParamsSchema.safeParse(req.params);
+  if (!subCategoryParams.success) {
+    const message = subCategoryParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await subCategoryService.getSubCategory(
+    subCategoryParams.data.id
+  );
 
   apiResponse({
     res,
     statusCode: 200,
     message: "Sub-category fetched successfully.",
-    data: {},
+    data: response,
   });
 });
 
