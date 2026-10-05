@@ -1,8 +1,8 @@
 /**
  * @file sub-category-schema.ts
- * @description category Drizzle schema
+ * @description sub-category Drizzle schema
  * @author Mohammad-Jafiruzzaman
- * @date 4th October 2026
+ * @date 5th October 2026
  */
 
 import { index, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
