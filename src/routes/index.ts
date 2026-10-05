@@ -12,11 +12,13 @@ import { authRoutes } from "@/modules/auth/auth-routes";
 import { categoryRoutes } from "@/modules/category/category-routes";
 import { subCategoryRoutes } from "@/modules/sub-category/sub-category-routes";
 import { courseRoutes } from "@/modules/course/course-routes";
+import { moduleRoutes } from "@/modules/modules/modules-routes";
 
 const router = Router();
 router.use("/api/v1/auth", authRoutes);
 router.use("/api/v1/category", categoryRoutes);
 router.use("/api/v1/sub-category", subCategoryRoutes);
 router.use("/api/v1/course", courseRoutes);
+router.use("/api/v1/modules", moduleRoutes);
 
 export { router as rootRoutes };
