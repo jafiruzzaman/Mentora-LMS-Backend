@@ -33,6 +33,11 @@ router.patch(
   categoryController.updateCategory
 );
 
-router.delete("/:id", categoryController.deleteCategory);
+router.delete(
+  "/:id",
+  authMiddleware,
+  roleMiddlewares([Roles.admin]),
+  categoryController.deleteCategory
+);
 
 export { router as categoryRoutes };
