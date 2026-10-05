@@ -2,7 +2,7 @@
  * @file category-schema.ts
  * @description category Drizzle schema
  * @author Mohammad-Jafiruzzaman
- * @date 2nd October 2026
+ * @date 4th October 2026
  */
 
 import {
