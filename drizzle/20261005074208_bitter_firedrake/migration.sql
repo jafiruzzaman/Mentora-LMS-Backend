@@ -1,0 +1,1 @@
+ALTER TABLE "sub_categories" ADD CONSTRAINT "sub_categories_name_key" UNIQUE("name");

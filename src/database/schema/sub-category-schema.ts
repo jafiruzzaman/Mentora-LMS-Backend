@@ -20,7 +20,7 @@ const subCategories = pgTable(
       }),
     name: varchar("name", {
       length: 100,
-    }).notNull(),
+    }).notNull().unique(),
 
     slug: varchar("slug", {
       length: 120,

@@ -9,15 +9,32 @@
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import type { Request, Response } from "express";
+import { subCategoryService } from "./sub-category-service";
+import {
+  categoryIdParamsSchema,
+  subCategorySchema,
+} from "./sub-category-validation";
 
 const createSubCategory = asyncHandler(async (req: Request, res: Response) => {
-  // const response = await subCategoryService.createSubCategory(...);
-
+  const categoryParams = categoryIdParamsSchema.safeParse(req.params);
+  if (!categoryParams.success) {
+    const message = categoryParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const parsedData = subCategorySchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await subCategoryService.createSubCategory(
+    categoryParams.data.categoryId,
+    parsedData.data.name
+  );
   apiResponse({
     res,
     statusCode: 201,
     message: "Sub-category created successfully.",
-    data: {},
+    data: response,
   });
 });
 

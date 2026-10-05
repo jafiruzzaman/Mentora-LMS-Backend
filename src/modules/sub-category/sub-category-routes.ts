@@ -10,10 +10,14 @@ import { subCategoryController } from "./sub-category-controller";
 
 const router = Router();
 
-router.post("/", subCategoryController.createSubCategory);
-router.get("/", subCategoryController.getSubCategories);
+router.post("/category/:categoryId/", subCategoryController.createSubCategory);
+
+router.get("/category/:categoryId/", subCategoryController.getSubCategories);
+
 router.get("/:id", subCategoryController.getSubCategory);
+
 router.patch("/:id", subCategoryController.updateSubCategory);
+
 router.delete("/:id", subCategoryController.deleteSubCategory);
 
 export { router as subCategoryRoutes };
