@@ -76,13 +76,26 @@ const getSubCategory = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const updateSubCategory = asyncHandler(async (req: Request, res: Response) => {
-  // const response = await subCategoryService.updateSubCategory(...);
+  const subCategoryParams = subCategoryIdParamsSchema.safeParse(req.params);
+  if (!subCategoryParams.success) {
+    const message = subCategoryParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const parsedData = subCategorySchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await subCategoryService.updateSubCategory(
+    subCategoryParams.data.id,
+    parsedData.data.name
+  );
 
   apiResponse({
     res,
     statusCode: 200,
     message: "Sub-category updated successfully.",
-    data: {},
+    data: response,
   });
 });
 
