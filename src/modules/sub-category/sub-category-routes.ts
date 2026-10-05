@@ -5,44 +5,15 @@
  * @date 5th October 2026
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { subCategoryController } from "./sub-category-controller";
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "sub-category crated successfully",
-    data: {},
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "get all sub-categories successfully",
-    data: {},
-  });
-});
-router.get("/:id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "get sub-category successfully",
-    data: {},
-  });
-});
-router.patch("/:id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "sub-category updated successfully",
-    data: {},
-  });
-});
-router.delete("/:id", (req: Request, res: Response) => {
-  res.status(204).json({
-    success: true,
-    message: "sub-category deleted successfully",
-    data: {},
-  });
-});
+router.post("/", subCategoryController.createSubCategory);
+router.get("/", subCategoryController.getSubCategories);
+router.get("/:id", subCategoryController.getSubCategory);
+router.patch("/:id", subCategoryController.updateSubCategory);
+router.delete("/:id", subCategoryController.deleteSubCategory);
 
 export { router as subCategoryRoutes };
