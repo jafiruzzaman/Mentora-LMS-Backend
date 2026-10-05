@@ -8,8 +8,13 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import type { Request, Response } from "express";
-import { courseParamsSchema, createCourseSchema } from "./course-validation";
+import {
+  courseFilterSchema,
+  courseParamsSchema,
+  createCourseSchema,
+} from "./course-validation";
 import { courseService } from "./course-service";
+import { AppError } from "@/shared/lib/app-error.lib";
 
 const createCourse = async (req: Request, res: Response) => {
   const instructor = req.user;
@@ -31,10 +36,19 @@ const createCourse = async (req: Request, res: Response) => {
 };
 
 const getAllCourses = async (req: Request, res: Response) => {
+  const validatedQuery = courseFilterSchema.safeParse(req.query);
+  if (!validatedQuery.success) {
+    const message = validatedQuery.error.issues[0]?.message;
+
+    throw new AppError(400, message ?? "Invalid course filters.");
+  }
+  const response = await courseService.getAllCourses(validatedQuery.data);
+
   apiResponse({
     res,
     statusCode: 200,
-    message: "fetch all courses",
+    message: "Courses fetched successfully.",
+    data: response,
   });
 };
 

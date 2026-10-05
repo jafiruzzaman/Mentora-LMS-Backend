@@ -7,6 +7,7 @@
 
 import {
   decimal,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -35,9 +36,7 @@ const courseLevelEnum = pgEnum("course_level", [
 ]);
 
 const courses = pgTable("courses", {
-
   id: uuid("id").primaryKey().defaultRandom(),
-
 
   instructor_id: uuid("instructor_id")
     .references(() => users.id, {
@@ -47,8 +46,7 @@ const courses = pgTable("courses", {
 
   title: varchar("title", {
     length: 200,
-  })
-    .notNull(),
+  }).notNull(),
 
   slug: varchar("slug", {
     length: 255,
@@ -76,22 +74,15 @@ const courses = pgTable("courses", {
 
   status: courseStatusEnum("status").notNull().default("DRAFT"),
 
-  price: decimal("price", {
-    precision: 10,
-    scale: 2,
-  }).notNull(),
+  price: integer("price").notNull(),
 
-  discount_price: decimal("discount_price", {
-    precision: 10,
-    scale: 2,
-  }),
+  discount_price: integer("discount_price"),
 
   created_at: timestamp("created_at", {
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
-
 
   updated_at: timestamp("updated_at", {
     withTimezone: true,

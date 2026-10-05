@@ -61,14 +61,14 @@ const courseFilterSchema = z.object({
 
   limit: z.coerce.number().int().min(1).max(50).default(10),
 });
-type courseFilterDTO = z.infer<typeof courseFilterSchema>;
+type courseFilter = z.infer<typeof courseFilterSchema>;
 type createCourseDTO = z.infer<typeof createCourseSchema>;
 type courseParamsDTO = z.infer<typeof courseParamsSchema>;
 
 export {
   type createCourseDTO,
   type courseParamsDTO,
-  type courseFilterDTO,
+  type courseFilter,
   createCourseSchema,
   courseParamsSchema,
   courseFilterSchema,
