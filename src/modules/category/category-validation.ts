@@ -27,7 +27,6 @@ type categoryParamsDTO = z.infer<typeof categoryIdSchema>;
 
 type CategoryDTO = z.infer<typeof categorySchema>;
 
-
 export {
   categorySchema,
   categoryIdSchema,
