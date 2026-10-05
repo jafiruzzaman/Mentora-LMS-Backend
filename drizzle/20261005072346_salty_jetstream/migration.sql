@@ -1,1 +1,0 @@
-ALTER TABLE "sub_categories" ADD CONSTRAINT "sub_categories_slug_key" UNIQUE("slug");
