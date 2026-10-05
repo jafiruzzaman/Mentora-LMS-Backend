@@ -9,8 +9,10 @@
 import { Router } from "express";
 
 import { authRoutes } from "@/modules/auth/auth-routes";
+import { categoryRoutes } from "@/modules/category/category-routes";
 
 const router = Router();
 router.use("/api/v1/auth", authRoutes);
+router.use("/api/v1/category", categoryRoutes);
 
 export { router as rootRoutes };
