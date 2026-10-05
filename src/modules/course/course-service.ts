@@ -56,6 +56,17 @@ const createCourse = async ({
   return response;
 };
 
+const getCourse = async (courseId: string) => {
+  const course = await courseRepository.findById(courseId);
+  if (!course) {
+    throw new AppError(404, "course not found");
+  }
+  if (course.status !== "PUBLISHED") {
+    throw new AppError(404, "Course not found.");
+  }
+};
+
 export const courseService = {
   createCourse,
+  getCourse,
 };

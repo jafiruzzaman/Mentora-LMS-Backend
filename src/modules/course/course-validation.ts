@@ -35,6 +35,16 @@ const createCourseSchema = z.object({
     .describe("course status is required"),
 });
 
-type createCourseDTO = z.infer<typeof createCourseSchema>;
+const courseParamsSchema = z.object({
+  id: z.uuid().describe("course id is required"),
+});
 
-export { type createCourseDTO, createCourseSchema };
+type createCourseDTO = z.infer<typeof createCourseSchema>;
+type courseParamsDTO = z.infer<typeof courseParamsSchema>;
+
+export {
+  type createCourseDTO,
+  type courseParamsDTO,
+  createCourseSchema,
+  courseParamsSchema,
+};

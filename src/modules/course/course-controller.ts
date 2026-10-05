@@ -8,7 +8,7 @@
 
 import { apiResponse } from "@/shared/lib/api-response";
 import type { Request, Response } from "express";
-import { createCourseSchema } from "./course-validation";
+import { courseParamsSchema, createCourseSchema } from "./course-validation";
 import { courseService } from "./course-service";
 
 const createCourse = async (req: Request, res: Response) => {
@@ -39,10 +39,18 @@ const getAllCourses = async (req: Request, res: Response) => {
 };
 
 const getCourse = async (req: Request, res: Response) => {
+  const validatedParam = courseParamsSchema.safeParse(req.params);
+  if (!validatedParam.success) {
+    const message = validatedParam.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const { id: courseId } = validatedParam.data;
+  const response = await courseService.getCourse(courseId);
   apiResponse({
     res,
     statusCode: 200,
     message: "fetch course details successfully",
+    data: response,
   });
 };
 
