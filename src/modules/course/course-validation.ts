@@ -39,12 +39,37 @@ const courseParamsSchema = z.object({
   id: z.uuid().describe("course id is required"),
 });
 
+const courseFilterSchema = z.object({
+  search: z.string().trim().optional(),
+  category_id: z.uuid().optional(),
+  sub_category_id: z.uuid().optional(),
+  level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"]).optional(),
+  min_price: z.coerce.number().int().min(0).optional(),
+  max_price: z.coerce.number().int().min(0).optional(),
+
+  sort: z
+    .enum([
+      "newest",
+      "oldest",
+      "price_asc",
+      "price_desc",
+      "title_asc",
+      "title_desc",
+    ])
+    .optional(),
+  page: z.coerce.number().int().positive().default(1),
+
+  limit: z.coerce.number().int().min(1).max(50).default(10),
+});
+type courseFilterDTO = z.infer<typeof courseFilterSchema>;
 type createCourseDTO = z.infer<typeof createCourseSchema>;
 type courseParamsDTO = z.infer<typeof courseParamsSchema>;
 
 export {
   type createCourseDTO,
   type courseParamsDTO,
+  type courseFilterDTO,
   createCourseSchema,
   courseParamsSchema,
+  courseFilterSchema,
 };
