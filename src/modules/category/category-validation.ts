@@ -20,6 +20,17 @@ const categorySchema = z.object({
     }),
 });
 
+const categoryIdSchema = z.uuid({
+  message: "Invalid category ID.",
+});
+type categoryParamsDTO = z.infer<typeof categoryIdSchema>;
+
 type CategoryDTO = z.infer<typeof categorySchema>;
 
-export { categorySchema, type CategoryDTO };
+
+export {
+  categorySchema,
+  categoryIdSchema,
+  type CategoryDTO,
+  type categoryParamsDTO,
+};

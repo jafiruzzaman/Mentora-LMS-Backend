@@ -10,7 +10,7 @@ import type { Request, Response } from "express";
 
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
-import { categorySchema } from "./category-validation";
+import { categoryIdSchema, categorySchema } from "./category-validation";
 import { categoryService } from "./category-service";
 
 const createCategory = asyncHandler(async (req: Request, res: Response) => {
@@ -39,10 +39,17 @@ const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getCategoryById = asyncHandler(async (req: Request, res: Response) => {
+  const parsedParams = categoryIdSchema.safeParse(req.params["id"]);
+  if (!parsedParams.success) {
+    const message = parsedParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await categoryService.getCategory(parsedParams.data);
   apiResponse({
     res,
     statusCode: 200,
     message: "Category fetched successfully",
+    data: response,
   });
 });
 
