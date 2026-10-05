@@ -24,7 +24,9 @@ const subCategories = pgTable(
 
     slug: varchar("slug", {
       length: 120,
-    }).notNull(),
+    })
+      .unique()
+      .notNull(),
 
     created_at: timestamp("created_at", {
       withTimezone: true,
