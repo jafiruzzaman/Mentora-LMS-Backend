@@ -52,9 +52,18 @@ const updateCategory = async (id: string, name: string) => {
   });
 };
 
+const deleteCategory = async (id: string) => {
+  const category = await categoryRepository.findById(id);
+  if (!category) {
+    throw new AppError(404, "category not found");
+  }
+  await categoryRepository.findByIdAndDelete(id);
+};
+
 export const categoryService = {
   createCategory,
   getAllCategories,
   getCategory,
   updateCategory,
+  deleteCategory,
 };

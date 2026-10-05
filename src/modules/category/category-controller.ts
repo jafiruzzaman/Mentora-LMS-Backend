@@ -78,9 +78,15 @@ const updateCategory = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteCategory = asyncHandler(async (req: Request, res: Response) => {
+  const parsedParams = categoryIdSchema.safeParse(req.params["id"]);
+  if (!parsedParams.success) {
+    const message = parsedParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  await categoryService.deleteCategory(parsedParams.data);
   apiResponse({
     res,
-    statusCode: 200,
+    statusCode: 204,
     message: "Category deleted successfully",
   });
 });
