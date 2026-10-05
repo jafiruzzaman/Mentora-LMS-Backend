@@ -22,7 +22,17 @@ router.post(
 );
 router.get("/", courseController.getAllCourses);
 router.get("/:id", courseController.getCourse);
-router.patch("/:id", courseController.updateCourse);
-router.delete("/:id", courseController.deleteCourse);
+router.patch(
+  "/:id",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor, Roles.admin]),
+  courseController.updateCourse
+);
+router.delete(
+  "/:id",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor, Roles.admin]),
+  courseController.deleteCourse
+);
 
 export { router as courseRoutes };

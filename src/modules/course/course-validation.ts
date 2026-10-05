@@ -61,15 +61,42 @@ const courseFilterSchema = z.object({
 
   limit: z.coerce.number().int().min(1).max(50).default(10),
 });
+
+const updateCourseSchema = z.object({
+  title: z.string().min(3).max(100).describe("course title"),
+  description: z.string().min(10).max(1000).describe("course description"),
+  category_id: z.uuid().optional().describe("course category id "),
+  sub_category_id: z.uuid().optional().describe("sub-category id"),
+  discount: z
+    .number()
+    .min(0)
+    .max(100)
+    .optional()
+    .describe("course discount percentage"),
+  thumbnail: z.url().optional().describe("course thumbnail url"),
+  price: z.int().positive().optional().describe("course price is required"),
+  discount_price: z
+    .int()
+    .positive()
+    .optional()
+    .describe("course discount price"),
+  level: z
+    .enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"])
+    .optional()
+    .describe("course level"),
+});
+
 type courseFilter = z.infer<typeof courseFilterSchema>;
 type createCourseDTO = z.infer<typeof createCourseSchema>;
 type courseParamsDTO = z.infer<typeof courseParamsSchema>;
-
+type updateCourseDTO =z.infer<typeof updateCourseSchema>
 export {
   type createCourseDTO,
   type courseParamsDTO,
   type courseFilter,
+  type updateCourseDTO,
   createCourseSchema,
   courseParamsSchema,
   courseFilterSchema,
+  updateCourseSchema,
 };

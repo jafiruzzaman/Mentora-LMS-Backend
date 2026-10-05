@@ -69,10 +69,27 @@ const getCourse = async (req: Request, res: Response) => {
 };
 
 const updateCourse = async (req: Request, res: Response) => {
+  const validatedParam = courseParamsSchema.safeParse(req.params);
+  if (!validatedParam.success) {
+    const message = validatedParam.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const { id: instructor_id } = req.user;
+  const parsedData = createCourseSchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const response = await courseService.updateCourse({
+    instructor_id,
+    course_id: validatedParam.data.id,
+    data: parsedData.data,
+  });
   apiResponse({
     res,
     statusCode: 200,
     message: "course updated successfully",
+    data: response,
   });
 };
 
