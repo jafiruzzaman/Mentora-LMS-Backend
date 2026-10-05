@@ -32,8 +32,15 @@ const createCategory = async (name: string) => {
 const getAllCategories = async () => {
   return await categoryRepository.findAll();
 };
-
+const getCategory = async (id: string) => {
+  const category = await categoryRepository.findById(id);
+  if (!category) {
+    throw new AppError(404, "category not found");
+  }
+  return category;
+};
 export const categoryService = {
   createCategory,
   getAllCategories,
+  getCategory,
 };
