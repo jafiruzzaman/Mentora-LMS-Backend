@@ -100,11 +100,16 @@ const updateSubCategory = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteSubCategory = asyncHandler(async (req: Request, res: Response) => {
-  // await subCategoryService.deleteSubCategory(...);
+  const subCategoryParams = subCategoryIdParamsSchema.safeParse(req.params);
+  if (!subCategoryParams.success) {
+    const message = subCategoryParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  await subCategoryService.deleteSubCategory(subCategoryParams.data.id);
 
   apiResponse({
     res,
-    statusCode: 200,
+    statusCode: 204,
     message: "Sub-category deleted successfully.",
   });
 });
