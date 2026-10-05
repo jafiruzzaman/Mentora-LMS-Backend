@@ -6,7 +6,6 @@
  */
 
 import {
-  decimal,
   integer,
   pgEnum,
   pgTable,
