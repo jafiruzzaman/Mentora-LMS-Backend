@@ -39,8 +39,22 @@ const getCategory = async (id: string) => {
   }
   return category;
 };
+
+const updateCategory = async (id: string, name: string) => {
+  const category = await categoryRepository.findById(id);
+  if (!category) {
+    throw new AppError(404, "category not found");
+  }
+  const slug = slugify(name).trim().toLocaleLowerCase();
+  return categoryRepository.findByIdAndUpdate(id, {
+    name,
+    slug,
+  });
+};
+
 export const categoryService = {
   createCategory,
   getAllCategories,
   getCategory,
+  updateCategory,
 };

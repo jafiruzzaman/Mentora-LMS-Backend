@@ -54,10 +54,26 @@ const getCategoryById = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const updateCategory = asyncHandler(async (req: Request, res: Response) => {
+  const parsedParams = categoryIdSchema.safeParse(req.params["id"]);
+  if (!parsedParams.success) {
+    const message = parsedParams.error.issues[0]?.message;
+    throw new Error(message);
+  }
+  const parsedData = categorySchema.safeParse(req.body);
+  if (!parsedData.success) {
+    const message = parsedData.error.issues[0]?.message;
+    throw new Error(message);
+  }
+
+  const response = await categoryService.updateCategory(
+    parsedParams.data,
+    parsedData.data.name
+  );
   apiResponse({
     res,
     statusCode: 200,
     message: "Category updated successfully",
+    data: response,
   });
 });
 
