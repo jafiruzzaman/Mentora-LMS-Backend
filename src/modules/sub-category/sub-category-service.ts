@@ -31,9 +31,17 @@ const createSubCategory = async (categoryId: string, name: string) => {
     name,
     slug,
   });
-  return response
+  return response;
 };
-
+const getSubCategories = async (categoryId: string) => {
+  // first check category exist or not
+  const category = await categoryRepository.findById(categoryId);
+  if (!category) {
+    throw new AppError(404, "category not found");
+  }
+  return await subCategoryRepository.findByCategory(categoryId);
+};
 export const subCategoryService = {
   createSubCategory,
+  getSubCategories,
 };

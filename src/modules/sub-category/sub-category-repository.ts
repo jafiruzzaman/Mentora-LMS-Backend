@@ -32,6 +32,13 @@ const findAll = async () => {
   return await db.select().from(subCategories);
 };
 
+const findByCategory = async (categoryId: string) => {
+  return await db
+    .select()
+    .from(subCategories)
+    .where(eq(subCategories.category_id, categoryId));
+};
+
 const findByName = async (name: string) => {
   const [category] = await db
     .select()
@@ -73,6 +80,7 @@ export const subCategoryRepository = {
   create,
   findAll,
   findByName,
+  findByCategory,
   findById,
   findBySlug,
   findByIdAndUpdate,
