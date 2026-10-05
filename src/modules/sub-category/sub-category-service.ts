@@ -70,9 +70,18 @@ const updateSubCategory = async (id: string, name: string) => {
   return response;
 };
 
+const deleteSubCategory = async (id: string) => {
+  const subCategory = await subCategoryRepository.findById(id);
+  if (!subCategory) {
+    throw new AppError(404, "Sub-category not found.");
+  }
+  await subCategoryRepository.findByIdAndDelete(id);
+};
+
 export const subCategoryService = {
   createSubCategory,
   getSubCategories,
   getSubCategory,
   updateSubCategory,
+  deleteSubCategory,
 };
