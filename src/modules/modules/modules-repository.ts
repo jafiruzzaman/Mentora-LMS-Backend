@@ -47,10 +47,13 @@ class ModuleRepository {
       .where(eq(modules.course_id, course_id));
     return module;
   }
-  async findByIdAndUpdate(id: string, data: typeof modules.$inferInsert) {
+  async findByIdAndUpdate(
+    id: string,
+    data: Partial<typeof modules.$inferInsert>
+  ) {
     const [module] = await db
       .update(modules)
-      .set(data)
+      .set({ ...data, updated_at: new Date() })
       .where(eq(modules.id, id))
       .returning();
     return module;

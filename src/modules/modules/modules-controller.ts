@@ -13,6 +13,7 @@ import {
   courseParams,
   moduleParams,
   moduleSchema,
+  updateModuleSchema,
 } from "@/modules/modules/modules-validation.ts";
 import { AppError } from "@/shared/lib/app-error.lib.ts";
 import type { ModuleService } from "@/modules/modules/modules-service.ts";
@@ -74,7 +75,7 @@ class CourseModuleController {
     if (!moduleParam.success) {
       const message =
         moduleParam.error.issues[0]?.message ||
-        "course params validation error";
+        "module params validation error";
       throw new AppError(400, message);
     }
     const response = await this.moduleService.getModule({
@@ -89,11 +90,33 @@ class CourseModuleController {
   });
   // update Module
   updateModule = asyncHandler(async (req: Request, res: Response) => {
+    const instructor_id = req.user.id.toString();
+    const moduleParam = moduleParams.safeParse(req.params);
+    if (!moduleParam.success) {
+      const message =
+        moduleParam.error.issues[0]?.message ||
+        "module params validation error";
+      throw new AppError(400, message);
+    }
+    const parsedData = updateModuleSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      const message =
+        parsedData.error.issues[0]?.message || "module validation error";
+      throw new AppError(400, message);
+    }
+    const response = await this.moduleService.updateModule({
+      module_id: moduleParam.data.module_id,
+      instructor_id,
+      data: {
+        title: parsedData.data.title,
+        description: parsedData.data.description,
+      },
+    });
     apiResponse({
       res,
       statusCode: 200,
       message: "Module updated successfully.",
-      data: {},
+      data: response,
     });
   });
 
