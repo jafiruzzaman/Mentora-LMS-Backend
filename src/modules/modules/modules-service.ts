@@ -17,7 +17,9 @@ type createModuleInput = {
   description: string;
 };
 class ModuleService {
-  constructor(private readonly moduleRepository: ModuleRepository) {}
+  constructor(
+    private readonly moduleRepository: ModuleRepository,
+  ) {}
   async createModule({
     course_id,
     instructor_id,
@@ -66,6 +68,21 @@ class ModuleService {
       throw new AppError(404, "Course Not Found");
     }
     return this.moduleRepository.findAll(course.id);
+  }
+
+  async getModule({ module_id }: { module_id: string }) {
+    // check if module exist or not
+    const module = await this.moduleRepository.findById(module_id);
+    if (!module) {
+      throw new AppError(404, "module not found");
+    }
+    // check if course exist or not
+    const course = await courseRepository.findById(module.course_id);
+
+    if (course?.status !== "PUBLISHED") {
+      throw new AppError(404, "Module not found");
+    }
+    return module;
   }
 }
 

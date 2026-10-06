@@ -11,6 +11,7 @@ import { asyncHandler } from "@/shared/lib/async-handler.ts";
 import { apiResponse } from "@/shared/lib/api-response.ts";
 import {
   courseParams,
+  moduleParams,
   moduleSchema,
 } from "@/modules/modules/modules-validation.ts";
 import { AppError } from "@/shared/lib/app-error.lib.ts";
@@ -69,11 +70,21 @@ class CourseModuleController {
   });
   //
   getModule = asyncHandler(async (req: Request, res: Response) => {
+    const moduleParam = moduleParams.safeParse(req.params);
+    if (!moduleParam.success) {
+      const message =
+        moduleParam.error.issues[0]?.message ||
+        "course params validation error";
+      throw new AppError(400, message);
+    }
+    const response = await this.moduleService.getModule({
+      module_id: moduleParam.data.module_id,
+    });
     apiResponse({
       res,
       statusCode: 200,
       message: "Fetch Module successfully.",
-      data: {},
+      data: response,
     });
   });
   // update Module
