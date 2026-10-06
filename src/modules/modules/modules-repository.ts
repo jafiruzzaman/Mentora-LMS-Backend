@@ -7,7 +7,7 @@
  */
 import { modules } from "@/database/schema/modules-schema.ts";
 import { db } from "@/config/db.ts";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 
 class ModuleRepository {
   async create(data: typeof modules.$inferInsert) {
@@ -22,8 +22,12 @@ class ModuleRepository {
       .limit(1);
     return module;
   }
-  async findAll() {
-    return await db.select().from(modules);
+  async findAll(course_id: string) {
+    return await db
+      .select()
+      .from(modules)
+      .where(eq(modules.course_id, course_id))
+      .orderBy(asc(modules.position));
   }
 
   async findModuleByCourseAndPosition(course_id: string, position: number) {
