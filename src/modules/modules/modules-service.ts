@@ -28,7 +28,7 @@ class ModuleService {
     //   check if course is exist or not
     const course = await courseRepository.findById(course_id);
     if (!course) {
-      throw new AppError(404, "Not Found");
+      throw new AppError(404, "Course Not Found");
     }
     //   check user own the course to create module
     if (course.instructor_id !== instructor_id) {
@@ -56,6 +56,16 @@ class ModuleService {
       position,
       description,
     });
+  }
+  async getAllModules({ course_id }: { course_id: string }) {
+    const course = await courseRepository.findById(course_id);
+    if (!course) {
+      throw new AppError(404, "Course Not Found");
+    }
+    if (course.status !== "PUBLISHED") {
+      throw new AppError(404, "Course Not Found");
+    }
+    return this.moduleRepository.findAll(course.id);
   }
 }
 

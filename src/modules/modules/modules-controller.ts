@@ -50,11 +50,21 @@ class CourseModuleController {
   });
   //
   getAllModules = asyncHandler(async (req: Request, res: Response) => {
+    const courseParam = courseParams.safeParse(req.params);
+    if (!courseParam.success) {
+      const message =
+        courseParam.error.issues[0]?.message ||
+        "course params validation error";
+      throw new AppError(400, message);
+    }
+    const response = await this.moduleService.getAllModules({
+      course_id: courseParam.data.course_id,
+    });
     apiResponse({
       res,
       statusCode: 200,
       message: "Fetch All Module successfully.",
-      data: {},
+      data: response,
     });
   });
   //
