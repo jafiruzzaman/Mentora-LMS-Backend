@@ -21,6 +21,12 @@ const moduleSchema = z.object({
   position: z.coerce.number().positive(),
 });
 
-type moduleInput = z.infer<typeof moduleSchema>;
+const updateModuleSchema = z.object({
+  title: z.string().min(4, { message: "title required" }).optional(),
+  description: z
+    .string()
+    .min(4, { message: "description required" })
+    .optional(),
+});
 
-export { type moduleInput, moduleSchema, moduleParams, courseParams };
+export { moduleSchema, moduleParams, courseParams, updateModuleSchema };
