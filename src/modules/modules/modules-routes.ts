@@ -6,68 +6,42 @@
  * @date 5th October 2026
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { CourseModuleController } from "@/modules/modules/modules-controller.ts";
 
 const router = Router();
+
+
+const courseMooduleController = new CourseModuleController();
 
 /**
  * Create module
  * POST /api/v1/modules/courses/:courseId
  */
-router.post("/course/:courseId/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "Module created successfully.",
-    data: {},
-  });
-});
+router.post("/course/:courseId/", courseMooduleController.createModule);
 
 /**
  * Get all modules of a course
  * GET /api/v1/modules/courses/:courseId
  */
-router.get("/course/:courseId/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Modules fetched successfully.",
-    data: [],
-  });
-});
+router.get("/course/:courseId/", courseMooduleController.getAllModules);
 
 /**
  * Get a single module
  * GET /api/v1/modules/:moduleId
  */
-router.get("/:moduleId", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Module fetched successfully.",
-    data: {},
-  });
-});
+router.get("/:moduleId", courseMooduleController.getModule);
 
 /**
  * Update module
  * PATCH /api/v1/modules/:moduleId
  */
-router.patch("/:moduleId", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Module updated successfully.",
-    data: {},
-  });
-});
+router.patch("/:moduleId", courseMooduleController.updateModule);
 
 /**
  * Delete module
  * DELETE /api/v1/modules/:moduleId
  */
-router.delete("/:moduleId", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Module deleted successfully.",
-    data: {},
-  });
-});
+router.delete("/:moduleId", courseMooduleController.deleteModule);
 
 export { router as moduleRoutes };
