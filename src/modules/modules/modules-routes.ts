@@ -8,40 +8,45 @@
 
 import { Router } from "express";
 import { CourseModuleController } from "@/modules/modules/modules-controller.ts";
+import { ModuleService } from "@/modules/modules/modules-service.ts";
+import { ModuleRepository } from "@/modules/modules/modules-repository.ts";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware.ts";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware.ts";
+import { Roles } from "@/constants";
 
 const router = Router();
 
+const moduleRepository = new ModuleRepository();
+const moduleService = new ModuleService(moduleRepository);
+const moduleController = new CourseModuleController(moduleService);
 
-const courseMooduleController = new CourseModuleController();
+router.post(
+  "/course/:course_id/",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor]),
+  moduleController.createModule
+);
 
-/**
- * Create module
- * POST /api/v1/modules/courses/:courseId
- */
-router.post("/course/:courseId/", courseMooduleController.createModule);
+router.get("/course/:course_id/", moduleController.getAllModules);
 
-/**
- * Get all modules of a course
- * GET /api/v1/modules/courses/:courseId
- */
-router.get("/course/:courseId/", courseMooduleController.getAllModules);
+router.get("/:module_id", moduleController.getModule);
 
-/**
- * Get a single module
- * GET /api/v1/modules/:moduleId
- */
-router.get("/:moduleId", courseMooduleController.getModule);
-
-/**
- * Update module
- * PATCH /api/v1/modules/:moduleId
- */
-router.patch("/:moduleId", courseMooduleController.updateModule);
+router.patch(
+  "/:module_id",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor]),
+  moduleController.updateModule
+);
 
 /**
  * Delete module
- * DELETE /api/v1/modules/:moduleId
+ * DELETE /api/v1/modules/:module_id
  */
-router.delete("/:moduleId", courseMooduleController.deleteModule);
+router.delete(
+  "/:module_id",
+  authMiddleware,
+  roleMiddlewares([Roles.instructor]),
+  moduleController.deleteModule
+);
 
 export { router as moduleRoutes };

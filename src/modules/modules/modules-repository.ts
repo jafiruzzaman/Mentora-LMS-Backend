@@ -7,30 +7,55 @@
  */
 import { modules } from "@/database/schema/modules-schema.ts";
 import { db } from "@/config/db.ts";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 class ModuleRepository {
-  async create(data:typeof modules.$inferInsert){
-    const [module] = await db.insert(modules).values((data)).returning()
+  async create(data: typeof modules.$inferInsert) {
+    const [module] = await db.insert(modules).values(data).returning();
     return module;
   }
-  async findById(id:string){
-    const [module] = await db.select().from(modules).where(eq(modules.id,id)).limit(1)
+  async findById(id: string) {
+    const [module] = await db
+      .select()
+      .from(modules)
+      .where(eq(modules.id, id))
+      .limit(1);
     return module;
   }
-  async findAll(){
-    return await db.select().from(modules)
+  async findAll() {
+    return await db.select().from(modules);
   }
-  async findByCourseId(course_id:string){
-    const [module] = await db.select().from(modules).where(eq(modules.course_id,course_id))
+
+  async findModuleByCourseAndPosition(course_id: string, position: number) {
+    const [module] = await db
+      .select()
+      .from(modules)
+      .where(
+        and(eq(modules.course_id, course_id), eq(modules.position, position))
+      );
     return module;
   }
-  async findByIdAndUpdate(id:string, data:typeof modules.$inferInsert){
-    const [module] = await db.update(modules).set(data).where(eq(modules.id,id)).returning();
+
+  async findByCourseId(course_id: string) {
+    const [module] = await db
+      .select()
+      .from(modules)
+      .where(eq(modules.course_id, course_id));
     return module;
   }
-  async findByIdAndDelete(id:string){
-    const [module] = await db.delete(modules).where(eq(modules.id,id)).returning();
+  async findByIdAndUpdate(id: string, data: typeof modules.$inferInsert) {
+    const [module] = await db
+      .update(modules)
+      .set(data)
+      .where(eq(modules.id, id))
+      .returning();
+    return module;
+  }
+  async findByIdAndDelete(id: string) {
+    const [module] = await db
+      .delete(modules)
+      .where(eq(modules.id, id))
+      .returning();
     return module;
   }
 }
