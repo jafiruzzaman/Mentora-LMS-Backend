@@ -9,14 +9,27 @@
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import type { Request, Response } from "express";
+import { enrollmentParamsSchema } from "./enrollment-validation";
+import { AppError } from "@/shared/lib/app-error.lib";
+import type { EnrollmentService } from "./enrollment-service";
 
 class EnrollmentController {
+  constructor(private readonly service: EnrollmentService) {}
   enroll = asyncHandler(async (req: Request, res: Response) => {
+    const parsedParams = enrollmentParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      const message =
+        parsedParams.error.issues[0]?.message ||
+        "enrollment params validation error";
+      throw new AppError(400, message);
+    }
+    const student_id = req.user.id;
+    const { course_id } = parsedParams.data;
+    await this.service.enroll({ student_id, course_id });
     apiResponse({
       res,
       statusCode: 201,
       message: "enrolled successfully",
-      data: {},
     });
   });
 
