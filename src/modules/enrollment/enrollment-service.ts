@@ -57,6 +57,23 @@ class EnrollmentService {
     }
     // CALL order & payment module later
   }
+  async getEnrollment({
+    enrollment_id,
+    student_id,
+  }: {
+    enrollment_id: string;
+    student_id: string;
+  }) {
+    // check enrollment exist or not
+    const enrollment = await this.enrollmentRepo.findById(enrollment_id);
+    if (!enrollment) {
+      throw new AppError(404, "Not enrolled");
+    }
+    if (enrollment.student_id !== student_id) {
+      throw new AppError(403, "Access denied.");
+    }
+    return enrollment;
+  }
 }
 
 export { EnrollmentService };

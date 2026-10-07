@@ -9,7 +9,7 @@
 import { z } from "zod";
 
 const enrollmentParamsSchema = z.object({
-  course_id: z.uuid().min(4).describe("course id is required"),
+  id: z.uuid().min(4).describe("course id is required"),
 });
 
 export { enrollmentParamsSchema };
