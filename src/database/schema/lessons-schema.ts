@@ -27,7 +27,7 @@ const lessons = pgTable(
     title: varchar("title", {
       length: 255,
     }).notNull(),
-    video_Url: text("video_url").notNull(),
+    video_key: varchar("video_key", { length: 150 }).notNull(),
     description: text("description"),
     duration: integer().notNull(),
     created_at: timestamp("created_at", { withTimezone: true })
