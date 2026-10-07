@@ -100,6 +100,23 @@ class LessonService {
     const singed_url = await getSignedUrlFromStorage({ key: lesson.video_key });
     return { ...lesson, video_url: singed_url };
   }
+  async getAllLessons() {
+    const lessons = await this.lessonRepo.findAll();
+
+    const lessonsWithSignedUrl = await Promise.all(
+      lessons.map(async ({ video_key, ...lesson }) => {
+        const singed_url = await getSignedUrlFromStorage({
+          key: video_key,
+          expires_in: 3600,
+        });
+        return {
+          ...lesson,
+          video_url: singed_url,
+        };
+      })
+    );
+    return lessonsWithSignedUrl;
+  }
 }
 
 export { LessonService };

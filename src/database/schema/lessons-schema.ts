@@ -12,7 +12,7 @@ import {
   timestamp,
   text,
   integer,
-  unique,
+  index,
 } from "drizzle-orm/pg-core";
 
 import { modules } from "@/database/schema/modules-schema.ts";
@@ -39,7 +39,7 @@ const lessons = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (table) => [unique("lesson_module_id_idx").on(table.module_id)]
+  (table) => [index("lesson_module_id_idx").on(table.module_id)]
 );
 
 export { lessons };
