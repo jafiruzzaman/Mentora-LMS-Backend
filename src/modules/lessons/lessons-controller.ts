@@ -1,6 +1,6 @@
 /**
  * @file lessons-routes.ts
- * @description Lesson API Routes
+ * @description Lesson API Controller
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
  * @date 7th October 2026
