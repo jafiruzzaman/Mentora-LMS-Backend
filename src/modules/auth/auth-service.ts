@@ -176,7 +176,6 @@ const resetPassword = async ({
 }: resetPasswordDTO) => {
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
   const user = await userRepository.findByResetPasswordToken(hashedToken);
-  // TODO: compare time its a huge mistake
   if (!user) {
     throw new AppError(400, "Invalid or expired verification token");
   }
@@ -193,7 +192,7 @@ const resetPassword = async ({
     reset_password_verification_expires_at: null,
   });
   // send password reset email confirmation
-  sendEmail({
+  await sendEmail({
     to: user.email,
     subject: "Reset Password",
     html: resetPasswordConfirmationTemplate(user.first_name),
@@ -218,7 +217,7 @@ const sendVerificationEmail = async (email: string) => {
     email_verification_expires_at: new Date(Date.now() + 15 * 60 * 1000),
   });
   const url = `${env.FRONTEND_DOMAIN}/verify-email?token=${rawToken}`;
-  sendEmail({
+  await sendEmail({
     to: user.email,
     subject: `Email Verification`,
     html: verificationEmailTemplate(user.first_name, url),
