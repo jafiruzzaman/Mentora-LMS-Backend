@@ -13,13 +13,14 @@ import type { LessonService } from "./lessons-service";
 import {
   lessonParamsValidationSchema,
   lessonValidationSchema,
+  updateLessonValidationSchema,
 } from "./lessons-validation";
 import { AppError } from "@/shared/lib/app-error.lib";
 
 class LessonController {
   constructor(private readonly service: LessonService) {}
   createLesson = asyncHandler(async (req: Request, res: Response) => {
-    const module_id = req.params["module_id"]?.toString()!;
+    const { module_id } = req.params as { module_id: string };
     const instructor_id = req.user.id;
     const parsedData = lessonValidationSchema.safeParse(req.body);
     if (!parsedData.success) {
@@ -44,7 +45,7 @@ class LessonController {
       data: response,
     });
   });
-  getLessons = asyncHandler(async (req: Request, res: Response) => {
+  getLessons = asyncHandler(async (_req: Request, res: Response) => {
     const response = await this.service.getAllLessons();
     apiResponse({
       res,
@@ -70,10 +71,29 @@ class LessonController {
     });
   });
   updateLesson = asyncHandler(async (req: Request, res: Response) => {
+    const parsedParams = lessonParamsValidationSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      const message =
+        parsedParams.error.issues[0]?.message || "lesson validation error";
+      throw new AppError(400, message);
+    }
+    const { lesson_id } = parsedParams.data;
+    const parsedData = updateLessonValidationSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      const message =
+        parsedData.error.issues[0]?.message || "lesson validation error";
+      throw new AppError(400, message);
+    }
+
+    const response = await this.service.updateLesson(
+      lesson_id,
+      parsedData?.data
+    );
     apiResponse({
       res,
       statusCode: 200,
       message: "lesson updated successfully",
+      data: response,
     });
   });
   deleteLesson = asyncHandler(async (req: Request, res: Response) => {
