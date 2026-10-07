@@ -8,9 +8,12 @@
 import { env } from "@/config/env";
 import {
   DeleteObjectCommand,
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const storage = new S3Client({
   region: env.AWS_REGION,
@@ -22,7 +25,6 @@ const storage = new S3Client({
   forcePathStyle: true,
 });
 
-const bucketName = "mentora-media";
 const uploadFileToStorage = async ({
   buffer,
   content_type,
@@ -52,4 +54,21 @@ const deleteFileFromStorage = async (key: string) => {
   );
 };
 
-export { uploadFileToStorage, deleteFileFromStorage };
+const getSignedUrlFromStorage = async ({
+  key,
+  expires_in,
+}: {
+  key: string;
+  expires_in?: number;
+}) => {
+  const command = new GetObjectCommand({
+    Bucket: env.BUCKET_NAME,
+    Key: key,
+  });
+  const signedUrl = await getSignedUrl(storage, command, {
+    expiresIn: expires_in,
+  });
+  return signedUrl;
+};
+
+export { uploadFileToStorage, deleteFileFromStorage, getSignedUrlFromStorage };

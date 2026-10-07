@@ -11,7 +11,10 @@ import type { LessonRepository } from "./lessons-repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import type { ModuleRepository } from "@/modules/modules/modules-repository";
 import { courseRepository } from "@/modules/course/course-repository";
-import { uploadFileToStorage } from "@/shared/lib/store";
+import {
+  getSignedUrlFromStorage,
+  uploadFileToStorage,
+} from "@/shared/lib/store";
 
 let req: Request;
 type LessonInput = {
@@ -82,6 +85,20 @@ class LessonService {
     console.log("7. Database insert completed");
 
     return response;
+  }
+  async getLesson(id: string) {
+    // check if lesson exist or not
+    const lesson = await this.lessonRepo.findById(id);
+    if (!lesson) {
+      throw new AppError(404, "Lesson not found");
+    }
+    // check if module exist or not
+    const module = await this.moduleRepo.findById(lesson.module_id!);
+    if (!module) {
+      throw new AppError(404, "Module not found");
+    }
+    const singed_url = await getSignedUrlFromStorage({ key: lesson.video_key });
+    return { ...lesson, video_url: singed_url };
   }
 }
 
