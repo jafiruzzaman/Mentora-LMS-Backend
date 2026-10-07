@@ -74,6 +74,9 @@ class EnrollmentService {
     }
     return enrollment;
   }
+  async getAllEnrollments(student_id: string) {
+    return this.enrollmentRepo.findByStudentId(student_id);
+  }
 }
 
 export { EnrollmentService };
