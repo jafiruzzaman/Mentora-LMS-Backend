@@ -38,10 +38,6 @@ router.patch(
   moduleController.updateModule
 );
 
-/**
- * Delete module
- * DELETE /api/v1/modules/:module_id
- */
 router.delete(
   "/:module_id",
   authMiddleware,

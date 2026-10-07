@@ -1,0 +1,1 @@
+ALTER TABLE "course_modules" DROP CONSTRAINT "course_modules_course_id_courses_id_fkey", ADD CONSTRAINT "course_modules_course_id_courses_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("id") ON DELETE CASCADE;

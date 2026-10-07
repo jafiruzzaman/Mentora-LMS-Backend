@@ -102,7 +102,7 @@ class ModuleService {
     // check if course exist or not
     const course = await courseRepository.findById(module.course_id);
     if (!course) {
-      throw new AppError(404, "Module not found");
+      throw new AppError(404, "Associated course not found");
     }
     // check ownership
     if (course.instructor_id !== instructor_id) {
@@ -111,9 +111,34 @@ class ModuleService {
         "Access denied. You don't have permission to update this module."
       );
     }
-    console.log("SERVICE DATA:", data);
-
     return await this.moduleRepository.findByIdAndUpdate(module.id, data);
+  }
+  async deleteModule({
+    instructor_id,
+    module_id,
+  }: {
+    instructor_id: string;
+    module_id: string;
+  }) {
+    // check if module exist or not
+    const module = await this.moduleRepository.findById(module_id);
+    if (!module) {
+      throw new AppError(404, "Module not found");
+    }
+    // check if course exist or not
+    const course = await courseRepository.findById(module.course_id);
+    if (!course) {
+      throw new AppError(404, "Associated course not found");
+    }
+    // check ownership
+    if (course.instructor_id !== instructor_id) {
+      throw new AppError(
+        403,
+        "Access denied. You don't have permission to update this module."
+      );
+    }
+    
+    return await this.moduleRepository.findByIdAndDelete(module.id);
   }
 }
 
