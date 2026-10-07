@@ -46,11 +46,24 @@ class EnrollmentController {
   });
 
   getEnrolledCourse = asyncHandler(async (req: Request, res: Response) => {
+    const parsedParams = enrollmentParamsSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      const message =
+        parsedParams.error.issues[0]?.message ||
+        "enrollment params validation error";
+      throw new AppError(400, message);
+    }
+    const { id: course_id } = parsedParams.data;
+    const student_id = req.user.id;
+    const response = await this.service.getEnrolledCourse({
+      student_id,
+      course_id,
+    });
     apiResponse({
       res,
       statusCode: 200,
       message: "get enrolled course.",
-      data: {},
+      data: response,
     });
   });
   getEnrollment = asyncHandler(async (req: Request, res: Response) => {
