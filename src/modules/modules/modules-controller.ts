@@ -122,11 +122,22 @@ class CourseModuleController {
 
   // delete module
   deleteModule = asyncHandler(async (req: Request, res: Response) => {
+    const instructor_id = req.user.id.toString();
+    const moduleParam = moduleParams.safeParse(req.params);
+    if (!moduleParam.success) {
+      const message =
+        moduleParam.error.issues[0]?.message ||
+        "module params validation error";
+      throw new AppError(400, message);
+    }
+    await this.moduleService.deleteModule({
+      instructor_id,
+      module_id: moduleParam.data.module_id,
+    });
     apiResponse({
       res,
       statusCode: 204,
       message: "Module deleted successfully.",
-      data: {},
     });
   });
 }

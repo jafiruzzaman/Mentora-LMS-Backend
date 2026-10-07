@@ -17,9 +17,11 @@ import { courses } from "./course-schema";
 const modules = pgTable(
   "course_modules",
   {
-    id: uuid().primaryKey().defaultRandom(),
+    id: uuid("id").primaryKey().defaultRandom(),
     course_id: uuid()
-      .references(() => courses.id)
+      .references(() => courses.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     title: varchar("title", {
       length: 100,
