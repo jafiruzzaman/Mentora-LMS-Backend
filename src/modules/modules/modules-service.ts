@@ -137,7 +137,7 @@ class ModuleService {
         "Access denied. You don't have permission to update this module."
       );
     }
-    
+
     return await this.moduleRepository.findByIdAndDelete(module.id);
   }
 }
