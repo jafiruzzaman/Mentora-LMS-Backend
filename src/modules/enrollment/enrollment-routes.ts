@@ -33,7 +33,7 @@ router.get(
 );
 
 router.get(
-  "/course/:course_id",
+  "/course/:id",
   authMiddleware,
   roleMiddlewares([Roles.student]),
   enrollmentController.getEnrolledCourse

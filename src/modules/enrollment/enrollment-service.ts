@@ -33,7 +33,7 @@ class EnrollmentService {
     // check if course is exist or not
     const course = await courseRepo.findById(course_id);
     if (!course) {
-      throw new AppError(404, "Student not found");
+      throw new AppError(404, "Course not found");
     }
 
     // check if student is already exist
@@ -48,12 +48,12 @@ class EnrollmentService {
     }
     // check if course is free or nor
     if (course.price === 0) {
-      await this.enrollmentRepo.create({
+      const enrollment = await this.enrollmentRepo.create({
         student_id,
         course_id,
         status: "completed",
       });
-      return;
+      return enrollment;
     }
     // CALL order & payment module later
   }
@@ -76,6 +76,28 @@ class EnrollmentService {
   }
   async getAllEnrollments(student_id: string) {
     return this.enrollmentRepo.findByStudentId(student_id);
+  }
+  async getEnrolledCourse({
+    student_id,
+    course_id,
+  }: {
+    student_id: string;
+    course_id: string;
+  }) {
+    // check enrollment exist
+    const enrollment = await this.enrollmentRepo.findByStudentIdAndCourse({
+      student_id,
+      course_id,
+    });
+    if (!enrollment) {
+      throw new AppError(404, "Not Enrolled");
+    }
+    // check course exist
+    const course = await courseRepo.findById(course_id);
+    if (!course) {
+      throw new AppError(404, "Course not found");
+    }
+    return enrollment;
   }
 }
 
