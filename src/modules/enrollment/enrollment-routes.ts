@@ -18,9 +18,9 @@ const router = Router();
 const enrollmentRepository = new EnrollmentRepository();
 const enrollmentService = new EnrollmentService(enrollmentRepository);
 const enrollmentController = new EnrollmentController(enrollmentService);
-
+// course_id
 router.post(
-  "/:course_id",
+  "/:id/enroll",
   authMiddleware,
   roleMiddlewares([Roles.student]),
   enrollmentController.enroll
@@ -38,9 +38,9 @@ router.get(
   roleMiddlewares([Roles.student]),
   enrollmentController.getEnrolledCourse
 );
-
+// enrollment_id
 router.get(
-  "/:enrollment_id",
+  "/:id",
   authMiddleware,
   roleMiddlewares([Roles.student]),
   enrollmentController.getEnrollment
