@@ -35,11 +35,13 @@ class EnrollmentController {
   });
 
   getAllEnrollments = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+    const response = await this.service.getAllEnrollments(student_id);
     apiResponse({
       res,
       statusCode: 200,
       message: "get all enrollment",
-      data: {},
+      data: response,
     });
   });
 
