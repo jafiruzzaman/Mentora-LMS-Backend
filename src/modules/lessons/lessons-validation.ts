@@ -17,5 +17,21 @@ const lessonValidationSchema = z.object({
 const lessonParamsValidationSchema = z.object({
   lesson_id: z.uuid().min(8).describe("lesson id is required"),
 });
+const updateLessonValidationSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(3)
+    .describe("lesson title is required")
+    .optional(),
+  description: z.string().trim().optional(),
+  duration: z.coerce.number().positive().optional(),
+});
+type updateLessonInput = z.infer<typeof updateLessonValidationSchema>;
 
-export { lessonParamsValidationSchema, lessonValidationSchema };
+export {
+  type updateLessonInput,
+  lessonParamsValidationSchema,
+  lessonValidationSchema,
+  updateLessonValidationSchema,
+};

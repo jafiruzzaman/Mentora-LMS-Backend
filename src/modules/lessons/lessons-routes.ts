@@ -35,6 +35,7 @@ router.patch(
   "/:lesson_id",
   authMiddleware,
   roleMiddlewares([Roles.instructor, Roles.admin]),
+  upload.single("video"),
   lessonController.updateLesson
 );
 router.delete(

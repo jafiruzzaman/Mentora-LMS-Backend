@@ -6,26 +6,31 @@
  * @date 7th October 2026
  */
 
-import type { Request } from "express";
 import type { LessonRepository } from "./lessons-repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import type { ModuleRepository } from "@/modules/modules/modules-repository";
 import { courseRepository } from "@/modules/course/course-repository";
 import {
+  deleteFileFromStorage,
   getSignedUrlFromStorage,
   uploadFileToStorage,
 } from "@/shared/lib/store";
 
-let req: Request;
 type LessonInput = {
   instructor_id: string;
   module_id: string;
   title: string;
   description?: string;
-  duration?: any;
+  duration: number;
   video: Express.Multer.File;
 };
 
+type updateLessonInput = {
+  title: string;
+  description?: string;
+  duration?: number;
+  video?: Express.Multer.File;
+};
 const courseRepo = courseRepository;
 
 class LessonService {
@@ -117,6 +122,40 @@ class LessonService {
     );
     return lessonsWithSignedUrl;
   }
+  async updateLesson(id: string, data: updateLessonInput) {
+    const lesson = await this.lessonRepo.findById(id);
+    if (!lesson) {
+      throw new AppError(404, "Lesson not found");
+    }
+    const module = await this.moduleRepo.findById(lesson.module_id!);
+    if (!module) {
+      throw new AppError(404, "Module not found");
+    }
+
+    let video_key = lesson.video_key;
+    const { video } = data;
+    if (data) {
+      const extension = video?.originalname.split(".").pop();
+      const key = `lessons/video/${crypto.randomUUID()}.${extension}`;
+      const uploadedVideo = await uploadFileToStorage({
+        buffer: video.buffer,
+        content_type: video.mimetype,
+        key,
+      });
+      video_key = uploadedVideo.key;
+    }
+
+    const updatedLesson = await this.lessonRepo.findByIdAndUpdate(id, {
+      ...data,
+      video_key,
+    });
+
+    if (video && lesson.video_key) {
+      await deleteFileFromStorage(lesson.video_key);
+    }
+    return updatedLesson;
+  }
 }
 
 export { LessonService };
+//
