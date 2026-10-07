@@ -28,6 +28,8 @@ const upload = multer({
         );
         return;
       }
+      callback(null, true);
+      return;
     }
     if (file.fieldname === "thumbnail") {
       if (!allowedImageTypes.has(file.mimetype)) {
