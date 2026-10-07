@@ -6,36 +6,17 @@
  * @date 7th October 2026
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { LessonController } from "./lessons-controller";
 
 const router = Router();
 
-router.post("/modules/:module_id/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "lesson created successfully",
-  });
-});
-router.get("/modules/:module_id/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "fetch lessons successfully",
-  });
-});
-router.get("/:lesson_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "fetch lesson successfully",
-  });
-});
-router.patch("/:lesson_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "lesson updated successfully",
-  });
-});
-router.delete("/:lesson_id", (req: Request, res: Response) => {
-  res.status(204).send();
-});
+const lessonController = new LessonController();
+
+router.post("/modules/:module_id/", lessonController.createLesson);
+router.get("/modules/:module_id/", lessonController.getLessons);
+router.get("/:lesson_id", lessonController.getLesson);
+router.patch("/:lesson_id", lessonController.updateLesson);
+router.delete("/:lesson_id", lessonController.deleteLesson);
 
 export { router as lessonRoutes };
