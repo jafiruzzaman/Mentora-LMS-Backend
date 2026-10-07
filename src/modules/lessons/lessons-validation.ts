@@ -13,3 +13,9 @@ const lessonValidationSchema = z.object({
   description: z.string().trim(),
   duration: z.coerce.number().positive(),
 });
+
+const lessonParamsValidationSchema = z.object({
+  lesson_id: z.uuid().min(8).describe("lesson id is required"),
+});
+
+export { lessonParamsValidationSchema, lessonValidationSchema };
