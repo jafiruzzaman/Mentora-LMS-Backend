@@ -26,7 +26,7 @@ type LessonInput = {
 };
 
 type updateLessonInput = {
-  title: string;
+  title?: string;
   description?: string;
   duration?: number;
   video?: Express.Multer.File;
@@ -138,8 +138,8 @@ class LessonService {
       const extension = video?.originalname.split(".").pop();
       const key = `lessons/video/${crypto.randomUUID()}.${extension}`;
       const uploadedVideo = await uploadFileToStorage({
-        buffer: video.buffer,
-        content_type: video.mimetype,
+        buffer: video?.buffer!,
+        content_type: video?.mimetype!,
         key,
       });
       video_key = uploadedVideo.key;
@@ -154,6 +154,21 @@ class LessonService {
       await deleteFileFromStorage(lesson.video_key);
     }
     return updatedLesson;
+  }
+  async deleteLesson(lesson_id: string) {
+    const lesson = await this.lessonRepo.findById(lesson_id);
+    // check lesson exist or not
+    if (!lesson) {
+      throw new AppError(404, "Lesson not found");
+    }
+    const module = await this.moduleRepo.findById(lesson.module_id!);
+    if (!module) {
+      throw new AppError(404, "Module not found");
+    }
+    if (lesson.video_key) {
+      await deleteFileFromStorage(lesson.video_key);
+    }
+    await this.lessonRepo.findByAndDelete(lesson_id);
   }
 }
 

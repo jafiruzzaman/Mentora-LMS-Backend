@@ -97,6 +97,13 @@ class LessonController {
     });
   });
   deleteLesson = asyncHandler(async (req: Request, res: Response) => {
+    const parsedParams = lessonParamsValidationSchema.safeParse(req.params);
+    if (!parsedParams.success) {
+      const message =
+        parsedParams.error.issues[0]?.message || "lesson validation error";
+      throw new AppError(400, message);
+    }
+    await this.service.deleteLesson(parsedParams.data.lesson_id);
     apiResponse({
       res,
       statusCode: 204,
