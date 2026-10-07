@@ -134,12 +134,12 @@ class LessonService {
 
     let video_key = lesson.video_key;
     const { video } = data;
-    if (data) {
+    if (video) {
       const extension = video?.originalname.split(".").pop();
       const key = `lessons/video/${crypto.randomUUID()}.${extension}`;
       const uploadedVideo = await uploadFileToStorage({
-        buffer: video?.buffer!,
-        content_type: video?.mimetype!,
+        buffer: video.buffer,
+        content_type: video.mimetype,
         key,
       });
       video_key = uploadedVideo.key;
