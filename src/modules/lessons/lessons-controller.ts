@@ -45,10 +45,12 @@ class LessonController {
     });
   });
   getLessons = asyncHandler(async (req: Request, res: Response) => {
+    const response = await this.service.getAllLessons();
     apiResponse({
       res,
       statusCode: 200,
       message: "fetch lessons successfully",
+      data: response,
     });
   });
   getLesson = asyncHandler(async (req: Request, res: Response) => {
@@ -59,7 +61,7 @@ class LessonController {
       throw new AppError(400, message);
     }
     const response = await this.service.getLesson(parsedParams.data.lesson_id);
-    
+
     apiResponse({
       res,
       statusCode: 200,
