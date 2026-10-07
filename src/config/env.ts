@@ -142,12 +142,19 @@ const envSchema = z.object({
   // File Upload
   // ============================================================
 
+  // ============================================================
+  // File Upload
+  // ============================================================
+  AWS_ENDPOINT_URL_S3: z.url().min(8).describe("aws endpoint is required"),
+  AWS_ACCESS_KEY_ID: z.string().min(32).describe("aws access key id"),
+  AWS_SECRET_ACCESS_KEY: z.string().min(32).describe("aws access key IS"),
+  AWS_REGION: z.string().min(4).describe("aws region is required"),
   MAX_FILE_SIZE: z.coerce
     .number()
     .int()
     .positive()
     .default(10 * 1024 * 1024),
-
+  BUCKET_NAME: z.string().min(4),
   // ============================================================
   // Logging
   // ============================================================
