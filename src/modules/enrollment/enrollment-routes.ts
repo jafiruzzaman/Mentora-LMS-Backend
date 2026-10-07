@@ -8,16 +8,42 @@
 
 import { Router } from "express";
 import { EnrollmentController } from "./enrollment-controller";
+import { EnrollmentService } from "./enrollment-service";
+import { EnrollmentRepository } from "./enrollment-repository";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
+import { Roles } from "@/constants";
 
 const router = Router();
+const enrollmentRepository = new EnrollmentRepository();
+const enrollmentService = new EnrollmentService(enrollmentRepository);
+const enrollmentController = new EnrollmentController(enrollmentService);
 
-const enrollmentController = new EnrollmentController();
+router.post(
+  "/:course_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  enrollmentController.enroll
+);
+router.get(
+  "/",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  enrollmentController.getAllEnrollments
+);
 
-router.post("/", enrollmentController.enroll);
-router.get("/", enrollmentController.getAllEnrollments);
+router.get(
+  "/course/:course_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  enrollmentController.getEnrolledCourse
+);
 
-router.get("/course/:course_id", enrollmentController.getEnrolledCourse);
-
-router.get("/:enrollment_id", enrollmentController.getEnrollment);
+router.get(
+  "/:enrollment_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  enrollmentController.getEnrollment
+);
 
 export { router as enrollmentRoutes };

@@ -30,7 +30,7 @@ class EnrollmentRepository {
     student_id: string;
     course_id: string;
   }) {
-    return await db
+    const [enrollment] = await db
       .select()
       .from(enrollments)
       .where(
@@ -38,7 +38,9 @@ class EnrollmentRepository {
           eq(enrollments.student_id, student_id),
           eq(enrollments.course_id, course_id)
         )
-      );
+      )
+      .limit(1);
+    return enrollment;
   }
   async findByStudentId(student_id: string) {
     return await db
