@@ -5,7 +5,7 @@
  * @license Apache-2.0
  * @date 5th October 2026
  */
-import { courseRepository } from "@/modules/course/course-repository.ts";
+import { CourseRepository } from "@/modules/course/course-repository.ts";
 import { AppError } from "@/shared/lib/app-error.lib.ts";
 import type { ModuleRepository } from "@/modules/modules/modules-repository.ts";
 
@@ -27,7 +27,10 @@ type updateModuleInput = {
 };
 
 class ModuleService {
-  constructor(private readonly moduleRepository: ModuleRepository) {}
+  constructor(
+    private readonly moduleRepository: ModuleRepository,
+    private readonly courseRepository: CourseRepository
+  ) {}
   async createModule({
     course_id,
     instructor_id,
@@ -36,7 +39,7 @@ class ModuleService {
     description,
   }: createModuleInput) {
     //   check if course is exist or not
-    const course = await courseRepository.findById(course_id);
+    const course = await this.courseRepository.findById(course_id);
     if (!course) {
       throw new AppError(404, "Course Not Found");
     }
@@ -68,7 +71,7 @@ class ModuleService {
     });
   }
   async getAllModules({ course_id }: { course_id: string }) {
-    const course = await courseRepository.findById(course_id);
+    const course = await this.courseRepository.findById(course_id);
     if (!course) {
       throw new AppError(404, "Course Not Found");
     }
@@ -85,7 +88,7 @@ class ModuleService {
       throw new AppError(404, "module not found");
     }
     // check if course exist or not
-    const course = await courseRepository.findById(module.course_id);
+    const course = await this.courseRepository.findById(module.course_id);
 
     if (course?.status !== "PUBLISHED") {
       throw new AppError(404, "Module not found");
@@ -100,7 +103,7 @@ class ModuleService {
       throw new AppError(404, "Module not found");
     }
     // check if course exist or not
-    const course = await courseRepository.findById(module.course_id);
+    const course = await this.courseRepository.findById(module.course_id);
     if (!course) {
       throw new AppError(404, "Associated course not found");
     }
@@ -126,7 +129,7 @@ class ModuleService {
       throw new AppError(404, "Module not found");
     }
     // check if course exist or not
-    const course = await courseRepository.findById(module.course_id);
+    const course = await this.courseRepository.findById(module.course_id);
     if (!course) {
       throw new AppError(404, "Associated course not found");
     }

@@ -1,13 +1,14 @@
 /**
  * @file auth-controller.ts
- * @description auth controller
+ * @description Auth controller
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
  * @date 3rd October
  */
 
-import { apiResponse } from "@/shared/lib/api-response";
-import { asyncHandler } from "@/shared/lib/async-handler";
+import type { Request, Response } from "express";
+
+import { env } from "@/config/env";
 import {
   changePasswordSchema,
   emailSchema,
@@ -16,185 +17,232 @@ import {
   singInSchema,
   verifyEmailSchema,
 } from "@/modules/auth/auth-validation";
-import type { Request, Response } from "express";
-import { authService } from "./auth-service";
-import { env } from "@/config/env";
+import { apiResponse } from "@/shared/lib/api-response";
+import { asyncHandler } from "@/shared/lib/async-handler";
+import { AppError } from "@/shared/lib/app-error.lib";
 
-const signUp = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = signUpSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  const { updatedUser, access_token, refresh_token } = await authService.signUp(
-    parsedData.data
-  );
-  res.cookie("token", refresh_token, {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    secure: env.NODE_ENV === "production",
-  });
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `sign-up successfully.`,
-    data: { updatedUser, access_token },
-  });
-});
-const signIn = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = singInSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  const { user, access_token, refresh_token } = await authService.signIn(
-    parsedData.data
-  );
-  res.cookie("token", refresh_token, {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    secure: env.NODE_ENV === "production",
-  });
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `sign-in successfully.`,
-    data: { user, access_token },
-  });
-});
-const signOut = asyncHandler(async (req: Request, res: Response) => {
-  const user = req.user;
-  await authService.signOut(user);
-  res.clearCookie("token");
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `sign-out successfully.`,
-  });
-});
-const refresh = asyncHandler(async (req: Request, res: Response) => {
-  const token = req.cookies["token"];
-  console.log(`token `, token);
+import { AuthService } from "./auth-service";
 
-  const { user, access_token, refresh_token } =
-    await authService.refresh(token);
-  res.cookie("token", refresh_token, {
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    secure: env.NODE_ENV === "production",
-    sameSite: "lax",
-    httpOnly: true,
-  });
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `token refreshed successfully.`,
-    data: {
-      user,
-      access_token,
-    },
-  });
-});
-const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = emailSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  await authService.forgotPassword(parsedData.data.email);
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `We send a password reset email to your email.`,
-  });
-});
+export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+  signUp = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = signUpSchema.safeParse(req.body);
 
-const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = resetPasswordSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  await authService.resetPassword(parsedData.data);
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `password reset successfully.`,
-  });
-});
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
 
-const changePassword = asyncHandler(async (req: Request, res: Response) => {
-  const email = req.user.email;
-  const parsedData = changePasswordSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  const response = await authService.changePassword({
-    email,
-    password: parsedData.data.newPassword,
-  });
+      throw new AppError(400, message ?? "Invalid sign-up data.");
+    }
 
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `password changed successfully.`,
-    data: {
-      response,
-    },
-  });
-});
+    const { updatedUser, access_token, refresh_token } =
+      await this.authService.signUp(parsedData.data);
 
-const sendVerificationEmail = asyncHandler(
-  async (req: Request, res: Response) => {
-    const userEmail = req.user.email;
-    await authService.sendVerificationEmail(userEmail);
+    res.cookie("token", refresh_token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: env.NODE_ENV === "production",
+    });
+
     apiResponse({
       res,
       statusCode: 200,
-      message: `We send a verification email to your email.`,
+      message: "Sign-up successfully.",
+      data: {
+        updatedUser,
+        access_token,
+      },
     });
-  }
-);
-const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = verifyEmailSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  const response = await authService.verifyEmail(parsedData.data.token);
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `email verified successfully.`,
-    data: { response },
   });
-});
-const resendEmail = asyncHandler(async (req: Request, res: Response) => {
-  const parsedData = emailSchema.safeParse(req.body);
-  if (!parsedData.success) {
-    const message = parsedData.error.issues[0]?.message;
-    throw new Error(message);
-  }
-  await authService.resendEmail(parsedData.data.email);
-  apiResponse({
-    res,
-    statusCode: 200,
-    message: `We send a verification email to your email.`,
-    data: {},
-  });
-});
 
-export const authController = {
-  signUp,
-  signIn,
-  signOut,
-  refresh,
-  forgotPassword,
-  resetPassword,
-  changePassword,
-  sendVerificationEmail,
-  verifyEmail,
-  resendEmail,
-};
+  signIn = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = singInSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid sign-in data.");
+    }
+
+    const { user, access_token, refresh_token } = await this.authService.signIn(
+      parsedData.data
+    );
+
+    res.cookie("token", refresh_token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: env.NODE_ENV === "production",
+    });
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Sign-in successfully.",
+      data: {
+        user,
+        access_token,
+      },
+    });
+  });
+
+  signOut = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+
+    await this.authService.signOut(user);
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: env.NODE_ENV === "production",
+    });
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Sign-out successfully.",
+    });
+  });
+
+  refresh = asyncHandler(async (req: Request, res: Response) => {
+    const refreshToken = req.cookies["token"];
+
+    if (!refreshToken) {
+      throw new AppError(401, "Refresh token is required.");
+    }
+
+    const { user, access_token, refresh_token } =
+      await this.authService.refresh(refreshToken);
+
+    res.cookie("token", refresh_token, {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: env.NODE_ENV === "production",
+    });
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Token refreshed successfully.",
+      data: {
+        user,
+        access_token,
+      },
+    });
+  });
+
+  forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = emailSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid email.");
+    }
+
+    await this.authService.forgotPassword(parsedData.data.email);
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "We sent a password reset email to your email.",
+    });
+  });
+
+  resetPassword = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = resetPasswordSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid password reset data.");
+    }
+
+    await this.authService.resetPassword(parsedData.data);
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Password reset successfully.",
+    });
+  });
+
+  changePassword = asyncHandler(async (req: Request, res: Response) => {
+    const email = req.user.email;
+
+    const parsedData = changePasswordSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid password data.");
+    }
+
+    const response = await this.authService.changePassword({
+      email,
+      password: parsedData.data.newPassword,
+    });
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Password changed successfully.",
+      data: {
+        response,
+      },
+    });
+  });
+
+  sendVerificationEmail = asyncHandler(async (req: Request, res: Response) => {
+    const userEmail = req.user.email;
+
+    await this.authService.sendVerificationEmail(userEmail);
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "We sent a verification email to your email.",
+    });
+  });
+
+  verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = verifyEmailSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid verification token.");
+    }
+
+    const response = await this.authService.verifyEmail(parsedData.data.token);
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "Email verified successfully.",
+      data: {
+        response,
+      },
+    });
+  });
+
+  resendEmail = asyncHandler(async (req: Request, res: Response) => {
+    const parsedData = emailSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid email.");
+    }
+
+    await this.authService.resendEmail(parsedData.data.email);
+
+    apiResponse({
+      res,
+      statusCode: 200,
+      message: "We sent a verification email to your email.",
+      data: {},
+    });
+  });
+}

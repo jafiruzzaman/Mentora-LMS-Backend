@@ -13,11 +13,13 @@ import { ModuleRepository } from "@/modules/modules/modules-repository.ts";
 import { authMiddleware } from "@/shared/middlewares/auth.middleware.ts";
 import { roleMiddlewares } from "@/shared/middlewares/role.middleware.ts";
 import { Roles } from "@/constants";
+import { CourseRepository } from "@/modules/course/course-repository";
 
 const router = Router();
 
 const moduleRepository = new ModuleRepository();
-const moduleService = new ModuleService(moduleRepository);
+const courseRepository = new CourseRepository();
+const moduleService = new ModuleService(moduleRepository, courseRepository);
 const moduleController = new CourseModuleController(moduleService);
 
 router.post(

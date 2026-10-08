@@ -9,11 +9,16 @@ import { Roles } from "./../../constants/index";
 
 import { Router } from "express";
 
-import { categoryController } from "./category-controller";
+import { CategoryController } from "./category-controller";
 import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
+import { CategoryRepository } from "./category-repository";
+import { CategoryService } from "./category-service";
 
 const router = Router();
+const categoryRepo = new CategoryRepository();
+const categoryService = new CategoryService(categoryRepo);
+const categoryController = new CategoryController(categoryService);
 
 router.post(
   "/",
