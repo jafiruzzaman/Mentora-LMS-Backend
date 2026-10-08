@@ -13,10 +13,18 @@ import { EnrollmentRepository } from "./enrollment-repository";
 import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
 import { Roles } from "@/constants";
+import { UserRepository } from "../user/user.repository";
+import { CourseRepository } from "../course/course-repository";
 
 const router = Router();
 const enrollmentRepository = new EnrollmentRepository();
-const enrollmentService = new EnrollmentService(enrollmentRepository);
+const userRepository = new UserRepository();
+const courseRepository = new CourseRepository();
+const enrollmentService = new EnrollmentService(
+  enrollmentRepository,
+  userRepository,
+  courseRepository
+);
 const enrollmentController = new EnrollmentController(enrollmentService);
 // course_id
 router.post(
