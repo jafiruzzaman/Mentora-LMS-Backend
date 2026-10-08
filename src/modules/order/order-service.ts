@@ -6,6 +6,7 @@
  * @date 8th October
  */
 
+import { AppError } from "@/shared/lib/app-error.lib";
 import type { CourseRepository } from "../course/course-repository";
 import { OrderRepository } from "./order-repository";
 
@@ -17,7 +18,7 @@ type OrderInput = {
 class OrderService {
   constructor(
     private readonly orderRepo: OrderRepository,
-    private readonly courseRepo: CourseRepository,
+    private readonly courseRepo: CourseRepository
   ) {}
   async createOrder({ student_id, course_id }: OrderInput) {
     // remove unique courses
@@ -64,6 +65,13 @@ class OrderService {
   async getAllOrder(student_id: string) {
     const orders = await this.orderRepo.findAll(student_id);
     return orders;
+  }
+  async getOrder(order_id: string) {
+    const order = await this.orderRepo.findById(order_id);
+    if (!order) {
+      throw new AppError(404, "Order not found");
+    }
+    return order;
   }
 }
 
