@@ -1,69 +1,110 @@
 /**
  * @file category-service.ts
- * @description category validation
+ * @description category business logic
  * @author Mohammad-Jafiruzzaman
  * @license Apache-2.0
- * @date 4th October
+ * @date 4th October 2026
  */
 
 import slugify from "slugify";
-import { categoryRepository } from "./category-repository";
+
 import { AppError } from "@/shared/lib/app-error.lib";
+import { CategoryRepository } from "./category-repository";
 
-const createCategory = async (name: string) => {
-  const normalizedName = name.replace(/\s+/g, " ");
-  const existingCategory = await categoryRepository.findByName(normalizedName);
-  if (existingCategory) {
-    throw new AppError(409, "Category already exists.");
+export class CategoryService {
+  constructor(private readonly categoryRepo:CategoryRepository) {}
+
+  async createCategory(name: string) {
+    // Normalize category name
+    const normalizedName = name.replace(/\s+/g, " ").trim();
+
+    // Check duplicate category name
+    const existingCategory = await this.categoryRepo.findByName(normalizedName);
+
+    if (existingCategory) {
+      throw new AppError(409, "Category already exists.");
+    }
+
+    // Generate slug
+    const slug = slugify(normalizedName, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+
+    // Check duplicate slug
+    const existingSlug = await this.categoryRepo.findBySlug(slug);
+
+    if (existingSlug) {
+      throw new AppError(409, "Category slug already exists.");
+    }
+
+    return await this.categoryRepo.create({
+      name: normalizedName,
+      slug,
+    });
   }
-  const slug = slugify(normalizedName).toLocaleLowerCase().trim();
 
-  const existingSlug = await categoryRepository.findBySlug(slug);
-
-  if (existingSlug) {
-    throw new AppError(409, "Category slug already exists.");
+  async getAllCategories() {
+    return await this.categoryRepo.findAll();
   }
-  return categoryRepository.create({
-    name,
-    slug,
-  });
-};
 
-const getAllCategories = async () => {
-  return await categoryRepository.findAll();
-};
-const getCategory = async (id: string) => {
-  const category = await categoryRepository.findById(id);
-  if (!category) {
-    throw new AppError(404, "category not found");
+  async getCategory(id: string) {
+    const category = await this.categoryRepo.findById(id);
+
+    if (!category) {
+      throw new AppError(404, "Category not found.");
+    }
+
+    return category;
   }
-  return category;
-};
 
-const updateCategory = async (id: string, name: string) => {
-  const category = await categoryRepository.findById(id);
-  if (!category) {
-    throw new AppError(404, "category not found");
+  async updateCategory(id: string, name: string) {
+    // Check category exists
+    const category = await this.categoryRepo.findById(id);
+
+    if (!category) {
+      throw new AppError(404, "Category not found.");
+    }
+
+    // Normalize name
+    const normalizedName = name.replace(/\s+/g, " ").trim();
+
+    // Check duplicate name
+    const existingCategory = await this.categoryRepo.findByName(normalizedName);
+
+    if (existingCategory && existingCategory.id !== id) {
+      throw new AppError(409, "Category already exists.");
+    }
+
+    // Generate slug
+    const slug = slugify(normalizedName, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+
+    // Check duplicate slug
+    const existingSlug = await this.categoryRepo.findBySlug(slug);
+
+    if (existingSlug && existingSlug.id !== id) {
+      throw new AppError(409, "Category slug already exists.");
+    }
+
+    return await this.categoryRepo.update(id, {
+      name: normalizedName,
+      slug,
+    });
   }
-  const slug = slugify(name).trim().toLocaleLowerCase();
-  return categoryRepository.findByIdAndUpdate(id, {
-    name,
-    slug,
-  });
-};
 
-const deleteCategory = async (id: string) => {
-  const category = await categoryRepository.findById(id);
-  if (!category) {
-    throw new AppError(404, "category not found");
+  async deleteCategory(id: string) {
+    // Check category exists
+    const category = await this.categoryRepo.findById(id);
+
+    if (!category) {
+      throw new AppError(404, "Category not found.");
+    }
+
+    await this.categoryRepo.delete(id);
   }
-  await categoryRepository.findByIdAndDelete(id);
-};
-
-export const categoryService = {
-  createCategory,
-  getAllCategories,
-  getCategory,
-  updateCategory,
-  deleteCategory,
-};
+}
