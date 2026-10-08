@@ -1,27 +1,43 @@
 /**
  * @file sub-category-routes.ts
- * @description sub-category api routes
+ * @description Sub-category API routes
  * @author Mohammad-Jafiruzzaman
+ * @license Apache-2.0
  * @date 5th October 2026
  */
 
 import { Router } from "express";
 
-import { subCategoryController } from "./sub-category-controller";
+import { Roles } from "@/constants";
 import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
-import { Roles } from "@/constants";
+
+import { CategoryRepository } from "@/modules/category/category-repository";
+import { SubCategoryRepository } from "./sub-category-repository";
+import { SubCategoryService } from "./sub-category-service";
+import { SubCategoryController } from "./sub-category-controller";
 
 const router = Router();
 
+const categoryRepository = new CategoryRepository();
+
+const subCategoryRepository = new SubCategoryRepository();
+
+const subCategoryService = new SubCategoryService(
+  subCategoryRepository,
+  categoryRepository
+);
+
+const subCategoryController = new SubCategoryController(subCategoryService);
+
 router.post(
-  "/category/:categoryId/",
+  "/category/:categoryId",
   authMiddleware,
   roleMiddlewares([Roles.admin]),
   subCategoryController.createSubCategory
 );
 
-router.get("/category/:categoryId/", subCategoryController.getSubCategories);
+router.get("/category/:categoryId", subCategoryController.getSubCategories);
 
 router.get("/:id", subCategoryController.getSubCategory);
 
