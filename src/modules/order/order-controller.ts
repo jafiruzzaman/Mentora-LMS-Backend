@@ -36,10 +36,13 @@ class OrderController {
     });
   });
   getAllOrders = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+    const response = await this.orderService.getAllOrder(student_id);
     apiResponse({
       res,
       statusCode: 200,
       message: "fetched all orders successfully",
+      data: response,
     });
   });
   getOrder = asyncHandler(async (req: Request, res: Response) => {

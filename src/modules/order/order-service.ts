@@ -17,7 +17,7 @@ type OrderInput = {
 class OrderService {
   constructor(
     private readonly orderRepo: OrderRepository,
-    private readonly courseRepo: CourseRepository
+    private readonly courseRepo: CourseRepository,
   ) {}
   async createOrder({ student_id, course_id }: OrderInput) {
     // remove unique courses
@@ -60,6 +60,10 @@ class OrderService {
       order_items
     );
     return { order };
+  }
+  async getAllOrder(student_id: string) {
+    const orders = await this.orderRepo.findAll(student_id);
+    return orders;
   }
 }
 
