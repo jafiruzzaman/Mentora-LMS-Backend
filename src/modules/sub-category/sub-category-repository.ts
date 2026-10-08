@@ -11,78 +11,73 @@ import { eq } from "drizzle-orm";
 import { db } from "@/config/db";
 import { subCategories } from "@/database/schema/sub-category-schema";
 
-const create = async (data: typeof subCategories.$inferInsert) => {
-  const [subCategory] = await db
-    .insert(subCategories)
-    .values({ ...data })
-    .returning();
-  return subCategory;
-};
+export class SubCategoryRepository {
+  async create(data: typeof subCategories.$inferInsert) {
+    const [subCategory] = await db
+      .insert(subCategories)
+      .values(data)
+      .returning();
 
-const findById = async (id: string) => {
-  const [subCategory] = await db
-    .select()
-    .from(subCategories)
-    .where(eq(subCategories.id, id))
-    .limit(1);
-  return subCategory;
-};
+    return subCategory;
+  }
 
-const findAll = async () => {
-  return await db.select().from(subCategories);
-};
+  async findById(id: string) {
+    const [subCategory] = await db
+      .select()
+      .from(subCategories)
+      .where(eq(subCategories.id, id))
+      .limit(1);
 
-const findByCategory = async (categoryId: string) => {
-  return await db
-    .select()
-    .from(subCategories)
-    .where(eq(subCategories.category_id, categoryId));
-};
+    return subCategory;
+  }
 
-const findByName = async (name: string) => {
-  const [category] = await db
-    .select()
-    .from(subCategories)
-    .where(eq(subCategories.name, name))
-    .limit(1);
-  return category;
-};
+  async findAll() {
+    return await db.select().from(subCategories);
+  }
 
-const findBySlug = async (slug: string) => {
-  const [category] = await db
-    .select()
-    .from(subCategories)
-    .where(eq(subCategories.slug, slug))
-    .limit(1);
-  return category;
-};
-const findByIdAndUpdate = async (
-  id: string,
-  data: Partial<typeof subCategories.$inferInsert>
-) => {
-  const [category] = await db
-    .update(subCategories)
-    .set(data)
-    .where(eq(subCategories.id, id))
-    .returning();
-  return category;
-};
+  async findByCategory(categoryId: string) {
+    return await db
+      .select()
+      .from(subCategories)
+      .where(eq(subCategories.category_id, categoryId));
+  }
 
-const findByIdAndDelete = async (id: string) => {
-  const [category] = await db
-    .delete(subCategories)
-    .where(eq(subCategories.id, id))
-    .returning();
-  return category;
-};
+  async findByName(name: string) {
+    const [subCategory] = await db
+      .select()
+      .from(subCategories)
+      .where(eq(subCategories.name, name))
+      .limit(1);
 
-export const subCategoryRepository = {
-  create,
-  findAll,
-  findByName,
-  findByCategory,
-  findById,
-  findBySlug,
-  findByIdAndUpdate,
-  findByIdAndDelete,
-};
+    return subCategory;
+  }
+
+  async findBySlug(slug: string) {
+    const [subCategory] = await db
+      .select()
+      .from(subCategories)
+      .where(eq(subCategories.slug, slug))
+      .limit(1);
+
+    return subCategory;
+  }
+
+  async update(id: string, data: Partial<typeof subCategories.$inferInsert>) {
+    const [subCategory] = await db
+      .update(subCategories)
+      .set(data)
+      .where(eq(subCategories.id, id))
+      .returning();
+
+    return subCategory;
+  }
+
+  async delete(id: string) {
+    const [subCategory] = await db
+      .delete(subCategories)
+      .where(eq(subCategories.id, id))
+      .returning();
+
+    return subCategory;
+  }
+}

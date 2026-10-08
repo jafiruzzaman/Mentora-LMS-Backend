@@ -1,87 +1,138 @@
 /**
  * @file sub-category-service.ts
- * @description sub-category service
+ * @description Sub-category service
  * @author Mohammad-Jafiruzzaman
+ * @license Apache-2.0
  * @date 5th October 2026
  */
 
 import slugify from "slugify";
 
+import { CategoryRepository } from "@/modules/category/category-repository";
 import { AppError } from "@/shared/lib/app-error.lib";
-import { subCategoryRepository } from "./sub-category-repository";
-import { categoryRepository } from "@/modules/category/category-repository";
 
-const createSubCategory = async (categoryId: string, name: string) => {
-  // first check category exist or not
-  const category = await categoryRepository.findById(categoryId);
-  if (!category) {
-    throw new AppError(404, "category not found");
-  }
-  const existingSubCategoryName = await subCategoryRepository.findByName(name);
-  if (existingSubCategoryName) {
-    throw new AppError(409, "sub-category already exist");
-  }
-  const slug = slugify(name).trim().toLocaleLowerCase();
-  const existingSubCategorySlug = await subCategoryRepository.findBySlug(slug);
-  if (existingSubCategorySlug) {
-    throw new AppError(409, "sub-category already exist");
-  }
-  const response = await subCategoryRepository.create({
-    category_id: categoryId,
-    name,
-    slug,
-  });
-  return response;
-};
-const getSubCategories = async (categoryId: string) => {
-  // first check category exist or not
-  const category = await categoryRepository.findById(categoryId);
-  if (!category) {
-    throw new AppError(404, "category not found");
-  }
-  return await subCategoryRepository.findByCategory(categoryId);
-};
+import { SubCategoryRepository } from "./sub-category-repository";
 
-const getSubCategory = async (id: string) => {
-  const subCategory = await subCategoryRepository.findById(id);
+export class SubCategoryService {
+  constructor(
+    private readonly subCategoryRepo: SubCategoryRepository,
+    private readonly categoryRepo: CategoryRepository
+  ) {}
 
-  if (!subCategory) {
-    throw new AppError(404, "Sub-category not found.");
+  async createSubCategory(categoryId: string, name: string) {
+    // Check category exists
+    const category = await this.categoryRepo.findById(categoryId);
+
+    if (!category) {
+      throw new AppError(404, "Category not found.");
+    }
+
+    // Normalize name
+    const normalizedName = name.replace(/\s+/g, " ").trim();
+
+    // Check duplicate name
+    const existingSubCategoryName =
+      await this.subCategoryRepo.findByName(normalizedName);
+
+    if (existingSubCategoryName) {
+      throw new AppError(409, "Sub-category already exists.");
+    }
+
+    // Generate slug
+    const slug = slugify(normalizedName, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+
+    // Check duplicate slug
+    const existingSubCategorySlug = await this.subCategoryRepo.findBySlug(slug);
+
+    if (existingSubCategorySlug) {
+      throw new AppError(409, "Sub-category already exists.");
+    }
+
+    return await this.subCategoryRepo.create({
+      category_id: categoryId,
+      name: normalizedName,
+      slug,
+    });
   }
 
-  return subCategory;
-};
+  async getSubCategories(categoryId: string) {
+    // Check category exists
+    const category = await this.categoryRepo.findById(categoryId);
 
-const updateSubCategory = async (id: string, name: string) => {
-  const subCategory = await subCategoryRepository.findById(id);
-  if (!subCategory) {
-    throw new AppError(404, "Sub-category not found.");
-  }
-  const normalizedName = name.replace(/\s+/g, " ").trim();
-  const slug = slugify(normalizedName).trim().toLocaleLowerCase();
-  const existingSubCategory = await subCategoryRepository.findBySlug(slug);
-  if (existingSubCategory) {
-    throw new AppError(409, "A sub-category with this name already exists.");
-  }
-  const response = await subCategoryRepository.findByIdAndUpdate(id, {
-    name: normalizedName,
-    slug,
-  });
-  return response;
-};
+    if (!category) {
+      throw new AppError(404, "Category not found.");
+    }
 
-const deleteSubCategory = async (id: string) => {
-  const subCategory = await subCategoryRepository.findById(id);
-  if (!subCategory) {
-    throw new AppError(404, "Sub-category not found.");
+    return await this.subCategoryRepo.findByCategory(categoryId);
   }
-  await subCategoryRepository.findByIdAndDelete(id);
-};
 
-export const subCategoryService = {
-  createSubCategory,
-  getSubCategories,
-  getSubCategory,
-  updateSubCategory,
-  deleteSubCategory,
-};
+  async getSubCategory(id: string) {
+    const subCategory = await this.subCategoryRepo.findById(id);
+
+    if (!subCategory) {
+      throw new AppError(404, "Sub-category not found.");
+    }
+
+    return subCategory;
+  }
+
+  async updateSubCategory(id: string, name: string) {
+    // Check sub-category exists
+    const subCategory = await this.subCategoryRepo.findById(id);
+
+    if (!subCategory) {
+      throw new AppError(404, "Sub-category not found.");
+    }
+
+    // Normalize name
+    const normalizedName = name.replace(/\s+/g, " ").trim();
+
+    // Check duplicate name
+    const existingSubCategoryName =
+      await this.subCategoryRepo.findByName(normalizedName);
+
+    if (
+      existingSubCategoryName &&
+      existingSubCategoryName.id !== subCategory.id
+    ) {
+      throw new AppError(409, "A sub-category with this name already exists.");
+    }
+
+    // Generate slug
+    const slug = slugify(normalizedName, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+
+    // Check duplicate slug
+    const existingSubCategorySlug = await this.subCategoryRepo.findBySlug(slug);
+
+    if (
+      existingSubCategorySlug &&
+      existingSubCategorySlug.id !== subCategory.id
+    ) {
+      throw new AppError(409, "A sub-category with this slug already exists.");
+    }
+
+    return await this.subCategoryRepo.update(id, {
+      name: normalizedName,
+      slug,
+    });
+  }
+
+  async deleteSubCategory(id: string) {
+    // Check sub-category exists
+    const subCategory = await this.subCategoryRepo.findById(id);
+
+    if (!subCategory) {
+      throw new AppError(404, "Sub-category not found.");
+    }
+
+    return await this.subCategoryRepo.delete(id);
+  }
+}
