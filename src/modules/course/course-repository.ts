@@ -140,4 +140,3 @@ export class CourseRepository {
     return course;
   }
 }
-

@@ -54,7 +54,9 @@ export class CourseController {
       throw new AppError(400, message ?? "Invalid course filters.");
     }
 
-    const response = await this.courseService.getAllCourses(validatedQuery.data);
+    const response = await this.courseService.getAllCourses(
+      validatedQuery.data
+    );
 
     apiResponse({
       res,
@@ -142,4 +144,3 @@ export class CourseController {
     });
   }
 }
-
