@@ -16,4 +16,8 @@ const orderValidationSchema = z.object({
   ),
 });
 
-export { orderValidationSchema };
+const orderParamsSchema = z.object({
+  order_id: z.uuid().min(4).describe("order id is required"),
+});
+
+export { orderValidationSchema, orderParamsSchema };
