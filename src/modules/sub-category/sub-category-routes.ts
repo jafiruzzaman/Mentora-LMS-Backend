@@ -41,7 +41,6 @@ router.get("/category/:categoryId", subCategoryController.getSubCategories);
 
 router.get("/:id", subCategoryController.getSubCategory);
 
-
 router.patch(
   "/:id",
   authMiddleware,

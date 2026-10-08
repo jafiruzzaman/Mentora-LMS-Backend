@@ -12,7 +12,7 @@ import { AppError } from "@/shared/lib/app-error.lib";
 import { CategoryRepository } from "./category-repository";
 
 export class CategoryService {
-  constructor(private readonly categoryRepo:CategoryRepository) {}
+  constructor(private readonly categoryRepo: CategoryRepository) {}
 
   async createCategory(name: string) {
     // Normalize category name
