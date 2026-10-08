@@ -49,10 +49,24 @@ class OrderRepository {
     return { order, items };
   }
   async findAll(student_id: string) {
-    return await db
+    const studentOrders = await db
       .select()
       .from(orders)
       .where(eq(orders.student_id, student_id));
+
+    const result = await Promise.all(
+      studentOrders.map(async (order) => {
+        const items = await db
+          .select()
+          .from(orderItems)
+          .where(eq(orderItems.order_id, order.id));
+        return {
+          items,
+          order,
+        };
+      })
+    );
+    return result;
   }
 }
 
