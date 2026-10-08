@@ -14,7 +14,7 @@ import { eq } from "drizzle-orm";
 class OrderRepository {
   async createOrderWithItems(
     order_data: typeof orders.$inferInsert,
-    items_data: Array<typeof orderItems.$inferInsert>
+    items_data: Array<Omit<typeof orderItems.$inferInsert, "order_id">>
   ) {
     return await db.transaction(async (tx) => {
       const [order] = await tx.insert(orders).values(order_data).returning();
