@@ -7,7 +7,7 @@
  */
 
 import { Router } from "express";
-import { authController } from "./auth-controller";
+import { AuthController } from "./auth-controller";
 import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 import {
   forgotPasswordRateLimiter,
@@ -16,8 +16,13 @@ import {
   signInRateLimiter,
   signUpRateLimiter,
 } from "@/shared/middlewares/rate-limiter.middleware";
+import { AuthService } from "./auth-service";
+import { UserRepository } from "../user/user.repository";
 
 const router = Router();
+const userRepository = new UserRepository();
+const authService = new AuthService(userRepository);
+const authController = new AuthController(authService);
 
 router.post("/sign-up", signUpRateLimiter, authController.signUp);
 router.post("/sign-in", signInRateLimiter, authController.signIn);
@@ -39,7 +44,7 @@ router.post(
   authMiddleware,
   authController.sendVerificationEmail
 );
-router.post("/verify-email", authMiddleware, authController.verifyEmail);
+router.post("/verify-email", authController.verifyEmail);
 router.post(
   "/resend-email",
   resendEmailRateLimiter,
