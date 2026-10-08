@@ -9,7 +9,7 @@
 import type { LessonRepository } from "./lessons-repository";
 import { AppError } from "@/shared/lib/app-error.lib";
 import type { ModuleRepository } from "@/modules/modules/modules-repository";
-import { courseRepository } from "@/modules/course/course-repository";
+import { CourseRepository } from "@/modules/course/course-repository";
 import {
   deleteFileFromStorage,
   getSignedUrlFromStorage,
@@ -31,7 +31,7 @@ type updateLessonInput = {
   duration?: number;
   video?: Express.Multer.File;
 };
-const courseRepo = courseRepository;
+const courseRepo = new CourseRepository();
 
 class LessonService {
   constructor(
@@ -51,7 +51,7 @@ class LessonService {
     if (!module) {
       throw new AppError(404, "Module not found");
     }
-    // check if course exist or not
+    // check if-course exist or not
     const course = await courseRepo.findById(module.course_id);
     if (!course) {
       throw new AppError(404, "Course not found");

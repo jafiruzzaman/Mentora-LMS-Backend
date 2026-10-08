@@ -8,15 +8,14 @@
 
 import { AppError } from "@/shared/lib/app-error.lib";
 import type { EnrollmentRepository } from "./enrollment-repository";
-import { userRepository } from "@/modules/user/user.repository";
-import { courseRepository } from "@/modules/course/course-repository";
+import type { UserRepository } from "@/modules/user/user.repository";
+import type { CourseRepository } from "@/modules/course/course-repository";
 // TODO: convert functional user repository to classed based
-const userRepo = userRepository;
-const courseRepo = courseRepository;
 class EnrollmentService {
   constructor(
-    private readonly enrollmentRepo: EnrollmentRepository
-    // private readonly userRepo: userRepository
+    private readonly enrollmentRepo: EnrollmentRepository,
+    private readonly userRepo: UserRepository,
+    private readonly courseRepo: CourseRepository
   ) {}
   async enroll({
     student_id,
@@ -26,12 +25,12 @@ class EnrollmentService {
     course_id: string;
   }) {
     // check if student exist or not
-    const student = await userRepo.findById(student_id);
+    const student = await this.userRepo.findById(student_id);
     if (!student) {
       throw new AppError(404, "Student not found");
     }
     // check if course is exist or not
-    const course = await courseRepo.findById(course_id);
+    const course = await this.courseRepo.findById(course_id);
     if (!course) {
       throw new AppError(404, "Course not found");
     }
@@ -93,7 +92,7 @@ class EnrollmentService {
       throw new AppError(404, "Not Enrolled");
     }
     // check course exist
-    const course = await courseRepo.findById(course_id);
+    const course = await this.courseRepo.findById(course_id);
     if (!course) {
       throw new AppError(404, "Course not found");
     }
