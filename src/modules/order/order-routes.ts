@@ -6,30 +6,15 @@
  * @date 8th October
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { OrderController } from "./order-controller";
 
 const router = Router();
 
-router.post("/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `order created successfully`,
-    data: {},
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `fetch all orders successfully`,
-    data: {},
-  });
-});
-router.get("/:order_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `fetch order successfully`,
-    data: {},
-  });
-});
+const orderController = new OrderController();
+
+router.post("/", orderController.createOrder);
+router.get("/", orderController.getAllOrders);
+router.get("/:order_id", orderController.getOrder);
 
 export { router as orderRoutes };
