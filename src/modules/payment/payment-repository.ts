@@ -11,7 +11,7 @@ import { payments, type NewPayment } from "@/database/schema/payment-schema";
 import { desc, eq } from "drizzle-orm";
 
 export class PaymentRepository {
-  async create(data: NewPayment) {
+  async createPayment(data: NewPayment) {
     const [payment] = await db.insert(payments).values(data).returning();
     return payment;
   }
@@ -30,6 +30,7 @@ export class PaymentRepository {
       .returning();
     return updated;
   }
+
   // find payment record by stripe session id
   async findPaymentBySessionId(sessionId: string) {
     return await db
