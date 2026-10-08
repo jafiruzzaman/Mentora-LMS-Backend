@@ -71,4 +71,4 @@ process.on("uncaughtException", (error) => {
   process.exit(1);
 });
 
-void bootStrap();
+await bootStrap();

@@ -21,7 +21,8 @@ import { CourseService } from "./course-service";
 
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
-  async createCourse(req: Request, res: Response) {
+
+  createCourse = async (req: Request, res: Response) => {
     const instructor = req.user;
 
     const parsedData = createCourseSchema.safeParse(req.body);
@@ -43,9 +44,9 @@ export class CourseController {
       message: "Course created successfully.",
       data: response,
     });
-  }
+  };
 
-  async getAllCourses(req: Request, res: Response) {
+  getAllCourses = async (req: Request, res: Response) => {
     const validatedQuery = courseFilterSchema.safeParse(req.query);
 
     if (!validatedQuery.success) {
@@ -64,9 +65,9 @@ export class CourseController {
       message: "Courses fetched successfully.",
       data: response,
     });
-  }
+  };
 
-  async getCourse(req: Request, res: Response) {
+  getCourse = async (req: Request, res: Response) => {
     const validatedParam = courseParamsSchema.safeParse(req.params);
 
     if (!validatedParam.success) {
@@ -85,9 +86,9 @@ export class CourseController {
       message: "Course details fetched successfully.",
       data: response,
     });
-  }
+  };
 
-  async updateCourse(req: Request, res: Response) {
+  updateCourse = async (req: Request, res: Response) => {
     const validatedParam = courseParamsSchema.safeParse(req.params);
 
     if (!validatedParam.success) {
@@ -118,9 +119,9 @@ export class CourseController {
       message: "Course updated successfully.",
       data: response,
     });
-  }
+  };
 
-  async deleteCourse(req: Request, res: Response) {
+  deleteCourse = async (req: Request, res: Response) => {
     const validatedParam = courseParamsSchema.safeParse(req.params);
 
     if (!validatedParam.success) {
@@ -130,6 +131,7 @@ export class CourseController {
     }
 
     const instructorId = req.user.id;
+
     const courseId = validatedParam.data.id;
 
     await this.courseService.deleteCourse({
@@ -142,5 +144,5 @@ export class CourseController {
       statusCode: 204,
       message: "Course deleted successfully.",
     });
-  }
+  };
 }

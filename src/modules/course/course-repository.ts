@@ -9,7 +9,7 @@
 import { db } from "@/config/db";
 import { courses } from "@/database/schema/course-schema";
 
-import { and, asc, desc, eq, gte, ilike, lte } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, lte } from "drizzle-orm";
 
 import type { courseFilter } from "./course-validation";
 
@@ -38,6 +38,10 @@ export class CourseRepository {
       .limit(1);
 
     return course;
+  }
+
+  async findByIds(ids: string[]) {
+    return await db.select().from(courses).where(inArray(courses.id, ids));
   }
 
   async findAll(filters: courseFilter) {

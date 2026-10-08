@@ -15,6 +15,7 @@ import { courseRoutes } from "@/modules/course/course-routes";
 import { moduleRoutes } from "@/modules/modules/modules-routes";
 import { lessonRoutes } from "@/modules/lessons/lessons-routes";
 import { enrollmentRoutes } from "@/modules/enrollment/enrollment-routes";
+import { orderRoutes } from "@/modules/order/order-routes";
 
 const router = Router();
 router.use("/api/v1/auth", authRoutes);
@@ -24,5 +25,6 @@ router.use("/api/v1/course", courseRoutes);
 router.use("/api/v1/modules", moduleRoutes);
 router.use("/api/v1/lessons", lessonRoutes);
 router.use("/api/v1/enrollment", enrollmentRoutes);
+router.use("/api/v1/orders", orderRoutes);
 
 export { router as rootRoutes };
