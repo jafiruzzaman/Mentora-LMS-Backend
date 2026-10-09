@@ -45,5 +45,21 @@ class WishlistService {
   async getAllFromWishlists(student_id: string) {
     return await this.wishlistRepo.findAll(student_id);
   }
+  async removeFromWishlist({
+    student_id,
+    course_id,
+  }: {
+    student_id: string;
+    course_id: string;
+  }) {
+    const wishlist = await this.wishlistRepo.findByStudentAndCourse({
+      student_id,
+      course_id,
+    });
+    if (!wishlist) {
+      throw new AppError(404, "wishlist not found");
+    }
+    await this.wishlistRepo.findByIdAndDelete({ student_id, course_id });
+  }
 }
 export { WishlistService };
