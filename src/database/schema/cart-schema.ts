@@ -10,18 +10,22 @@ import { pgTable, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 import { users } from "./user-schema";
 import { courses } from "./course-schema";
 
-const carts = pgTable("carts", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  student_id: uuid("student_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  created_at: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updated_at: timestamp("updated_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
+const carts = pgTable(
+  "carts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    student_id: uuid("student_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    created_at: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updated_at: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [unique("cart_student_unique").on(table.student_id)]
+);
 
 const cartItems = pgTable(
   "cart_items",
