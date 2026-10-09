@@ -6,30 +6,33 @@
  * @date 9th October 2026
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { WishlistController } from "./wishlist-controller";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
+import { Roles } from "@/constants";
 
 const router = Router();
 
-router.post("/:course_id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "add to wishlist",
-    data: {},
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "fetch all wishlist",
-    data: {},
-  });
-});
-router.delete("/:course_id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: "remove from wishlist",
-    data: {},
-  });
-});
+const wishlistController = new WishlistController();
+
+router.post(
+  "/:course_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  wishlistController.addToWishlist
+);
+router.get(
+  "/",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  wishlistController.getAllWishlists
+);
+router.delete(
+  "/:course_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  wishlistController.removeFromWishlist
+);
 
 export { router as wishlistRoutes };
