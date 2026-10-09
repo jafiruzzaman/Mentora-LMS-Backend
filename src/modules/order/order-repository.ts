@@ -10,7 +10,7 @@ import { db } from "@/config/db";
 import { orderItems, orders } from "@/database/schema/order-schema";
 import { AppError } from "@/shared/lib/app-error.lib";
 import { eq } from "drizzle-orm";
-
+type status = "PENDING" | "COMPLETED" | "FAILED";
 class OrderRepository {
   async createOrderWithItems(
     order_data: typeof orders.$inferInsert,
@@ -67,6 +67,22 @@ class OrderRepository {
       })
     );
     return result;
+  }
+  async updateOrderStatus(order_id: string, status: status) {
+    const [updated] = await db
+      .update(orders)
+      .set({
+        order_status: status,
+        updated_at: new Date(),
+      })
+      .where(eq(orders.id, order_id))
+      .returning();
+
+    if (!updated) {
+      throw new AppError(404, "Order not found");
+    }
+
+    return updated;
   }
 }
 
