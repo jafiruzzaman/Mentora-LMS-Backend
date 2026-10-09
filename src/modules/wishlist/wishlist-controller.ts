@@ -42,10 +42,20 @@ class WishlistController {
     });
   });
   removeFromWishlist = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+    const course_id = req.params["course_id"]?.toString();
+    if (!course_id) {
+      throw new AppError(400, "course id is required");
+    }
+    const response = await this.wishlistService.removeFromWishlist({
+      student_id,
+      course_id,
+    });
     apiResponse({
       res,
       statusCode: 204,
-      message: "from from wishlist",
+      message: "remove from wishlist",
+      data: response,
     });
   });
 }
