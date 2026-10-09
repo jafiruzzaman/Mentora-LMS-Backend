@@ -53,4 +53,7 @@ export class PaymentRepository {
       .where(eq(payments.student_id, userId))
       .orderBy(desc(payments.createdAt));
   }
+  async findById(id: string) {
+    return await db.select().from(payments).where(eq(payments.id, id));
+  }
 }
