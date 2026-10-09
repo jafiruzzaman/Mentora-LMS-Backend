@@ -7,6 +7,7 @@
  */
 
 import { db } from "@/config/db";
+import { courses } from "@/database/schema/course-schema";
 import { wishlists } from "@/database/schema/wishlist-schema";
 import { and, asc, eq } from "drizzle-orm";
 
@@ -17,8 +18,21 @@ class WishlistRepository {
   }
   async findAll(student_id: string) {
     return await db
-      .select()
+      .select({
+        id: wishlists.id,
+        // course info
+        course: {
+          id: courses.id,
+          title: courses.title,
+          thumbnail: courses.thumbnail,
+          price: courses.price,
+          level: courses.level,
+        },
+
+        created_at: wishlists.created_at,
+      })
       .from(wishlists)
+      .innerJoin(courses, eq(wishlists.course_id, courses.id))
       .where(eq(wishlists.student_id, student_id))
       .orderBy(asc(wishlists.created_at));
   }

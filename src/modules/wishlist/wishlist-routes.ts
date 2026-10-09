@@ -37,7 +37,7 @@ router.get(
   "/",
   authMiddleware,
   roleMiddlewares([Roles.student]),
-  wishlistController.getAllWishlists
+  wishlistController.getAllFromWishlists
 );
 router.delete(
   "/:course_id",

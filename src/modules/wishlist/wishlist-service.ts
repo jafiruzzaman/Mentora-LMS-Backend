@@ -17,7 +17,7 @@ class WishlistService {
     private readonly courseRepo: CourseRepository,
     private readonly userRepo: UserRepository
   ) {}
-  async create({
+  async addToWishlist({
     student_id,
     course_id,
   }: {
@@ -41,6 +41,9 @@ class WishlistService {
     }
     const response = await this.wishlistRepo.create({ course_id, student_id });
     return response;
+  }
+  async getAllFromWishlists(student_id: string) {
+    return await this.wishlistRepo.findAll(student_id);
   }
 }
 export { WishlistService };
