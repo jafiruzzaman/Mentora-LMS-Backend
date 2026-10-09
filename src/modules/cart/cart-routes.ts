@@ -6,34 +6,14 @@
  * @license Apache-2.0
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+import { CartController } from "./cart-controller";
 
 const router = Router();
-
-router.post("/:course_id", (req: Request, res: Response) => {
-  res.status(201).json({
-    success: true,
-    message: `added to cart successfully`,
-  });
-});
-router.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `retrieve cart successfully`,
-  });
-});
-
-router.delete("/:course_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `remove from cart successfully`,
-  });
-});
-router.delete("/clear", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: `cart clear successfully`,
-  });
-});
+const cartController = new CartController();
+router.post("/:course_id", cartController.addToCart);
+router.get("/", cartController.getAllCartItems);
+router.delete("/:course_id", cartController.removeFromCart);
+router.delete("/clear", cartController.clearCart);
 
 export { router as cartRoutes };
