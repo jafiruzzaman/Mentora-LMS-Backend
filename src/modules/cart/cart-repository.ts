@@ -8,6 +8,7 @@
 
 import { db } from "@/config/db";
 import { cartItems, carts } from "@/database/schema/cart-schema";
+import { courses } from "@/database/schema/course-schema";
 import { and, eq } from "drizzle-orm";
 
 class CartRepository {
@@ -58,7 +59,7 @@ class CartRepository {
       .limit(1);
     return item;
   }
-  async addItem(cart_id: string, course_id: string) {
+  async addItem(student_id: string, cart_id: string, course_id: string) {
     const [item] = await db
       .insert(cartItems)
       .values({
@@ -66,8 +67,25 @@ class CartRepository {
         course_id,
       })
       .returning();
-
-    return item;
+    if (!item) {
+      return undefined;
+    }
+    const [result] = await db
+      .select({
+        id: cartItems.id,
+        cart_id: carts.id,
+        cart_item_id: cartItems.id,
+        course: {
+          course_id: courses.id,
+          title: courses.title,
+          price: courses.price,
+        },
+      })
+      .from(carts)
+      .innerJoin(cartItems, eq(cartItems.cart_id, carts.id))
+      .innerJoin(courses, eq(courses.id, cartItems.course_id))
+      .where(eq(carts.student_id, student_id))
+    return result;
   }
   async removeItemByStudentAndCourse(student_id: string, course_id: string) {
     // check cart exist or not
