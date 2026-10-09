@@ -121,7 +121,7 @@ export class PaymentService {
   async getPaymentsByStudentId(student_id: string) {
     return await this.paymentRepo.findPaymentsByUserId(student_id);
   }
-  async  getPaymentById(payment_id: string) {
+  async getPaymentById(payment_id: string) {
     const payment = await this.paymentRepo.findById(payment_id);
     if (!payment) {
       throw new AppError(404, "Payment not found");
