@@ -20,7 +20,7 @@ class WishlistController {
     if (!course_id) {
       throw new AppError(400, "course id is required");
     }
-    const response = await this.wishlistService.create({
+    const response = await this.wishlistService.addToWishlist({
       student_id,
       course_id,
     });
@@ -31,11 +31,14 @@ class WishlistController {
       data: response,
     });
   });
-  getAllWishlists = asyncHandler(async (req: Request, res: Response) => {
+  getAllFromWishlists = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+    const response = await this.wishlistService.getAllFromWishlists(student_id);
     apiResponse({
       res,
-      statusCode: 201,
+      statusCode: 200,
       message: "added to wishlist",
+      data: response,
     });
   });
   removeFromWishlist = asyncHandler(async (req: Request, res: Response) => {
