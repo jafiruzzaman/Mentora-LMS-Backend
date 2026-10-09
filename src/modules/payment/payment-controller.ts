@@ -64,15 +64,17 @@ export class PaymentController {
         signature,
         env.STRIPE_WEBHOOK_SECRET
       );
-    } catch (err: any) {
-      throw new AppError(
-        400,
-        `Webhook Signature Verification Failed: ${err.message}`
-      );
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new AppError(
+          400,
+          `Webhook Signature Verification Failed: ${err.message}`
+        );
+      }
     }
 
     // Delegate event handling to service
-    await this.paymentService.handleWebhook(event);
+    await this.paymentService.handleWebhook(event!);
 
     // Stripe expects a clean 200 acknowledgment
     res.status(200).json({ received: true });
