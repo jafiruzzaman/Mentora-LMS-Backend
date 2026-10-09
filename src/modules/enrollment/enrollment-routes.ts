@@ -14,16 +14,28 @@ import { authMiddleware } from "@/shared/middlewares/auth.middleware";
 import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
 import { Roles } from "@/constants";
 import { UserRepository } from "../user/user.repository";
-import { CourseRepository } from "../course/course-repository";
+import { CourseRepository } from "@/modules/course/course-repository";
+import { OrderRepository } from "@/modules/order/order-repository";
+import { PaymentService } from "@/modules/payment/payment-service";
+import { PaymentRepository } from "../payment/payment-repository";
 
 const router = Router();
 const enrollmentRepository = new EnrollmentRepository();
 const userRepository = new UserRepository();
 const courseRepository = new CourseRepository();
+const orderRepository = new OrderRepository();
+const paymentRepository = new PaymentRepository();
+const paymentService = new PaymentService(
+  paymentRepository,
+  orderRepository,
+  enrollmentRepository
+);
 const enrollmentService = new EnrollmentService(
   enrollmentRepository,
   userRepository,
-  courseRepository
+  courseRepository,
+  orderRepository,
+  paymentService
 );
 const enrollmentController = new EnrollmentController(enrollmentService);
 // course_id
