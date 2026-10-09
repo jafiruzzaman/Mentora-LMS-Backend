@@ -16,7 +16,11 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./user-schema";
 import { courses } from "./course-schema";
-const orderStatusEnum = pgEnum("order_status", ["PENDING", "PAID", "FAILED"]);
+const orderStatusEnum = pgEnum("order_status", [
+  "PENDING",
+  "COMPLETED",
+  "FAILED",
+]);
 
 const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),

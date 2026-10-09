@@ -126,6 +126,14 @@ const envSchema = z.object({
 
   STRIPE_CURRENCY: z.string().length(3).default("usd"),
 
+  FRONTEND_SUCCESS_URL: z
+    .url()
+    .min(4)
+    .describe(`frontend success url is required.`),
+  FRONTEND_CANCEL_URL: z
+    .url()
+    .min(4)
+    .describe(`frontend cancel url is required.`),
   // ============================================================
   // Security
   // ============================================================
