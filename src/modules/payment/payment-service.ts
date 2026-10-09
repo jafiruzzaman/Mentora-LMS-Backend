@@ -38,7 +38,7 @@ export class PaymentService {
     if (order.order.order_status === "COMPLETED") {
       throw new AppError(400, "The Order has already completed");
     }
-    // convert order items into stipe line items
+    // convert order items into stripe line items
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
       order.items.map((item) => ({
         price_data: {
@@ -100,7 +100,7 @@ export class PaymentService {
       payment_status: "COMPLETED",
       stripe_payment_intent_id: session.payment_intent as string,
     });
-    // fetch order items and & update order status to paid
+    // fetch order items and & update order status to be paid
     const { items } = await this.orderRepo.findById(orderId);
     await this.orderRepo.updateOrderStatus(orderId, "COMPLETED");
     // create course enrollment for student
@@ -110,7 +110,7 @@ export class PaymentService {
         course_id: item.course_id,
       });
       if (!existing) {
-        this.enrollmentRepo.create({
+        await this.enrollmentRepo.create({
           student_id: studentId,
           course_id: item.course_id,
           status: "completed",
@@ -120,5 +120,12 @@ export class PaymentService {
   }
   async getPaymentsByStudentId(student_id: string) {
     return await this.paymentRepo.findPaymentsByUserId(student_id);
+  }
+  async  getPaymentById(payment_id: string) {
+    const payment = await this.paymentRepo.findById(payment_id);
+    if (!payment) {
+      throw new AppError(404, "Payment not found");
+    }
+    return payment;
   }
 }

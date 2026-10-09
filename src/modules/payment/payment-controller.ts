@@ -103,21 +103,21 @@ export class PaymentController {
    */
   getPaymentById = asyncHandler(async (req: Request, res: Response) => {
     const student_id = req.user?.id;
-    const { payment_id } = req.params;
+    const  payment_id = req.params['payment_id'] as string;
 
     if (!student_id) {
       throw new AppError(401, "Unauthorized");
     }
 
-    // // const data = await this.paymentService.getPaymentById(
-    //   payment_id,
-    //   student_id
-    // );
+    const data = await this.paymentService.getPaymentById(
+      payment_id,
+    );
 
     apiResponse({
       res,
       statusCode: 200,
       message: "Payment retrieved successfully",
+      data
     });
   });
 }
