@@ -91,5 +91,9 @@ class CartService {
       course_id
     );
   }
+  // clearCart
+  async clearCart(student_id: string) {
+    await this.cartRepo.clear(student_id);
+  }
 }
 export { CartService };

@@ -59,9 +59,11 @@ class CartController {
   });
 
   clearCart = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+    await this.cartService.clearCart(student_id);
     apiResponse({
       res,
-      statusCode: 201,
+      statusCode: 200,
       message: `cart cleared successfully`,
     });
   });

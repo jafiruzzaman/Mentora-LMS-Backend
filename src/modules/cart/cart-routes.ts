@@ -32,17 +32,19 @@ router.get(
   roleMiddlewares([Roles.student]),
   cartController.getAllCartItems
 );
-router.delete(
-  "/:course_id",
-  authMiddleware,
-  roleMiddlewares([Roles.student]),
-  cartController.removeFromCart
-);
+
 router.delete(
   "/clear",
   authMiddleware,
   roleMiddlewares([Roles.student]),
   cartController.clearCart
+);
+
+router.delete(
+  "/:course_id",
+  authMiddleware,
+  roleMiddlewares([Roles.student]),
+  cartController.removeFromCart
 );
 
 export { router as cartRoutes };
