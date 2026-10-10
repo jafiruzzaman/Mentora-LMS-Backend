@@ -68,5 +68,28 @@ class CartService {
       item_count: items.length,
     };
   }
+  async removeFromCart({
+    student_id,
+    course_id,
+  }: {
+    student_id: string;
+    course_id: string;
+  }) {
+    const cart = await this.cartRepo.findByStudentId(student_id);
+    if (!cart) {
+      throw new AppError(400, "cart is empty");
+    }
+    const cartItem = await this.cartRepo.findItemByStudentAndCourse(
+      student_id,
+      course_id
+    );
+    if (!cartItem) {
+      throw new AppError(400, "No item found");
+    }
+    return await this.cartRepo.removeItemByStudentAndCourse(
+      student_id,
+      course_id
+    );
+  }
 }
 export { CartService };
