@@ -9,7 +9,7 @@
 import { db } from "@/config/db";
 import { cartItems, carts } from "@/database/schema/cart-schema";
 import { courses } from "@/database/schema/course-schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sum } from "drizzle-orm";
 
 class CartRepository {
   async create({
@@ -84,8 +84,24 @@ class CartRepository {
       .from(carts)
       .innerJoin(cartItems, eq(cartItems.cart_id, carts.id))
       .innerJoin(courses, eq(courses.id, cartItems.course_id))
-      .where(eq(carts.student_id, student_id))
+      .where(eq(carts.student_id, student_id));
     return result;
+  }
+  async findItemsByStudentId(student_id: string) {
+    return await db
+      .select({
+        cart_item_id: cartItems.id,
+        cart_id: cartItems.cart_id,
+        course: {
+          id: courses.id,
+          title: courses.title,
+          price: courses.price,
+        },
+      })
+      .from(carts)
+      .innerJoin(cartItems, eq(cartItems.cart_id, carts.id))
+      .innerJoin(courses, eq(courses.id, cartItems.course_id))
+      .where(eq(carts.student_id, student_id));
   }
   async removeItemByStudentAndCourse(student_id: string, course_id: string) {
     // check cart exist or not
@@ -127,6 +143,17 @@ class CartRepository {
 
       return items;
     });
+  }
+  async calculateTotalPrice(student_id: string) {
+    const [result] = await db
+      .select({
+        total_price: sum(courses.price),
+      })
+      .from(carts)
+      .innerJoin(cartItems, eq(cartItems.cart_id, carts.id))
+      .innerJoin(courses, eq(courses.id, cartItems.course_id))
+      .where(eq(carts.student_id, student_id));
+    return Number(result?.total_price ?? 0);
   }
 }
 

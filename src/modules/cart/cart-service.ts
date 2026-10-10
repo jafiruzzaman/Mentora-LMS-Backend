@@ -46,7 +46,27 @@ class CartService {
       cart!.id,
       course_id
     );
-    return cartItem;
+    const totalPrice = await this.cartRepo.calculateTotalPrice(student_id);
+    return { cartItem, totalPrice };
+  }
+  async getCart(student_id: string) {
+    const cart = await this.cartRepo.findByStudentId(student_id);
+    if (!cart) {
+      return {
+        items: [],
+        total_price: 0,
+        item_count: 0,
+      };
+    }
+    const items = await this.cartRepo.findItemsByStudentId(student_id);
+    const total_price = await this.cartRepo.calculateTotalPrice(student_id);
+
+    return {
+      cart_id: cart.id,
+      items,
+      total_price,
+      item_count: items.length,
+    };
   }
 }
 export { CartService };
