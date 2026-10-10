@@ -18,6 +18,7 @@ import { enrollmentRoutes } from "@/modules/enrollment/enrollment-routes";
 import { orderRoutes } from "@/modules/order/order-routes";
 import { paymentRoutes } from "@/modules/payment/payment-routes";
 import { wishlistRoutes } from "@/modules/wishlist/wishlist-routes";
+import { cartRoutes } from "@/modules/cart/cart-routes";
 
 const router = Router();
 router.use("/api/v1/auth", authRoutes);
@@ -28,7 +29,8 @@ router.use("/api/v1/modules", moduleRoutes);
 router.use("/api/v1/lessons", lessonRoutes);
 router.use("/api/v1/enrollment", enrollmentRoutes);
 router.use("/api/v1/orders", orderRoutes);
-router.use("/api/v1/payments", paymentRoutes);
+router.use("/api/v1/payment", paymentRoutes);
 router.use("/api/v1/wishlist", wishlistRoutes);
+router.use("/api/v1/cart", cartRoutes);
 
 export { router as rootRoutes };
