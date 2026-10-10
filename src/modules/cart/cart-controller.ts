@@ -29,10 +29,14 @@ class CartController {
     });
   });
   getAllCartItems = asyncHandler(async (req: Request, res: Response) => {
+    const student_id = req.user.id;
+
+    const data = await this.cartService.getCart(student_id);
     apiResponse({
       res,
       statusCode: 201,
       message: `cart retrieve successfully`,
+      data,
     });
   });
   removeFromCart = asyncHandler(async (req: Request, res: Response) => {
