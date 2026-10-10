@@ -34,16 +34,27 @@ class CartController {
     const data = await this.cartService.getCart(student_id);
     apiResponse({
       res,
-      statusCode: 201,
+      statusCode: 200,
       message: `cart retrieve successfully`,
       data,
     });
   });
   removeFromCart = asyncHandler(async (req: Request, res: Response) => {
+    const course_id = req.params["course_id"] as string;
+    const student_id = req.user.id;
+
+    if (!course_id) {
+      throw new AppError(400, "course id is required");
+    }
+    const data = await this.cartService.removeFromCart({
+      student_id,
+      course_id,
+    });
     apiResponse({
       res,
-      statusCode: 201,
-      message: `remove to cart successfully`,
+      statusCode: 200,
+      message: `item remove from cart successfully`,
+      data,
     });
   });
 
