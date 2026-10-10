@@ -9,9 +9,14 @@
 import type { Request, Response } from "express";
 import { describe, vi, it, beforeEach, expect } from "vitest";
 
-import { authService } from "../../../src/modules/auth/auth-service";
-import { authController } from "../../../src/modules/auth/auth-controller";
+import { AuthService } from "../../../src/modules/auth/auth-service";
+import { AuthController } from "../../../src/modules/auth/auth-controller";
 import { apiResponse } from "../../../src/shared/lib/api-response";
+import { UserRepository } from "../../../src/modules/user/user.repository";
+
+const userRepository = new UserRepository();
+const authService = new AuthService(userRepository);
+const authController = new AuthController(authService);
 
 // prepare mock data
 vi.mock("../../../src/modules/auth/auth-service", () => ({
@@ -54,7 +59,7 @@ describe("auth controller unit testing", () => {
     } as Request;
 
     const res = {} as Response;
-    vi.mocked(authService.signUp).mockResolvedValue(createdUserData);
+    vi.mocked(authService.signUp).mockResolvedValue(createdUserData as any);
 
     // Act =>
     await authController.signUp(req, res);
