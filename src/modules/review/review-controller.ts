@@ -40,11 +40,16 @@ class ReviewController {
     });
   });
   getReviews = asyncHandler(async (req: Request, res: Response) => {
+    const course_id = req.params["course_id"] as string;
+    if (!course_id) {
+      throw new AppError(400, "course id is required");
+    }
+    const data = await this.reviewService.getReviews(course_id);
     apiResponse({
       res,
       statusCode: 200,
       message: "retrieved all the reviews successfully.",
-      data: {},
+      data,
     });
   });
   getReview = asyncHandler(async (req: Request, res: Response) => {

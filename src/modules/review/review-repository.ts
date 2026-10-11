@@ -43,6 +43,12 @@ class ReviewRepository {
       .limit(1);
     return review;
   }
+  async findAllCourseId(course_id: string) {
+    return await db
+      .select()
+      .from(reviews)
+      .where(eq(reviews.course_id, course_id));
+  }
   async findById(review_id: string) {
     const [review] = await db
       .select()

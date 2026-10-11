@@ -54,6 +54,13 @@ class ReviewService {
     });
     return response;
   }
+  async getReviews(course_id: string) {
+    const course = await this.courseRepo.findById(course_id);
+    if (!course) {
+      throw new AppError(404, "course not found");
+    }
+    return await this.reviewRepo.findAllCourseId(course_id);
+  }
 }
 
 export { ReviewService };
