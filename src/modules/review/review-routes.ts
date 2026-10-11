@@ -6,43 +6,17 @@
  * @date 10th October
  */
 
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
+
+import { ReviewController } from "./review-controller";
+
 const router = Router();
 
-router.post("/course/:course_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "review posted successfully.",
-    data: {},
-  });
-});
-router.get("/course/:course_id/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "retrieved all the reviews successfully.",
-    data: {},
-  });
-});
-router.get("/:review_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "fetch review successfully.",
-    data: {},
-  });
-});
-router.patch("/:review_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "review updated successfully.",
-    data: {},
-  });
-});
-router.delete("/:review_id", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "review deleted successfully.",
-    data: {},
-  });
-});
+const reviewController = new ReviewController();
+router.post("/course/:course_id/", reviewController.addReview);
+router.get("/course/:course_id/", reviewController.getReviews);
+router.get("/:review_id", reviewController.getReview);
+router.patch("/:review_id", reviewController.updateReview);
+router.delete("/:review_id", reviewController.deleteReview);
 
 export { router as reviewRoutes };
