@@ -9,12 +9,9 @@
 // import required dependencies
 import { describe, it, vi, beforeEach, expect } from "vitest";
 
-import { UserRepository } from "../../../src/modules/user/user.repository";
-import { AuthService } from "../../../src/modules/auth/auth-service";
+import { userRepository } from "../../../src/modules/user/user.repository";
+import { authService } from "../../../src/modules/auth/auth-service";
 import { hashPassword } from "../../../src/shared/lib/password";
-
-const userRepository = new UserRepository();
-const authService = new AuthService(userRepository);
 
 /**
  * Mock password hashing.

@@ -13,12 +13,14 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
 
 /* ================================================================= */
 //  Custom Modules
 /* ================================================================= */
 import { env } from "@/config/env";
 import compression from "compression";
+import openApiDocument from "../openapi.yaml";
 import { loggerMiddleware } from "@/shared/middlewares/logger.middleware";
 import { notFoundMiddleware } from "@/shared/middlewares/not-found.middleware";
 import { globalErrorMiddleware } from "@/shared/middlewares/global.middleware";
@@ -67,7 +69,7 @@ app.use(compression({ threshold: "1kb" }));
 /* ================================================================= */
 //  API Routes
 /* ================================================================= */
-app.use(rootRoutes);
+
 /* ================================================================= */
 // Not Found Middleware
 /* ================================================================= */
