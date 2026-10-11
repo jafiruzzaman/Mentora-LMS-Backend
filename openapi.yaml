@@ -1,0 +1,1202 @@
+openapi: 3.0.0
+info:
+  title: mentora-lms-swagger-api
+  version: 1.0.0
+paths:
+  /api/v1/auth/change-password:
+    post:
+      summary: change-password
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_change-password_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/change-password'
+      security:
+        - change-password: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/forgot-password:
+    post:
+      summary: forgot-password
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_forgot-password_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/forgot-password'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/refresh:
+    post:
+      summary: refresh
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_refresh_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/resend-email:
+    post:
+      summary: resend-email
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_resend-email_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/resend-email'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/reset-password:
+    post:
+      summary: reset-password
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_reset-password_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/reset-password'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/send-verification-email:
+    post:
+      summary: send-verification-email
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_auth_send-verification-email_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        - send-verification-email: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/sign-in:
+    post:
+      summary: sign-in
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_sign-in_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/sign-in'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/sign-out:
+    post:
+      summary: sign-out
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_sign-out_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      security:
+        - sign-out: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/sign-up:
+    post:
+      summary: sign-up
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_sign-up_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/sign-up'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/auth/verify-email:
+    post:
+      summary: verify
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_auth_verify_yml
+      description: ''
+      tags:
+        - auth
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/verify'
+      security:
+        - verify: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/cart/d2ef00a3-3bba-4f58-823d-bf37df96e25f:
+    post:
+      summary: add-to-cart
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_cart_add-to-cart_yml
+      description: ''
+      tags:
+        - cart
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    delete:
+      summary: remove-cart-item
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_cart_remove-cart-item_yml
+      description: ''
+      tags:
+        - cart
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/cart/clear:
+    delete:
+      summary: clear-cart
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_cart_clear-cart_yml
+      description: ''
+      tags:
+        - cart
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/cart/:
+    get:
+      summary: get-to-cart
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_cart_get-to-cart_yml
+      description: ''
+      tags:
+        - cart
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/category/:
+    post:
+      summary: create-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_categories_create-category_yml
+      description: ''
+      tags:
+        - categories
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-category'
+      security:
+        - create-category: []
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-all-categories
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_categories_get-all-categories_yml
+      description: ''
+      tags:
+        - categories
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/category/0aa1188e-c37a-499f-b1eb-f0ebff4b41f0:
+    delete:
+      summary: delete-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_categories_delete-category_yml
+      description: ''
+      tags:
+        - categories
+      responses:
+        '200':
+          description: ''
+      security:
+        - delete-category: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/category/315c063d-100d-4a5c-becd-1e1a54ee5348:
+    get:
+      summary: get-category
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_categories_get-category_yml
+      description: ''
+      tags:
+        - categories
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    patch:
+      summary: update-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_categories_update-category_yml
+      description: ''
+      tags:
+        - categories
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update-category'
+      security:
+        - update-category: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/course/:
+    post:
+      summary: create-course
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_course_create-course_yml
+      description: ''
+      tags:
+        - course
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-course'
+      security:
+        - create-course: []
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-all-courses
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_course_get-all-courses_yml
+      description: ''
+      tags:
+        - course
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: search
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+          example: react
+        - name: min_price
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+            format: int32
+          example: '2500'
+        - name: category_id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+          example: a44883e0-562e-4359-9cc8-7a9f1e52276c
+        - name: sub_category_id
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+          example: 422685ff-27b5-43a1-a2f7-fce7848f8570
+        - name: level
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+          example: INTERMEDIATE
+        - name: limit
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+            format: int32
+          example: '10'
+      security:
+        - get-all-courses: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d:
+    delete:
+      summary: delete-course
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_course_delete-course_yml
+      description: ''
+      tags:
+        - course
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/course/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7:
+    get:
+      summary: get-course
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_course_get-course_yml
+      description: ''
+      tags:
+        - course
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    patch:
+      summary: update-course
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_course_update-course_yml
+      description: ''
+      tags:
+        - course
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update-course'
+      security:
+        - update-course: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/enrollment/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d/enroll:
+    post:
+      summary: enroll-course
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_enrollment_enroll-course_yml
+      description: ''
+      tags:
+        - enrollment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/enrollment/:
+    get:
+      summary: get-all-enrollment
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_enrollment_get-all-enrollment_yml
+      description: ''
+      tags:
+        - enrollment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/enrollment/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d:
+    get:
+      summary: get-enrolled-course
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_enrollment_get-enrolled-course_yml
+      description: ''
+      tags:
+        - enrollment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/enrollment/c43ef29c-4a6a-44ce-adee-a1e8400a30fb:
+    get:
+      summary: get-enrollment
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_enrollment_get-enrollment_yml
+      description: ''
+      tags:
+        - enrollment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/lessons/modules/79a0a4db-84c8-44f3-8b33-4d17726dcc85:
+    post:
+      summary: create-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_create-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-lesson'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/lessons/2d263ad2-f65b-4ba7-a448-3fc950d83948:
+    delete:
+      summary: delete-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_delete-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/lessons/cd1fdaa6-d18b-4974-833c-d0782f1f0067:
+    get:
+      summary: get-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_get-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/lessons/modules/1:
+    get:
+      summary: get-lessons
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_get-lessons_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/lessons/9f140d24-8264-4b6e-af1d-51c8cdca55f5:
+    patch:
+      summary: update-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_update-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: title
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/update-lesson'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/modules/course/d2ef00a3-3bba-4f58-823d-bf37df96e25f/:
+    post:
+      summary: create-modules
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_create-modules_yml
+      description: ''
+      tags:
+        - modules
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-modules'
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-modules
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_get-modules_yml
+      description: ''
+      tags:
+        - modules
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/modules/ceca0d0b-20d0-42aa-b6e5-a7bc47b8e0df:
+    delete:
+      summary: delete-module
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_delete-module_yml
+      description: ''
+      tags:
+        - modules
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/modules/a492c2aa-5d75-427e-8a5b-fe5d00cba967:
+    get:
+      summary: get-module
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_get-module_yml
+      description: ''
+      tags:
+        - modules
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    patch:
+      summary: update-module
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_update-module_yml
+      description: ''
+      tags:
+        - modules
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update-module'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/orders/:
+    post:
+      summary: create-order
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_order_create-order_yml
+      description: ''
+      tags:
+        - order
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-order'
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-all-orders
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_order_get-all-orders_yml
+      description: ''
+      tags:
+        - order
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/orders/7a89e6a4-52a5-4ac1-9e82-d0dcda0e5336:
+    get:
+      summary: get-order
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_order_get-order_yml
+      description: ''
+      tags:
+        - order
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/payments/my-payment:
+    get:
+      summary: all-payment-history
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_payment_all-payment-history_yml
+      description: ''
+      tags:
+        - payment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/payments/webhook:
+    post:
+      summary: checkout-session copy
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_payment_checkout-session_copy_yml
+      description: ''
+      tags:
+        - payment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/payments/checkout:
+    post:
+      summary: checkout-session
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_payment_checkout-session_yml
+      description: ''
+      tags:
+        - payment
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/checkout-session'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/payments/ac7e11ca-9799-4015-9567-12a08b69634b:
+    get:
+      summary: get-payment
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_payment_get-payment_yml
+      description: ''
+      tags:
+        - payment
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/sub-category/category/a44883e0-562e-4359-9cc8-7a9f1e52276c/:
+    post:
+      summary: create-sub-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_sub-categories_create-sub-category_yml
+      description: ''
+      tags:
+        - sub-categories
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/create-sub-category'
+      security:
+        - create-sub-category: []
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-all-sub-categories
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_sub-categories_get-all-sub-categories_yml
+      description: ''
+      tags:
+        - sub-categories
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/sub-category/4bf565e8-e898-496c-9cab-25cfddc0f344:
+    delete:
+      summary: delete-sub-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_sub-categories_delete-sub-category_yml
+      description: ''
+      tags:
+        - sub-categories
+      responses:
+        '200':
+          description: ''
+      security:
+        - delete-sub-category: []
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-sub-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_sub-categories_get-sub-category_yml
+      description: ''
+      tags:
+        - sub-categories
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    patch:
+      summary: update-sub-category
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_sub-categories_update-sub-category_yml
+      description: ''
+      tags:
+        - sub-categories
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update-sub-category'
+      security:
+        - update-sub-category: []
+      servers:
+        - url: http://localhost:8080
+  /api/v1/wishlist/d2ef00a3-3bba-4f58-823d-bf37df96e25f:
+    post:
+      summary: add-to-wishlist
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_wishlist_add-to-wishlist_yml
+      description: ''
+      tags:
+        - wishlist
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    delete:
+      summary: remove-from-wishlist
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_wishlist_remove-from-wishlist_yml
+      description: ''
+      tags:
+        - wishlist
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/wishlist/:
+    get:
+      summary: get-all-wishlists
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_wishlist_get-all-wishlists_yml
+      description: ''
+      tags:
+        - wishlist
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+servers: []
+components:
+  schemas:
+    change-password:
+      type: object
+      properties:
+        newPassword:
+          type: string
+        confirmedPassword:
+          type: string
+      example:
+        newPassword: mohammad@qwerty.T,N
+        confirmedPassword: mohammad@qwerty.T,N
+    forgot-password:
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: mohammadjafiruzzaman@gmail.com
+    resend-email:
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: mohammadjafiruzzaman@gmail.com
+    reset-password:
+      type: object
+      properties:
+        token:
+          type: string
+        newPassword:
+          type: string
+        confirmedPassword:
+          type: string
+      example:
+        token: fbf19038e45ef0ea6c1dbb01d5ed74092a7b70604ff2609581d5b74824a9056d
+        newPassword: mohammad@qwerty.T,N
+        confirmedPassword: mohammad@qwerty.T,N
+    sign-in:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: jafiruzzaman@gmail.com
+        password: 01950275252.T,N
+    sign-up:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        user_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        first_name: Mohammad
+        last_name: Jafiruzzaman
+        user_name: jafiruzzamantuhin
+        email: jafiruzzaman@gmail.com
+        password: 01950275252.T,N
+    verify:
+      type: object
+      properties:
+        token:
+          type: string
+      example:
+        token: 05fd9e05c7d58832e2ac47efbacad978dfce388b9d78ffa839f3362c15601d4e
+    create-category:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Web Development
+    update-category:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Machine Learning
+    create-course:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category_id:
+          type: string
+        sub_category_id:
+          type: string
+        discount:
+          type: integer
+        price:
+          type: integer
+        discount_price:
+          type: integer
+        level:
+          type: string
+      example:
+        title: Advanced Next.js Development
+        description: >-
+          Build production-ready applications with Next.js using App Router,
+          server components, server actions, authentication, caching, API
+          integration, and deployment strategies.
+        category_id: a44883e0-562e-4359-9cc8-7a9f1e52276c
+        sub_category_id: 422685ff-27b5-43a1-a2f7-fce7848f8570
+        discount: 25
+        price: 4000
+        discount_price: 3000
+        level: ADVANCED
+    update-course:
+      type: object
+      properties:
+        title:
+          type: string
+        category_id:
+          type: string
+        sub_category_id:
+          type: string
+        description:
+          type: string
+        level:
+          type: string
+        status:
+          type: string
+        price:
+          type: integer
+        discount_price:
+          type: integer
+      example:
+        title: Advanced Next.js Full Stack Development Course
+        category_id: a44883e0-562e-4359-9cc8-7a9f1e52276c
+        sub_category_id: 422685ff-27b5-43a1-a2f7-fce7848f8570
+        description: >-
+          Build production-ready applications with Next.js using App Router,
+          server components, server actions, authentication, caching, API
+          integration, and deployment strategies.
+        level: BEGINNER
+        status: PUBLISHED
+        price: 2000
+        discount_price: 1500
+    create-lesson:
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            type:
+              type: string
+        description:
+          type: object
+          properties:
+            type:
+              type: string
+        video:
+          type: object
+          properties:
+            type:
+              type: string
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+        duration:
+          type: object
+          properties:
+            type:
+              type: string
+    update-lesson:
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            type:
+              type: string
+        description:
+          type: object
+          properties:
+            type:
+              type: string
+        video:
+          type: object
+          properties:
+            type:
+              type: string
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+        duration:
+          type: object
+          properties:
+            type:
+              type: string
+    create-modules:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        position:
+          type: integer
+      example:
+        title: Functions, Scope and Execution Context
+        description: >-
+          Understand functions, parameters, return values, scope, hoisting,
+          execution context, and how JavaScript executes code.
+        position: 3
+    update-module:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      example:
+        title: Control Flow, Conditions and Loops
+        description: Learn conditions, switch statements, loops, and nested loops.
+    create-order:
+      type: object
+      properties:
+        order_items:
+          type: array
+          items:
+            type: object
+            properties:
+              course_id:
+                type: string
+      example:
+        order_items:
+          - course_id: d2ef00a3-3bba-4f58-823d-bf37df96e25f
+    checkout-session:
+      type: object
+      properties:
+        order_id:
+          type: string
+      example:
+        order_id: ce051fad-7868-42a8-a02c-baae43d8b943
+    create-sub-category:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Fullstack Development
+    update-sub-category:
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Backend Development
+  requestBodies:
+    change-password:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/change-password'
+      description: ''
+      required: true
+    forgot-password:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/forgot-password'
+      description: ''
+      required: true
+    resend-email:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/resend-email'
+      description: ''
+      required: true
+    reset-password:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/reset-password'
+      description: ''
+      required: true
+    sign-in:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/sign-in'
+      description: ''
+      required: true
+    sign-up:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/sign-up'
+      description: ''
+      required: true
+    verify:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/verify'
+      description: ''
+      required: true
+    create-category:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-category'
+      description: ''
+      required: true
+    update-category:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update-category'
+      description: ''
+      required: true
+    create-course:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-course'
+      description: ''
+      required: true
+    update-course:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update-course'
+      description: ''
+      required: true
+    create-lesson:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/create-lesson'
+      description: ''
+      required: true
+    update-lesson:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/update-lesson'
+      description: ''
+      required: true
+    create-modules:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-modules'
+      description: ''
+      required: true
+    update-module:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update-module'
+      description: ''
+      required: true
+    create-order:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-order'
+      description: ''
+      required: true
+    checkout-session:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/checkout-session'
+      description: ''
+      required: true
+    create-sub-category:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/create-sub-category'
+      description: ''
+      required: true
+    update-sub-category:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update-sub-category'
+      description: ''
+      required: true
+  securitySchemes:
+    change-password:
+      type: http
+      scheme: bearer
+    send-verification-email:
+      type: http
+      scheme: bearer
+    sign-out:
+      type: http
+      scheme: bearer
+    verify:
+      type: http
+      scheme: bearer
+    create-category:
+      type: http
+      scheme: bearer
+    delete-category:
+      type: http
+      scheme: bearer
+    update-category:
+      type: http
+      scheme: bearer
+    create-course:
+      type: http
+      scheme: bearer
+    get-all-courses:
+      type: http
+      scheme: bearer
+    update-course:
+      type: http
+      scheme: bearer
+    create-sub-category:
+      type: http
+      scheme: bearer
+    delete-sub-category:
+      type: http
+      scheme: bearer
+    update-sub-category:
+      type: http
+      scheme: bearer
