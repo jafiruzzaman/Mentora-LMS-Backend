@@ -9,14 +9,39 @@
 import { Router } from "express";
 
 import { ReviewController } from "./review-controller";
+import { ReviewRepository } from "./review-repository";
+import { ReviewService } from "./review-service";
+import { CourseRepository } from "../course/course-repository";
+import { EnrollmentRepository } from "../enrollment/enrollment-repository";
+import { authMiddleware } from "@/shared/middlewares/auth.middleware";
+import { roleMiddlewares } from "@/shared/middlewares/role.middleware";
+import { Roles } from "@/constants";
 
 const router = Router();
-
-const reviewController = new ReviewController();
-router.post("/course/:course_id/", reviewController.addReview);
+const reviewRepo = new ReviewRepository();
+const courseRepo = new CourseRepository();
+const enrollmentRepo = new EnrollmentRepository();
+const reviewService = new ReviewService(reviewRepo, courseRepo, enrollmentRepo);
+const reviewController = new ReviewController(reviewService);
+router.post(
+  "/course/:course_id/",
+  authMiddleware,
+  roleMiddlewares([Roles.admin, Roles.student]),
+  reviewController.addReview
+);
 router.get("/course/:course_id/", reviewController.getReviews);
 router.get("/:review_id", reviewController.getReview);
-router.patch("/:review_id", reviewController.updateReview);
-router.delete("/:review_id", reviewController.deleteReview);
+router.patch(
+  "/:review_id",
+  authMiddleware,
+  roleMiddlewares([Roles.admin, Roles.student]),
+  reviewController.updateReview
+);
+router.delete(
+  "/:review_id",
+  authMiddleware,
+  roleMiddlewares([Roles.admin, Roles.student]),
+  reviewController.deleteReview
+);
 
 export { router as reviewRoutes };

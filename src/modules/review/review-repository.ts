@@ -10,17 +10,38 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/config/db";
 import { reviews } from "@/database/schema/review-schema";
-
+import type { ReviewDTO } from "./review-validation";
+type ReviewInput = {
+  student_id: string;
+  course_id: string;
+  data: ReviewDTO;
+};
 class ReviewRepository {
-  async create(data: typeof reviews.$inferInsert) {
-    const [review] = await db.insert(reviews).values(data).returning();
+  async create({ data, course_id, student_id }: ReviewInput) {
+    const [review] = await db
+      .insert(reviews)
+      .values({ ...data, student_id, course_id })
+      .returning();
     return review;
   }
-  async findByCourseId(course_id: string) {
-    return await db
+  async findByCourseAndStudentId({
+    student_id,
+    course_id,
+  }: {
+    course_id: string;
+    student_id: string;
+  }) {
+    const [review] = await db
       .select()
       .from(reviews)
-      .where(eq(reviews.course_id, course_id));
+      .where(
+        and(
+          eq(reviews.course_id, course_id),
+          eq(reviews.student_id, student_id)
+        )
+      )
+      .limit(1);
+    return review;
   }
   async findById(review_id: string) {
     const [review] = await db

@@ -9,14 +9,34 @@
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import type { Request, Response } from "express";
+import { reviewSchema } from "./review-validation";
+import { AppError } from "@/shared/lib/app-error.lib";
+import type { ReviewService } from "./review-service";
 
 class ReviewController {
+  constructor(private readonly reviewService: ReviewService) {}
   addReview = asyncHandler(async (req: Request, res: Response) => {
+    const course_id = req.params["course_id"] as string;
+    const student_id = req.user.id;
+    if (!course_id) {
+      throw new AppError(400, "course id is required");
+    }
+    const parsedData = reviewSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+
+      throw new AppError(400, message ?? "Invalid review data.");
+    }
+    const data = await this.reviewService.addReview({
+      student_id,
+      course_id,
+      data: parsedData.data,
+    });
     apiResponse({
       res,
       statusCode: 201,
       message: "review posted successfully.",
-      data: {},
+      data,
     });
   });
   getReviews = asyncHandler(async (req: Request, res: Response) => {

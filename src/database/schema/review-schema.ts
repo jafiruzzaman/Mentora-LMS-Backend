@@ -10,9 +10,9 @@ import {
   varchar,
   timestamp,
   uuid,
-  integer,
   unique,
   index,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { courses } from "./course-schema";
 import { users } from "./user-schema";
@@ -31,7 +31,11 @@ const reviews = pgTable(
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    rating: integer("rating").notNull(),
+    rating: numeric("rating", {
+      precision: 2,
+      scale: 1,
+      mode: "number",
+    }).notNull(),
     message: varchar("message", { length: 2000 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
