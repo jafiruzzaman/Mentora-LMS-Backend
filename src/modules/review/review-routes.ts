@@ -38,7 +38,7 @@ router.patch(
   reviewController.updateReview
 );
 router.delete(
-  "/:review_id",
+  "/course/:course_id/:review_id",
   authMiddleware,
   roleMiddlewares([Roles.admin, Roles.student]),
   reviewController.deleteReview

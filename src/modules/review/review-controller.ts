@@ -91,11 +91,21 @@ class ReviewController {
     });
   });
   deleteReview = asyncHandler(async (req: Request, res: Response) => {
+    const review_id = req.params["review_id"] as string;
+    const course_id = req.params["course_id"] as string;
+    if (!review_id) {
+      throw new AppError(400, "review id is required.");
+    }
+    const student_id = req.user.id as string;
+    await this.reviewService.deleteReview({
+      student_id,
+      course_id,
+      review_id,
+    });
     apiResponse({
       res,
-      statusCode: 200,
+      statusCode: 204,
       message: "review deleted successfully.",
-      data: {},
     });
   });
 }

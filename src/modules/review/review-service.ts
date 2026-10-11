@@ -101,6 +101,32 @@ class ReviewService {
     });
     return response;
   }
+  async deleteReview({
+    review_id,
+    student_id,
+    course_id,
+  }: {
+    review_id: string;
+    student_id: string;
+    course_id: string;
+  }) {
+    // find course
+    const course = await this.courseRepo.findById(course_id);
+    if (!course) {
+      throw new AppError(404, "course not found");
+    }
+    // find review
+    const review = await this.reviewRepo.findById(review_id);
+    if (!review) {
+      throw new AppError(404, "Review Not found");
+    }
+    // check ownership
+    if (review.student_id !== student_id) {
+      throw new AppError(403, "Access denied.");
+    }
+    // now delete
+    return await this.reviewRepo.findByIdAndDelete(review_id);
+  }
 }
 
 export { ReviewService };
