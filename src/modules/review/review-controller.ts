@@ -53,11 +53,16 @@ class ReviewController {
     });
   });
   getReview = asyncHandler(async (req: Request, res: Response) => {
+    const review_id = req.params["review_id"] as string;
+    if (!review_id) {
+      throw new AppError(400, "review id is required.");
+    }
+    const data = await this.reviewService.getReview(review_id);
     apiResponse({
       res,
       statusCode: 200,
       message: "fetch review successfully.",
-      data: {},
+      data,
     });
   });
   updateReview = asyncHandler(async (req: Request, res: Response) => {

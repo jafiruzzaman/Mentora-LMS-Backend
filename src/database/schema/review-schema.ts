@@ -37,8 +37,8 @@ const reviews = pgTable(
       mode: "number",
     }).notNull(),
     message: varchar("message", { length: 2000 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at").defaultNow().notNull(),
   },
   (table) => [
     unique("reviews_student_course_unique").on(

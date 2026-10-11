@@ -61,6 +61,13 @@ class ReviewService {
     }
     return await this.reviewRepo.findAllCourseId(course_id);
   }
+  async getReview(review_id: string) {
+    const review = await this.reviewRepo.findById(review_id);
+    if (!review) {
+      throw new AppError(404, "review not found");
+    }
+    return review;
+  }
 }
 
 export { ReviewService };

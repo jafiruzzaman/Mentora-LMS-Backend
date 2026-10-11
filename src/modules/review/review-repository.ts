@@ -11,6 +11,9 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/config/db";
 import { reviews } from "@/database/schema/review-schema";
 import type { ReviewDTO } from "./review-validation";
+import { courses } from "@/database/schema/course-schema";
+import { users } from "@/database/schema/user-schema";
+
 type ReviewInput = {
   student_id: string;
   course_id: string;
@@ -45,14 +48,46 @@ class ReviewRepository {
   }
   async findAllCourseId(course_id: string) {
     return await db
-      .select()
+      .select({
+        id: reviews.id,
+        rating: reviews.rating,
+        message: reviews.message,
+        created_at: reviews.created_at,
+
+        // courses info
+        course_id: courses.id,
+        course_title: courses.title,
+
+        // students info
+        student_id: users.id,
+        student_first_name: users.first_name,
+        student_last_name: users.last_name,
+      })
       .from(reviews)
+      .innerJoin(courses, eq(reviews.course_id, courses.id))
+      .innerJoin(users, eq(reviews.student_id, users.id))
       .where(eq(reviews.course_id, course_id));
   }
   async findById(review_id: string) {
     const [review] = await db
-      .select()
+      .select({
+        id: reviews.id,
+        rating: reviews.rating,
+        message: reviews.message,
+        created_at: reviews.created_at,
+
+        // courses info
+        course_id: courses.id,
+        course_title: courses.title,
+
+        // students info
+        student_id: users.id,
+        student_first_name: users.first_name,
+        student_last_name: users.last_name,
+      })
       .from(reviews)
+      .innerJoin(courses, eq(reviews.course_id, courses.id))
+      .innerJoin(users, eq(reviews.student_id, users.id))
       .where(eq(reviews.id, review_id))
       .limit(1);
     return review;
