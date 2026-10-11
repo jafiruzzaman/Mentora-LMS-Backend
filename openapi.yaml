@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: mentora-lms-swagger-api
+  title: Mentora-LMS-API-Docs
   version: 1.0.0
 paths:
   /api/v1/auth/change-password:
@@ -222,7 +222,7 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/category/0aa1188e-c37a-499f-b1eb-f0ebff4b41f0:
+  /api/v1/category/315c063d-100d-4a5c-becd-1e1a54ee5348:
     delete:
       summary: delete-category
       operationId: >-
@@ -237,7 +237,6 @@ paths:
         - delete-category: []
       servers:
         - url: http://localhost:8080
-  /api/v1/category/315c063d-100d-4a5c-becd-1e1a54ee5348:
     get:
       summary: get-category
       operationId: home_jafiruzzaman_documents_bruno_blog_api_categories_get-category_yml
@@ -339,7 +338,7 @@ paths:
         - get-all-courses: []
       servers:
         - url: http://localhost:8080
-  /api/v1/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d:
+  /api/v1/course/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7:
     delete:
       summary: delete-course
       operationId: home_jafiruzzaman_documents_bruno_blog_api_course_delete-course_yml
@@ -351,7 +350,6 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/course/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7:
     get:
       summary: get-course
       operationId: home_jafiruzzaman_documents_bruno_blog_api_course_get-course_yml
@@ -378,7 +376,7 @@ paths:
         - update-course: []
       servers:
         - url: http://localhost:8080
-  /api/v1/enrollment/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d/enroll:
+  /api/v1/enrollment/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7/enroll:
     post:
       summary: enroll-course
       operationId: home_jafiruzzaman_documents_bruno_blog_api_enrollment_enroll-course_yml
@@ -403,7 +401,7 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/enrollment/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d:
+  /api/v1/enrollment/course/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7:
     get:
       summary: get-enrolled-course
       operationId: >-
@@ -428,7 +426,7 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/lessons/modules/79a0a4db-84c8-44f3-8b33-4d17726dcc85:
+  /api/v1/lessons/modules/a492c2aa-5d75-427e-8a5b-fe5d00cba967:
     post:
       summary: create-lesson
       operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_create-lesson_yml
@@ -442,31 +440,6 @@ paths:
         $ref: '#/components/requestBodies/create-lesson'
       servers:
         - url: http://localhost:8080
-  /api/v1/lessons/2d263ad2-f65b-4ba7-a448-3fc950d83948:
-    delete:
-      summary: delete-lesson
-      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_delete-lesson_yml
-      description: ''
-      tags:
-        - lessons
-      responses:
-        '200':
-          description: ''
-      servers:
-        - url: http://localhost:8080
-  /api/v1/lessons/cd1fdaa6-d18b-4974-833c-d0782f1f0067:
-    get:
-      summary: get-lesson
-      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_get-lesson_yml
-      description: ''
-      tags:
-        - lessons
-      responses:
-        '200':
-          description: ''
-      servers:
-        - url: http://localhost:8080
-  /api/v1/lessons/modules/1:
     get:
       summary: get-lessons
       operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_get-lessons_yml
@@ -478,7 +451,29 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/lessons/9f140d24-8264-4b6e-af1d-51c8cdca55f5:
+  /api/v1/lessons/cd1fdaa6-d18b-4974-833c-d0782f1f0067:
+    delete:
+      summary: delete-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_delete-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-lesson
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_get-lesson_yml
+      description: ''
+      tags:
+        - lessons
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
     patch:
       summary: update-lesson
       operationId: home_jafiruzzaman_documents_bruno_blog_api_lessons_update-lesson_yml
@@ -499,7 +494,7 @@ paths:
         $ref: '#/components/requestBodies/update-lesson'
       servers:
         - url: http://localhost:8080
-  /api/v1/modules/course/d2ef00a3-3bba-4f58-823d-bf37df96e25f/:
+  /api/v1/modules/course/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7/:
     post:
       summary: create-modules
       operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_create-modules_yml
@@ -524,7 +519,7 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/modules/ceca0d0b-20d0-42aa-b6e5-a7bc47b8e0df:
+  /api/v1/modules/a492c2aa-5d75-427e-8a5b-fe5d00cba967:
     delete:
       summary: delete-module
       operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_delete-module_yml
@@ -536,7 +531,6 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/modules/a492c2aa-5d75-427e-8a5b-fe5d00cba967:
     get:
       summary: get-module
       operationId: home_jafiruzzaman_documents_bruno_blog_api_modules_get-module_yml
@@ -650,7 +644,69 @@ paths:
           description: ''
       servers:
         - url: http://localhost:8080
-  /api/v1/sub-category/category/a44883e0-562e-4359-9cc8-7a9f1e52276c/:
+  /api/v1/review/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d/:
+    post:
+      summary: add review
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_review_add_review_yml
+      description: ''
+      tags:
+        - review
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/add_review'
+      servers:
+        - url: http://localhost:8080
+    get:
+      summary: get-reviews
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_review_get-reviews_yml
+      description: ''
+      tags:
+        - review
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/review/course/46b2f7a4-6c96-47f1-a3a0-cb8bf1a55b9d/fd573d2c-e023-4e6f-ad22-56da1ab5ad22:
+    delete:
+      summary: delete-review
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_review_delete-review_yml
+      description: ''
+      tags:
+        - review
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+    patch:
+      summary: update-review
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_review_update-review_yml
+      description: ''
+      tags:
+        - review
+      responses:
+        '200':
+          description: ''
+      requestBody:
+        $ref: '#/components/requestBodies/update-review'
+      servers:
+        - url: http://localhost:8080
+  /api/v1/review/fd573d2c-e023-4e6f-ad22-56da1ab5ad22:
+    get:
+      summary: get-review
+      operationId: home_jafiruzzaman_documents_bruno_blog_api_review_get-review_yml
+      description: ''
+      tags:
+        - review
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/sub-category/category/315c063d-100d-4a5c-becd-1e1a54ee5348/:
     post:
       summary: create-sub-category
       operationId: >-
@@ -722,22 +778,10 @@ paths:
         - update-sub-category: []
       servers:
         - url: http://localhost:8080
-  /api/v1/wishlist/d2ef00a3-3bba-4f58-823d-bf37df96e25f:
+  /api/v1/wishlist/a7f9c4f9-2e2e-47d5-a4ea-0aa18e64f4c7:
     post:
       summary: add-to-wishlist
       operationId: home_jafiruzzaman_documents_bruno_blog_api_wishlist_add-to-wishlist_yml
-      description: ''
-      tags:
-        - wishlist
-      responses:
-        '200':
-          description: ''
-      servers:
-        - url: http://localhost:8080
-    delete:
-      summary: remove-from-wishlist
-      operationId: >-
-        home_jafiruzzaman_documents_bruno_blog_api_wishlist_remove-from-wishlist_yml
       description: ''
       tags:
         - wishlist
@@ -751,6 +795,19 @@ paths:
       summary: get-all-wishlists
       operationId: >-
         home_jafiruzzaman_documents_bruno_blog_api_wishlist_get-all-wishlists_yml
+      description: ''
+      tags:
+        - wishlist
+      responses:
+        '200':
+          description: ''
+      servers:
+        - url: http://localhost:8080
+  /api/v1/wishlist/d2ef00a3-3bba-4f58-823d-bf37df96e25f:
+    delete:
+      summary: remove-from-wishlist
+      operationId: >-
+        home_jafiruzzaman_documents_bruno_blog_api_wishlist_remove-from-wishlist_yml
       description: ''
       tags:
         - wishlist
@@ -785,7 +842,7 @@ components:
         email:
           type: string
       example:
-        email: mohammadjafiruzzaman@gmail.com
+        email: jafiruzzamantuhin@gmail.com
     reset-password:
       type: object
       properties:
@@ -807,8 +864,8 @@ components:
         password:
           type: string
       example:
-        email: jafiruzzaman@gmail.com
-        password: 01950275252.T,N
+        email: jafiruzzamantuhin@gmail.com
+        password: test123456
     sign-up:
       type: object
       properties:
@@ -827,7 +884,7 @@ components:
         last_name: Jafiruzzaman
         user_name: jafiruzzamantuhin
         email: jafiruzzaman@gmail.com
-        password: 01950275252.T,N
+        password: test123456
     verify:
       type: object
       properties:
@@ -1012,6 +1069,30 @@ components:
           type: string
       example:
         order_id: ce051fad-7868-42a8-a02c-baae43d8b943
+    add_review:
+      type: object
+      properties:
+        message:
+          type: string
+        rating:
+          type: string
+      example:
+        message: >-
+          this is very helpful. The instructor hold my hand from basic to
+          advnced production grade deployment.
+        rating: '4.8'
+    update-review:
+      type: object
+      properties:
+        message:
+          type: string
+        rating:
+          type: string
+      example:
+        message: >-
+          this review is update and this course is very helpful. The instructor
+          hold my hand from basic to advnced production grade deployment.
+        rating: '5'
     create-sub-category:
       type: object
       properties:
@@ -1144,6 +1225,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/checkout-session'
+      description: ''
+      required: true
+    add_review:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/add_review'
+      description: ''
+      required: true
+    update-review:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/update-review'
       description: ''
       required: true
     create-sub-category:

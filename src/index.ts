@@ -42,7 +42,7 @@ const bootStrap = async (): Promise<void> => {
 /* ================================================================= */
 /* Graceful Shutdown */
 /* ================================================================= */
-const shutDown = async (signal: string): Promise<void> => {
+const shutDown = (signal: string) => {
   logger.info(`${signal} received. Server is shutting down...`);
   try {
     server = server.close();
@@ -57,14 +57,14 @@ const shutDown = async (signal: string): Promise<void> => {
   }
 };
 process.on("SIGINT", () => {
-  void shutDown("SIGINT");
+  shutDown("SIGINT");
 });
 process.on("SIGTERM", () => {
-  void shutDown("SIGTERM");
+  shutDown("SIGTERM");
 });
 process.on("unhandledRejection", (reason) => {
   logger.error(reason, "unhandled rejection");
-  void shutDown("unhandledRejection");
+  shutDown("unhandledRejection");
 });
 process.on("uncaughtException", (error) => {
   logger.fatal(error, "Uncaught exception");
