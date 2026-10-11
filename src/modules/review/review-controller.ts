@@ -9,7 +9,7 @@
 import { apiResponse } from "@/shared/lib/api-response";
 import { asyncHandler } from "@/shared/lib/async-handler";
 import type { Request, Response } from "express";
-import { reviewSchema } from "./review-validation";
+import { reviewSchema, updateReviewSchema } from "./review-validation";
 import { AppError } from "@/shared/lib/app-error.lib";
 import type { ReviewService } from "./review-service";
 
@@ -66,11 +66,28 @@ class ReviewController {
     });
   });
   updateReview = asyncHandler(async (req: Request, res: Response) => {
+    const review_id = req.params["review_id"] as string;
+    const course_id = req.params["course_id"] as string;
+    if (!review_id) {
+      throw new AppError(400, "review id is required.");
+    }
+    const parsedData = updateReviewSchema.safeParse(req.body);
+    if (!parsedData.success) {
+      const message = parsedData.error.issues[0]?.message;
+      throw new AppError(400, message ?? "Invalid review data.");
+    }
+    const student_id = req.user.id as string;
+    const data = await this.reviewService.updateReview({
+      review_id,
+      student_id,
+      course_id,
+      data: parsedData.data,
+    });
     apiResponse({
       res,
       statusCode: 200,
       message: "review updated successfully.",
-      data: {},
+      data,
     });
   });
   deleteReview = asyncHandler(async (req: Request, res: Response) => {

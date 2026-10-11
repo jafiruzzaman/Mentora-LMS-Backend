@@ -17,7 +17,13 @@ const reviewSchema = z.object({
     .describe("review rating is required"),
   message: z.string().min(5).max(2000).describe("review message is required"),
 });
-
+const updateReviewSchema = reviewSchema.partial();
 type ReviewDTO = z.infer<typeof reviewSchema>;
+type UpdateReviewDTO = z.infer<typeof updateReviewSchema>;
 
-export { type ReviewDTO, reviewSchema };
+export {
+  type ReviewDTO,
+  type UpdateReviewDTO,
+  reviewSchema,
+  updateReviewSchema,
+};

@@ -32,7 +32,7 @@ router.post(
 router.get("/course/:course_id/", reviewController.getReviews);
 router.get("/:review_id", reviewController.getReview);
 router.patch(
-  "/:review_id",
+  "/course/:course_id/:review_id",
   authMiddleware,
   roleMiddlewares([Roles.admin, Roles.student]),
   reviewController.updateReview
